@@ -16,14 +16,14 @@ typedef struct {
     SDL_Texture* pTexBomb;
 
     SDL_Rect playerPositionRect;
+    SDL_Rect bombPositionRect;
 } stGame;
 
 
 stGame* game_init();
 void game_destroy(stGame* game);
-void game_draw(stGame* game);
+void game_draw(stGame* game,int flagBomb);
 int game_event(stGame *game);
 void character_move(SDL_Keycode direction, stGame *game);
-
 
 #endif

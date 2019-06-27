@@ -5,7 +5,7 @@ int main(int argc, char* argv[]) {
     int quit = 0;
     
     while(quit != 1) {
-        game_draw(game);
+        game_draw(game, 0);
 
         quit = game_event(game);
 
