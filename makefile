@@ -1,7 +1,7 @@
-NAME = client
+NAME = server
 
 # Files
-SRC= sourceFiles/client.c
+SRC= sourceFiles/server.c
 OBJ	= $(SRC:%.c=%.o)
 
 # Build settings
