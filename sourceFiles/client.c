@@ -1,4 +1,5 @@
 #include "../headerFiles/header.h"
+#include <string.h>
 
 int my_strlen(char *str)
 {
@@ -54,13 +55,26 @@ int main(int argc, char *argv[])
     //envoyer des messages
     while (1)
     {
-        char *message = NULL;
-        message = malloc(sizeof(char *) * 100);
-        printf("écrivez votre message : \n");
+        char *message = malloc(sizeof(char *) + 100);
+        //char *message;
+        //on remet à zéro le message à chaque boucle
+        //memset(message, 0, 100);
+
+        printf("écrivez votre message : \n"); //invitation de commande pour l'utilisateur
         fgets(message, 100, stdin);
-        int length = my_strlen(message);
         //le programme attend qu'on rentre une valeur
-        write(mysocket, message, length);
+        int length = my_strlen(message); //une fois le message écris on calcule son length
+
+        //on écrit sur le socket
+
+        if (send(mysocket, message, length, MSG_NOSIGNAL) < 0)
+        {
+            puts("send failed");
+            close(mysocket);
+            return 1;
         }
+        free(message);
+    }
+    close(mysocket);
     return 0;
 }
