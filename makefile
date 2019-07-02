@@ -1,9 +1,7 @@
-NAME = bomberman
+NAME = client
 
 # Files
-SRC= sourceFiles/main.c\
-	 sourceFiles/game.c	
-
+SRC= sourceFiles/client.c
 OBJ	= $(SRC:%.c=%.o)
 
 # Build settings
