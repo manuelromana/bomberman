@@ -5,11 +5,12 @@ stGame* game_init() {
     stGame* game = NULL;
     game = malloc(sizeof (stGame));
 
-    game->screenSize.x = 640;
-    game->screenSize.y = 480;
+    game->screenSize.x = 1280;
+    game->screenSize.y = 960;
     game->pWindow = NULL;
     game->pRenderer = NULL;
-    game->pTexPlayer = NULL;
+    game->pTexPlayerFront = NULL;
+    game->pTexPlayerBack = NULL;
     game->pTexBomb = NULL;
     game->playerPositionRect.x = game->screenSize.x / 2;
     game->playerPositionRect.y = game->screenSize.y / 2;
@@ -17,6 +18,7 @@ stGame* game_init() {
     game->playerPositionRect.h = 128;
     game->bombPositionRect.x = 900;
     game->bombPositionRect.y = 900;
+    game->playerDirection = 0;
 
     game->pWindow = SDL_CreateWindow(
         "Bomberman",                  // window title
@@ -42,19 +44,28 @@ stGame* game_init() {
         return NULL;
     }
 
-    SDL_Surface* surfaceBomberman = IMG_Load("assets/Bomberman/Front/Bman_F_f00.png");
-    if (!surfaceBomberman) {
+    SDL_Surface* frontBomberman = IMG_Load("assets/Bomberman/Front/Bman_F_f00.png");
+    SDL_Surface* backBomberman = IMG_Load("assets/Bomberman/Back/Bman_B_f00.png");
+    SDL_Surface* RightSideBomberman = IMG_Load("assets/Bomberman/Side/Bman_F_f00.png");
+    SDL_Surface* LeftSideBomberman = IMG_Load("assets/Bomberman/Side/Bman_F_f00.png");
+   
+
+    if (!frontBomberman || !backBomberman) {
         fprintf(stderr, "Erreur au chargement de l'image : %s\n", IMG_GetError());
         game_destroy(game);
         return NULL;
     } else {
-        game->pTexPlayer = SDL_CreateTextureFromSurface(game->pRenderer, surfaceBomberman);
-        if (!game->pTexPlayer) {
+        game->pTexPlayerFront = SDL_CreateTextureFromSurface(game->pRenderer, frontBomberman);
+        game->pTexPlayerBack = SDL_CreateTextureFromSurface(game->pRenderer, backBomberman);
+        game->pTexPlayerRight = SDL_CreateTextureFromSurface(game->pRenderer, RightSideBomberman);
+        game->pTexPlayerLeft = SDL_CreateTextureFromSurface(game->pRenderer, LeftSideBomberman);
+        if (!game->pTexPlayerFront || !game->pTexPlayerBack) {
             fprintf(stderr, "Erreur au chargement de la texture : %s\n", SDL_GetError());
             game_destroy(game);
             return NULL;
         }
-        SDL_FreeSurface(surfaceBomberman);
+        // SDL_FreeSurface(frontBomberman);
+        // SDL_FreeSurface(backBomberman);
     }
 
     SDL_Surface* surfaceBombe = IMG_Load("assets/Bomb/Bomb_f01.png");
@@ -69,24 +80,40 @@ stGame* game_init() {
             game_destroy(game);
             return NULL;
         }
-        SDL_FreeSurface(surfaceBombe);
+        // SDL_FreeSurface(surfaceBombe);
     }
 
     return game;
 }
 
-void game_draw(stGame* game, int flagBomb) {
+void game_draw(stGame* game) {
 
     SDL_SetRenderDrawColor(game->pRenderer, 100, 0, 0, 255);
     SDL_RenderClear(game->pRenderer);
+    SDL_RendererFlip flip = SDL_FLIP_HORIZONTAL;
+    SDL_Rect destinationPlayer = {
+        game->playerPositionRect.x,
+        game->playerPositionRect.y,
+        game->playerPositionRect.w,
+        game->playerPositionRect.h
+    };
 
-    SDL_Rect destinationPlayer = {game->playerPositionRect.x, game->playerPositionRect.y, game->playerPositionRect.w, game->playerPositionRect.h};
-    SDL_RenderCopy(game->pRenderer, game->pTexPlayer, NULL, &destinationPlayer);
-    
-    if (flagBomb == 1) {
-        game->bombPositionRect.x = (game->playerPositionRect.x) + 10;
-        game->bombPositionRect.y =  (game->playerPositionRect.y) + 80;
+    switch (game->playerDirection) {
+        case 0 :
+            SDL_RenderCopy(game->pRenderer, game->pTexPlayerRight, NULL, &destinationPlayer); 
+            break;
+        case 1 :
+            SDL_RenderCopyEx(game->pRenderer,game->pTexPlayerLeft, NULL, &destinationPlayer, 0, NULL, flip);
+            //SDL_RenderCopy(game->pRenderer, game->pTexPlayerLeft, NULL, &destinationPlayer); 
+            break;
+        case 2 :
+            SDL_RenderCopy(game->pRenderer, game->pTexPlayerBack, NULL, &destinationPlayer); 
+            break;
+        case 3 :
+            SDL_RenderCopy(game->pRenderer, game->pTexPlayerFront, NULL, &destinationPlayer); 
+            break;
     }
+  
 
     SDL_Rect destinationBombe = { game->bombPositionRect.x, game->bombPositionRect.y,48,48};
     SDL_RenderCopy(game->pRenderer, game->pTexBomb, NULL, &destinationBombe);
@@ -123,23 +150,33 @@ int game_event(stGame *game) {
     return quit;
 }
 
+        // game->pTexPlayer = SDL_CreateTextureFromSurface(game->pRenderer, frontBomberman);
+        // game->pTexPlayer = SDL_CreateTextureFromSurface(game->pRenderer, backBomberman);
+        // game->pTexPlayer = SDL_CreateTextureFromSurface(game->pRenderer, sideBomberman);
+
+
 void character_move(SDL_Keycode direction, stGame *game) {
+
     switch (direction) {
             case SDLK_RIGHT:
                 if(game->playerPositionRect.x < (game->screenSize.x - game->playerPositionRect.w))
                     game->playerPositionRect.x += 10;
+                    game->playerDirection = 0;
                 break;
             case SDLK_LEFT:
                 if(game->playerPositionRect.x > 0)
                     game->playerPositionRect.x -= 10;
+                game->playerDirection = 1;
                 break;
             case SDLK_UP:
                 if(game->playerPositionRect.y > 0)
                     game->playerPositionRect.y -= 10;
+                game->playerDirection = 2;
                 break;
             case SDLK_DOWN: 
                 if(game->playerPositionRect.y < (game->screenSize.y - game->playerPositionRect.h))
                     game->playerPositionRect.y += 10;
+                game->playerDirection = 3;
                 break;  
             case SDLK_SPACE:
                 /*if (!game->pTexBomb) {
@@ -147,7 +184,7 @@ void character_move(SDL_Keycode direction, stGame *game) {
                     SDL_Surface* surfaceBombe = IMG_Load("assets/Bomb/Bomb_f01.png");
                     game->pTexBomb = SDL_CreateTextureFromSurface(game->pRenderer, surfaceBombe);
                 } */
-                game_draw(game, 1);
+                draw_bomb(game, 1);
                 break;
             /*
             case SDLK_a: 
@@ -157,12 +194,21 @@ void character_move(SDL_Keycode direction, stGame *game) {
     }
 }
 
+void draw_bomb(stGame* game, int flagBomb) {
+
+if (flagBomb == 1) {
+        game->bombPositionRect.x = (game->playerPositionRect.x) + 10;
+        game->bombPositionRect.y =  (game->playerPositionRect.y) + 80;
+    }
+}
+
 
 void game_destroy(stGame *game){
     if (game){
         SDL_DestroyWindow(game->pWindow);
         SDL_DestroyRenderer(game->pRenderer);
-        SDL_DestroyTexture(game->pTexPlayer);
+        SDL_DestroyTexture(game->pTexPlayerFront);
+        SDL_DestroyTexture(game->pTexPlayerBack);
         SDL_DestroyTexture(game->pTexBomb);
         free(game);
     }

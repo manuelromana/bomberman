@@ -12,17 +12,25 @@ typedef struct {
     SDL_Renderer* pRenderer;
 
     //Textures
-    SDL_Texture* pTexPlayer;
+    SDL_Texture* pTexPlayerFront;
+    SDL_Texture* pTexPlayerBack;
+    SDL_Texture* pTexPlayerRight;
+    SDL_Texture* pTexPlayerLeft;
     SDL_Texture* pTexBomb;
+
+    int playerDirection;
+
 
     SDL_Rect playerPositionRect;
     SDL_Rect bombPositionRect;
 } stGame;
 
 
+
+
 stGame* game_init();
 void game_destroy(stGame* game);
-void game_draw(stGame* game,int flagBomb);
+void game_draw(stGame* game);
 int game_event(stGame *game);
 void character_move(SDL_Keycode direction, stGame *game);
 
