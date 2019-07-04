@@ -8,6 +8,7 @@
 #include <unistd.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
+#include <pthread.h>
 
 typedef struct
 {
@@ -29,5 +30,6 @@ void game_destroy(stGame *game);
 void game_draw(stGame *game, int flagBomb);
 int game_event(stGame *game);
 void character_move(SDL_Keycode direction, stGame *game);
+int my_strlen(char *str);
 
 #endif

@@ -1,7 +1,9 @@
-NAME = server
+NAME = server	
 
 # Files
-SRC= sourceFiles/server.c
+SRC= sourceFiles/server.c\
+sourceFiles/my_strlen.c
+
 OBJ	= $(SRC:%.c=%.o)
 
 # Build settings

@@ -1,17 +1,6 @@
 #include "../headerFiles/header.h"
 #include <string.h>
 
-int my_strlen(char *str)
-{
-    int i;
-    i = 0;
-    while (str[i] != 0)
-    {
-        ++i;
-    }
-    return (i);
-}
-
 int main(int argc, char *argv[])
 {
 
@@ -51,29 +40,30 @@ int main(int argc, char *argv[])
         perror("connect()");
         return 1;
     }
-
+    char message[128];
+    //read(mysocket, message, 128);
+    //printf("%s", message);
     //envoyer des messages
     while (1)
     {
-        char *message = malloc(sizeof(char *) + 100);
-        //char *message;
+
         //on remet à zéro le message à chaque boucle
-        //memset(message, 0, 100);
+        memset(message, '\0', 128);
 
         printf("écrivez votre message : \n"); //invitation de commande pour l'utilisateur
-        fgets(message, 100, stdin);
+        fgets(message, 128, stdin);
         //le programme attend qu'on rentre une valeur
         int length = my_strlen(message); //une fois le message écris on calcule son length
 
-        //on écrit sur le socket
-
-        if (send(mysocket, message, length, MSG_NOSIGNAL) < 0)
+        if (write(mysocket, message, length) < 0)
         {
             puts("send failed");
             close(mysocket);
             return 1;
         }
-        free(message);
+
+        read(mysocket, message, 128);
+        printf("reçu par le server: %s", message);
     }
     close(mysocket);
     return 0;
