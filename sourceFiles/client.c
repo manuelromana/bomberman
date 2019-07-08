@@ -55,15 +55,18 @@ int main(int argc, char *argv[])
         //le programme attend qu'on rentre une valeur
         int length = my_strlen(message); //une fois le message écris on calcule son length
 
-        if (write(mysocket, message, length) < 0)
+        //message utilisateur est écris sur le socket si jamais write return un int positif sinon message erreur ainsi le server peut le récupérer
+        //et on utilise send car cette fonction catch les erreurs en cas de server interrompu
+        if (send(mysocket, message, length, MSG_NOSIGNAL) < 0)
         {
             puts("send failed");
             close(mysocket);
             return 1;
         }
 
+        //on utilise read pour que le socket puisse lire la réponse du server on l'affiche avec print f
         read(mysocket, message, 128);
-        printf("reçu par le server: %s", message);
+        printf("reçu par le server: %s\n", message);
     }
     close(mysocket);
     return 0;

@@ -58,11 +58,13 @@ int main(int argc, char *argv[])
         }
         puts("new client");
         memset(buff, '\0', 128);
-        //write(client, "hello manu :", 12);
-        while ((n = read(client, buff, 10)) > 0)
+
+        //write(client, "hello manu :", 12); si on veut un message d'accueil personnalisé
+        //le server récupère le message du client si n est positif sinon message d'erreur utilisé rcv si on veut une utilisation bien spéciale mais ne pas utilisé de rcv avec un flag à 0 ça ne sert à rien
+        while ((n = read(client, buff, 128)) > 0)
         {
             int length = my_strlen(buff);
-            printf("received : %i octet and %s\n", length, buff);
+            printf("received : %i octet and %s", length, buff);
 
             write(client, buff, length);
             memset(buff, '\0', 128);
