@@ -80,12 +80,7 @@ stGame* game_init() {
 }
 
 void game_draw(stGame* game) {
-<<<<<<< HEAD
-
-    SDL_SetRenderDrawColor(game->pRenderer, 0, 100, 0, 255);
-=======
     SDL_SetRenderDrawColor(game->pRenderer, 100, 0, 0, 255);
->>>>>>> 921b0aa18c16f3b4f374ae1b0ac1eb26388bec94
     SDL_RenderClear(game->pRenderer);
     SDL_RendererFlip flip = SDL_FLIP_HORIZONTAL;
     SDL_Rect destinationPlayer = {
