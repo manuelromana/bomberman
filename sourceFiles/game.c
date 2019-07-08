@@ -5,7 +5,7 @@ stGame* game_init() {
     stGame* game = NULL;
     game = malloc(sizeof (stGame));
 
-    game->screenSize.x = 1280;
+    game->screenSize.x = 1216;
     game->screenSize.y = 960;
     game->pWindow = NULL;
     game->pRenderer = NULL;
@@ -88,7 +88,7 @@ stGame* game_init() {
 
 void game_draw(stGame* game) {
 
-    SDL_SetRenderDrawColor(game->pRenderer, 100, 0, 0, 255);
+    SDL_SetRenderDrawColor(game->pRenderer, 0, 100, 0, 255);
     SDL_RenderClear(game->pRenderer);
     SDL_RendererFlip flip = SDL_FLIP_HORIZONTAL;
     SDL_Rect destinationPlayer = {
