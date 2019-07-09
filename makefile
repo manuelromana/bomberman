@@ -1,7 +1,7 @@
 NAME = bomberman
 
 SRC= sourceFiles/main.c\
-	 sourceFiles/character.c\
+sourceFiles/character.c\
 	 sourceFiles/objects.c\
 	 sourceFiles/game.c
 
