@@ -1,9 +1,10 @@
 NAME = bomberman
 
-SRC= sourceFiles/main.c\
-sourceFiles/character.c\
-	 sourceFiles/objects.c\
-	 sourceFiles/game.c
+SRC = sourceFiles/main.c\
+	sourceFiles/character.c\
+	sourceFiles/objects.c\
+	sourceFiles/game.c\
+	sourceFiles/map.c
 
 OBJ	= $(SRC:%.c=%.o)
 

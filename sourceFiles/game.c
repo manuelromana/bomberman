@@ -1,8 +1,33 @@
 #include "../headerFiles/header.h"
 
+int map[HAUTEURMAP][LARGEURMAP] = {
+        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+        {1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1},
+        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+        {1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1},
+        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+        {1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1},
+        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+        {1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1},
+        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+        {1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1},
+        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+        {1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1},
+        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
+    };
+
 stGame* game_init() {
     stGame* game = NULL;
     game = malloc(sizeof (stGame));
+
+    for (int x = 0; x < LARGEURMAP; x++) {
+        for (int y = 0; y < HAUTEURMAP; y++) {
+            game->map[y][x] = map[y][x];
+        }
+    }
+    
 
     game->screenSize.x = 1216;
     game->screenSize.y = 960;
@@ -11,6 +36,7 @@ stGame* game_init() {
     game->pTexPlayerFront = NULL;
     game->pTexPlayerBack = NULL;
     game->pTexBomb = NULL;
+    game->pTexWall = NULL;
     game->playerPositionRect.x = game->screenSize.x / 2;
     game->playerPositionRect.y = game->screenSize.y / 2;
     game->playerPositionRect.w = 64;
@@ -18,6 +44,11 @@ stGame* game_init() {
     game->bombPositionRect.x = 900;
     game->bombPositionRect.y = 900;
     game->playerDirection = 0;
+    game->wallPosition.x = 0;
+    game->wallPosition.y = 0;
+     game->wallPosition.w = 64;
+      game->wallPosition.h = 128;
+
 
     game->pWindow = SDL_CreateWindow(
         "Bomberman",
@@ -62,7 +93,7 @@ stGame* game_init() {
         }
     }
 
-    SDL_Surface* surfaceBombe = IMG_Load("assets/Bomb/Bomb_f01.png");
+    SDL_Surface* surfaceBombe = IMG_Load("assets/Bomb/Bomb_f03.png");
     if (!surfaceBombe) {
         fprintf(stderr, "Erreur au chargement de l'image : %s\n", IMG_GetError());
         game_destroy(game);
@@ -75,12 +106,11 @@ stGame* game_init() {
             return NULL;
         }
     }
-
     return game;
 }
 
 void game_draw(stGame* game) {
-    SDL_SetRenderDrawColor(game->pRenderer, 100, 0, 0, 255);
+    SDL_SetRenderDrawColor(game->pRenderer, 10, 50, 10, 255);
     SDL_RenderClear(game->pRenderer);
     SDL_RendererFlip flip = SDL_FLIP_HORIZONTAL;
     SDL_Rect destinationPlayer = {
@@ -89,6 +119,9 @@ void game_draw(stGame* game) {
         game->playerPositionRect.w,
         game->playerPositionRect.h
     };
+
+    load_map(game);
+    draw_map(game);
 
     switch (game->playerDirection) {
         case 0 :
@@ -104,6 +137,7 @@ void game_draw(stGame* game) {
             SDL_RenderCopy(game->pRenderer, game->pTexPlayerFront, NULL, &destinationPlayer); 
             break;
     }
+
 
     SDL_Rect destinationBombe = { game->bombPositionRect.x, game->bombPositionRect.y,48,48};
     SDL_RenderCopy(game->pRenderer, game->pTexBomb, NULL, &destinationBombe);
