@@ -1,8 +1,9 @@
-NAME = client	
+NAME = server	
 
 # Files
-SRC= sourceFiles/client.c\
-sourceFiles/my_strlen.c
+SRC= sourceFiles/server.c\
+sourceFiles/my_strlen.c\
+sourceFiles/read_client.c
 
 OBJ	= $(SRC:%.c=%.o)
 

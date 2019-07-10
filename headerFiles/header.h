@@ -9,6 +9,8 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <pthread.h>
+#include <sys/select.h>
+#include <sys/time.h>
 
 typedef struct
 {
@@ -31,5 +33,6 @@ void game_draw(stGame *game, int flagBomb);
 int game_event(stGame *game);
 void character_move(SDL_Keycode direction, stGame *game);
 int my_strlen(char *str);
+int read_client(int client);
 
 #endif

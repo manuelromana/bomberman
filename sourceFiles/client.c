@@ -65,8 +65,8 @@ int main(int argc, char *argv[])
         }
 
         //on utilise read pour que le socket puisse lire la réponse du server on l'affiche avec print f
-        read(mysocket, message, 128);
-        printf("reçu par le server: %s\n", message);
+        // read(mysocket, message, 128);
+        // printf("reçu par le server: %s\n", message);
     }
     close(mysocket);
     return 0;
