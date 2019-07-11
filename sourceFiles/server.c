@@ -69,22 +69,23 @@ int main(int argc, char *argv[])
     }
     //acceptation des clients
     puts("en attente d'accepation de nouveaux clients");
-    int sd = 0;
+    int sd = 0; //socket descriptor "dynamique" qu'on va utliser pour le select
+
     while (1) //boucle infini pour laisser le server tourner
     {
         FD_ZERO(&read_fs); //initialiser read fs à zéro important de faire cela à chaque tour de boucle
         FD_SET(server_socket, &read_fs);
         max_sd = server_socket; //le plus grand des socket descriptor
 
-        //comparaison des socket descriptor
+                //comparaison des socket descriptor
         //on parcours le tableau de clients pour voir si on a des sd valables et on met le plus grand au max
-        int j = 0;
-        while (j < max_client)
+        for (int i = 0; i < max_client; i++)
         {
 
-            sd = clients_array[j];
+            sd = clients_array[i]; //on remet sd à zéro si tous les clients sont nuls comme on a indiqué plus bas en cas de déconnexion de ces derniers
 
             //si le socket descriptor existe donc != 0
+            //si le socket n'est pas valable il ne sera plus fd_set et donc le select ne le suivra plus on n'entre pas dans la condition ci-dessous
             if (sd > 0)
             {
                 FD_SET(sd, &read_fs);
@@ -94,7 +95,6 @@ int main(int argc, char *argv[])
             {
                 max_sd = sd;
             }
-            j++;
         }
 
         select(max_sd + 1, &read_fs, NULL, NULL, NULL);
@@ -109,23 +109,22 @@ int main(int argc, char *argv[])
                 perror("accept");
                 return 1;
             }
-
+            puts("detect client");
             //client accepté ? on parcours le tableau pour affecter la new socket
-            int k = 0;
-            while (k < max_client)
+
+            for (int i = 0; i < max_client; i++)
             {
-                if (clients_array[k] == 0)
+                if (clients_array[i] == 0)
                 {
 
-                    clients_array[k] = new_socket;
+                    clients_array[i] = new_socket;
 
-                    puts("add new client");
+                    printf("add new client :%i", new_socket);
                     break;
                 }
-                k++;
             }
         }
-        //else its some IO operation on some other socket
+        //on parcours le tableau des clients
         for (i = 0; i < max_client; i++)
         {
             sd = clients_array[i];
@@ -134,9 +133,9 @@ int main(int argc, char *argv[])
             {
                 if (read_client(sd) == -1)
                 {
-                    puts("client1 disconnected");
+                    puts("client disconnected");
                     close(sd);
-                    sd = 0;
+                    clients_array[i] = 0;
                 }
             }
         }
