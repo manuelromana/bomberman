@@ -7,21 +7,39 @@ int main(int argc, char *argv[])
         fprintf(stderr, "le format de la commande doit être : %s hostAdresse port\n", argv[0]);
         return (0);
     }
-    int mysocket;
+    //variable pour la création du socket du serveur
+    int server_socket;
     struct sockaddr_in addr;
-    int client1;
-    int client2;
-    int client3;
-    socklen_t client_addr_len;
+
+    //variables pour gérer la comparaison des sockets descriptor
+    int max_sd;
+    //variable pour la fonction accept
+    int new_socket;
+    int clients_array[4];
+    //initialisation du tableau à zéro
+    int i = 0;
+    while (i < 4)
+    {
+        clients_array[i] = 0;
+
+        i++;
+    }
+    int max_client = 4;
+
+    socklen_t client_addr_size = sizeof(addr); //attention cette valeur attend une taille donc un sizeof!!!!!!!!!!!!!!!!
+    //on peut aussi déclarer sockelen_t direct dans la fonction accept
+
+    //variables pour le select
     fd_set read_fs;         //structure pour manager les files descriptors
     struct timeval timeout; //on va utiliser pour le timeout
 
-    mysocket = socket(AF_INET, SOCK_STREAM, 0);
-    if (mysocket < 0)
+    server_socket = socket(AF_INET, SOCK_STREAM, 0);
+    if (server_socket < 0)
     {
         perror("socket()");
         return -1;
     }
+
     //récupérer les arguments et les transformer
     //portno = numéro de port
     int portno; //numéro de port
@@ -30,99 +48,100 @@ int main(int argc, char *argv[])
     addr.sin_port = htons(portno);
     addr.sin_family = AF_INET;
 
-    if (setsockopt(mysocket, SOL_SOCKET, SO_REUSEADDR, &addr, sizeof(int)) == -1)
+    //créer la scoket server
+    if (setsockopt(server_socket, SOL_SOCKET, SO_REUSEADDR, &addr, sizeof(int)) == -1)
     {
         perror("setsockopt");
         pthread_exit(NULL);
     }
-    if (bind(mysocket, (struct sockaddr *)&addr, sizeof(addr)) < 0)
+
+    //binder la socket
+    if (bind(server_socket, (struct sockaddr *)&addr, sizeof(addr)) < 0)
     {
         perror("bind()");
         return 1;
     }
     //vérifier que le server ecoute le port concerné
-    if (listen(mysocket, 5) < 0)
+    if (listen(server_socket, 5) < 0)
     {
         perror("listen()");
         return 1;
     }
     //acceptation des clients
     puts("en attente d'accepation de nouveaux clients");
-    client1 = accept(mysocket, (struct sockaddr *)&addr, &client_addr_len);
-    client2 = accept(mysocket, (struct sockaddr *)&addr, &client_addr_len);
-
-    //ici les accept ne sont pas dynamique mais on peut les mettre dans le select pour que dès que le socket reçois une info on puisse accepter le client, pour le moment il est bloquant
-    if (client1 < 0 || client2 < 0)
-    {
-        perror("accept()");
-        return 1;
-    }
-    puts("new clients");
-
+    int sd = 0;
     while (1) //boucle infini pour laisser le server tourner
     {
         FD_ZERO(&read_fs); //initialiser read fs à zéro important de faire cela à chaque tour de boucle
-        FD_SET(mysocket, &read_fs);
-        FD_SET(client1, &read_fs); //on peut faire des fd_set en boucle
-        FD_SET(client2, &read_fs);
+        FD_SET(server_socket, &read_fs);
+        max_sd = server_socket; //le plus grand des socket descriptor
 
-        select(client2 + 1, &read_fs, NULL, NULL, NULL);
-
-        if (FD_ISSET(mysocket, &read_fs))
+        //comparaison des socket descriptor
+        //on parcours le tableau de clients pour voir si on a des sd valables et on met le plus grand au max
+        int j = 0;
+        while (j < max_client)
         {
-            client1 = accept(mysocket, (struct sockaddr *)&addr, &client_addr_len);
-            client2 = accept(mysocket, (struct sockaddr *)&addr, &client_addr_len);
-            if (client1 < 0 || client2 < 0)
+
+            sd = clients_array[j];
+
+            //si le socket descriptor existe donc != 0
+            if (sd > 0)
             {
-                perror("accept()");
+                FD_SET(sd, &read_fs);
+            }
+            //si il est plus grand que le max il devient le max pour qu'on puisse l'utiliser avec le select
+            if (sd > max_sd)
+            {
+                max_sd = sd;
+            }
+            j++;
+        }
+
+        select(max_sd + 1, &read_fs, NULL, NULL, NULL);
+
+        if (FD_ISSET(server_socket, &read_fs)) //détecte les changements sur le socket_server normalement l'arrivée d'un nouveau client
+        {
+            //ici on a détecté une nouvelle demande de client on essaye de l'accpeter
+            //géréer ici une nouvelle demande supérieur à la taille du tableau
+
+            if ((new_socket = accept(server_socket, (struct sockaddr *)&addr, &client_addr_size)) < 0)
+            {
+                perror("accept");
                 return 1;
             }
-            puts("new clients");
-        }
 
-        if (FD_ISSET(client1, &read_fs)) //cette fonction repère les changements dans le file descriptor correspondant
-        {
-            if (read_client(client1) == -1)
+            //client accepté ? on parcours le tableau pour affecter la new socket
+            int k = 0;
+            while (k < max_client)
             {
-                puts("client1 disconnected");
-                close(client1);
-                client1 = -1;
+                if (clients_array[k] == 0)
+                {
+
+                    clients_array[k] = new_socket;
+
+                    puts("add new client");
+                    break;
+                }
+                k++;
             }
         }
-        else if (FD_ISSET(client2, &read_fs))
+        //else its some IO operation on some other socket
+        for (i = 0; i < max_client; i++)
         {
-            if (read_client(client2) == -1)
+            sd = clients_array[i];
+
+            if (FD_ISSET(sd, &read_fs))
             {
-                puts("client2 disconnected");
-                close(client2);
+                if (read_client(sd) == -1)
+                {
+                    puts("client1 disconnected");
+                    close(sd);
+                    sd = 0;
+                }
             }
         }
 
-        if (client1 == -1 && client2 == -1)
-        {
-            break;
-        }
         puts("looping");
     }
-    close(mysocket);
+    close(server_socket);
 }
-
-//code que je garde aucas ou pour reveenir à la base
-
-//read pour un client étape 2 (pour se rappeler de la base mais cette fonction a été déplacée)
-// char buff[128];
-// memset(buff, '\0', 128);
-
-//write(client, "hello manu :", 12); si on veut un message d'accueil personnalisé
-//le server récupère le message du client si n est positif sinon message d'erreur utilisé rcv si on veut une utilisation bien spéciale mais ne pas utilisé de rcv avec un flag à 0 ça ne sert à rien
-// while ((n = read(client, buff, 128)) > 0)
-// {
-//     int length = my_strlen(buff);
-//     printf("received : %i octet and %s", length, buff);
-
-//     write(client, buff, length);
-//     memset(buff, '\0', 128);
-// }
-
-// si on utilise pas close pour ne pas avoir l'erreur  "already bind" quand on ferme un server
-//binder le server au socket ET éviter l'erreur bind en cas d'arrêt et redémarrage' du server
