@@ -17,6 +17,7 @@ $(NAME): $(OBJ)
 all: $(NAME)
 
 clean:
+		rm -f $(NAME)
 		rm -f $(OBJ)
 
 fclean:	clean

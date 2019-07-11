@@ -6,9 +6,7 @@ int main(int argc, char* argv[]) {
     
     while(quit != 1) {
         game_draw(game);
-
         quit = game_event(game);
-
         SDL_Delay(30);
     }
         
