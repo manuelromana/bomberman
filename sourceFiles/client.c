@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
     //argv[1] : adresse de l'hôte (on peut aussi la mettre en bianaire ou littéral genre localhost)
     //argv[2] : port de l'hôte
 
-    // on vérifie qu'il y a le bom nombre d'argument
+    // on vérifie qu'il y a le bon nombre d'argument
     if (argc < 3)
     {
         fprintf(stderr, "le format de la commande doit être : %s hostAdresse port\n", argv[0]);
@@ -41,8 +41,9 @@ int main(int argc, char *argv[])
         return 1;
     }
     char message[128];
-    //read(mysocket, message, 128);
-    //printf("%s", message);
+    memset(message, '\0', 128);
+    read(mysocket, message, 128);
+    printf("%s\n", message);
     //envoyer des messages
     while (1)
     {

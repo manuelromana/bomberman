@@ -34,5 +34,6 @@ int game_event(stGame *game);
 void character_move(SDL_Keycode direction, stGame *game);
 int my_strlen(char *str);
 int read_client(int client);
+int read_server(int server);
 
 #endif

@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
         FD_SET(server_socket, &read_fs);
         max_sd = server_socket; //le plus grand des socket descriptor
 
-                //comparaison des socket descriptor
+        //comparaison des socket descriptor
         //on parcours le tableau de clients pour voir si on a des sd valables et on met le plus grand au max
         for (int i = 0; i < max_client; i++)
         {
@@ -110,6 +110,10 @@ int main(int argc, char *argv[])
                 return 1;
             }
             puts("detect client");
+            if (new_socket >= 8)
+            {
+                puts("nombre client max atteint");
+                        }
             //client accepté ? on parcours le tableau pour affecter la new socket
 
             for (int i = 0; i < max_client; i++)
@@ -120,6 +124,12 @@ int main(int argc, char *argv[])
                     clients_array[i] = new_socket;
 
                     printf("add new client :%i", new_socket);
+                    if (send(new_socket, "hello\n", 6, MSG_NOSIGNAL) < 0)
+                    {
+                        puts("send failed");
+                        return 1;
+                    }
+
                     break;
                 }
             }
