@@ -3,6 +3,8 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL/SDL_ttf.h>
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -11,6 +13,7 @@
 #include <pthread.h>
 #include <sys/select.h>
 #include <sys/time.h>
+#include <string.h>
 
 typedef struct
 {
@@ -27,13 +30,16 @@ typedef struct
     SDL_Rect bombPositionRect;
 } stGame;
 
-stGame *game_init();
-void game_destroy(stGame *game);
-void game_draw(stGame *game, int flagBomb);
-int game_event(stGame *game);
-void character_move(SDL_Keycode direction, stGame *game);
+stGame *game_init_2();
+void game_destroy_2(stGame *game);
+int game_event_2(stGame *game);
+
 int my_strlen(char *str);
 int read_client(int client);
 int read_server(int server);
+
+void game_draw(stGame *game, int flagBomb);
+void character_move(SDL_Keycode direction, stGame *game);
+void Redraw();
 
 #endif

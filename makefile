@@ -1,8 +1,10 @@
-NAME = main	
+NAME = test	
 
 # Files
 SRC= sourceFiles/main.c\
-sourceFiles/game.c\
+sourceFiles/game_event_2.c\
+sourceFiles/game_destroy_2.c\
+sourceFiles/game_init_2.c
 
 OBJ	= $(SRC:%.c=%.o)
 
