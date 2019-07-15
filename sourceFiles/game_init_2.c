@@ -10,7 +10,11 @@ stGame *game_init_2()
     game->screenSize.y = 480;
     game->pWindow = NULL;
     game->pRenderer = NULL;
-    SDL_Texture *texture, *text;
+    TTF_Font *police = NULL;
+    game->text = NULL;
+    game->textPositionRect.x = 60;
+    game->textPositionRect.y = 370;
+    //SDL_Texture *texture, *text;
 
     //initialiser la ttf pour les textes
     TTF_Init();
@@ -44,17 +48,36 @@ stGame *game_init_2()
     {
         // In the case that the window could not be made...
         printf("Could not create window: %s\n", SDL_GetError());
+
         return NULL;
     }
 
     //création de la surface pour charger la police
-    SDL_Surface *police = NULL;
+
     police = TTF_OpenFont("assets/font/angelina.TTF", 65);
 
-    /* Écriture du texte dans la SDL_Surface texte en mode Blended (optimal) */
-    SDL_Surface *text = NULL;
-    SDL_Color bleu = {69, 14, 237};
-    text = TTF_RenderText_Blended(police, "entrer l'hostname !", bleu);
+    /*Écriture du texte dans la SDL_Surface texte en mode Blended (optimal) */
+
+    SDL_Color noir = {0, 0, 0};
+    game->text = TTF_RenderText_Blended(police, "entrer l'hostname !", noir);
+
+    if (!game->text)
+    {
+        fprintf(stderr, "Erreur au chargement du text : %s\n", IMG_GetError());
+        game_destroy_2(game);
+        return NULL;
+    }
+    else
+    {
+        game->pTexText = SDL_CreateTextureFromSurface(game->pRenderer, game->text);
+        if (!game->pTexText)
+        {
+            fprintf(stderr, "Erreur au chargement de la texture : %s\n", SDL_GetError());
+            game_destroy_2(game);
+            return NULL;
+        }
+        SDL_FreeSurface(game->text);
+    }
 
     return game;
 }

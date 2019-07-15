@@ -9,10 +9,7 @@ int game_event_2(stGame *game)
     while (SDL_PollEvent(&event) != 0)
     {
         //User requests quit
-        if ()
-        {
-        }
-        else if (event.type == SDL_QUIT)
+        if (event.type == SDL_QUIT)
         {
             quit = -1;
         }

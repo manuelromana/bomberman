@@ -3,7 +3,7 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-#include <SDL/SDL_ttf.h>
+#include <SDL2/SDL_ttf.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -22,17 +22,22 @@ typedef struct
     SDL_Window *pWindow;
     SDL_Renderer *pRenderer;
 
+    SDL_Surface *text;
+
     //Textures
     SDL_Texture *pTexPlayer;
     SDL_Texture *pTexBomb;
+    SDL_Texture *pTexText;
 
     SDL_Rect playerPositionRect;
     SDL_Rect bombPositionRect;
+    SDL_Rect textPositionRect;
 } stGame;
 
 stGame *game_init_2();
 void game_destroy_2(stGame *game);
 int game_event_2(stGame *game);
+void game_draw_2(stGame *game);
 
 int my_strlen(char *str);
 int read_client(int client);
