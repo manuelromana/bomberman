@@ -1,4 +1,5 @@
-#include "../headerFiles/header.h"
+#include "../headerFiles/map.h"
+#include "../headerFiles/game.h"
 
 void draw_bomb(stGame* game) {
     game->map->bombPositionRect.x = (game->p1->pPos1->playerPositionRect.x) + 10;

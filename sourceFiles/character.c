@@ -1,4 +1,5 @@
-#include "../headerFiles/header.h"
+#include "../headerFiles/player.h"
+#include "../headerFiles/game.h"
 
 player* player_init(stGame* game) {
     player* p1 = NULL;
