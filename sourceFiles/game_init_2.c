@@ -78,6 +78,7 @@ stGame *game_init_2()
         }
         SDL_FreeSurface(game->text);
     }
+    SDL_StartTextInput();
 
     return game;
 }

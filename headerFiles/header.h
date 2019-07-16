@@ -36,7 +36,7 @@ typedef struct
 
 stGame *game_init_2();
 void game_destroy_2(stGame *game);
-int game_event_2(stGame *game);
+int game_event_2();
 void game_draw_2(stGame *game);
 
 int my_strlen(char *str);
