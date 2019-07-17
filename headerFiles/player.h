@@ -7,28 +7,28 @@
 
 #include "game.h"
 
-extern stGame game;
 
-typedef struct {
+typedef struct stPlayerPosition {
     int playerDirection;
 
     SDL_Rect playerPositionRect;
-} playerPosition;
+} stPlayerPosition;
 
-typedef struct {
+typedef struct stPlayer {
+    SDL_Renderer* pRenderer;
+    
     SDL_Texture* pTexPlayerFront;
     SDL_Texture* pTexPlayerBack;
     SDL_Texture* pTexPlayerRight;
     SDL_Texture* pTexPlayerLeft;
 
-    playerPosition* pPos1;
-} player;
+    struct stPlayerPosition* pPos1;
+} stPlayer;
 
-playerPosition* playerPosition_init(stGame* game, player* p1);
-player* player_init(stGame* game);
+stPlayer* player_init();
+
 /*
 int game_event(stGame *game);
-void character_move(SDL_Keycode direction, stGame *game);
 */
-void player_destroy(player* p1);
+void player_destroy(stPlayer* p1);
 #endif

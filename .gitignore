@@ -1,2 +1,4 @@
 sourceFiles/*.o
 bomberman
+.vscode/settings.json
+assets/Bomberman/Front/BmanBackup.png

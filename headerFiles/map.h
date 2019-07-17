@@ -13,6 +13,7 @@
 typedef struct {
     int map[HAUTEURMAP][LARGEURMAP];
     
+    SDL_Renderer* pRenderer;
     SDL_Texture* pTexBomb;
     SDL_Texture* pTexWall;
     SDL_Rect bombPositionRect;
@@ -20,12 +21,13 @@ typedef struct {
 
 } stMap;
 
+stMap* map_init();
+void draw_map(stMap* map);
+void load_map(stMap* map);
+
 /* 
 void load_surface(SDL_Surface* surface, stGame *game);
 
-void draw_bomb(stGame* game);
-void draw_map(stGame* game);
-void load_map(stGame* game);
 */
 void map_destroy(stMap* map);
 #endif

@@ -8,42 +8,29 @@
 #include "player.h"
 #include "map.h"
 
-typedef struct {
+typedef struct stGame {
     SDL_Point screenSize;
     SDL_Window* pWindow;
     SDL_Renderer* pRenderer;
 
-    struct {
-        int playerDirection;
-        SDL_Rect playerPositionRect;
-    } playerPosition;
+    struct stPlayerPosition* pPos1;
 
-    struct {
-        SDL_Texture* pTexPlayerFront;
-        SDL_Texture* pTexPlayerBack;
-        SDL_Texture* pTexPlayerRight;
-        SDL_Texture* pTexPlayerLeft;
-
-        playerPosition* pPos1;
-    } player;
+    struct stPlayer* player;
 
     struct stMap* map;
 } stGame;
 
 stGame* game_init();
+void draw_bomb(stGame* game);
 
-void game_draw(stGame* game);
+void game_draw(stGame* game, stPlayer* player, stMap* map);
+int game_event(stGame *game);
 void game_destroy(stGame *game);
 
+void character_move(SDL_Keycode direction, stPlayer *player,stGame* game);
 
-int game_event(stGame *game);
-void character_move(SDL_Keycode direction, stGame *game);
-
+stPlayerPosition* playerPosition_init(stPlayer* p1, stGame* game);
 
 void load_surface(SDL_Surface* surface, stGame *game);
-
-void draw_bomb(stGame* game);
-void draw_map(stGame* game);
-void load_map(stGame* game);
 
 #endif

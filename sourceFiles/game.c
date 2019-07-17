@@ -33,45 +33,70 @@ stGame* game_init() {
     return game;
 }
 
-void game_draw(stGame* game) {
+void game_draw(stGame* game, stPlayer* player, stMap* map) {
     SDL_SetRenderDrawColor(game->pRenderer, 10, 50, 10, 255);
     SDL_RenderClear(game->pRenderer);
     SDL_RendererFlip flip = SDL_FLIP_HORIZONTAL;
     SDL_Rect destinationPlayer = {
-        game->p1->pPos1->playerPositionRect.x,
-        game->p1->pPos1->playerPositionRect.y,
-        game->p1->pPos1->playerPositionRect.w,
-        game->p1->pPos1->playerPositionRect.h
+        player->pPos1->playerPositionRect.x,
+        player->pPos1->playerPositionRect.y,
+        player->pPos1->playerPositionRect.w,
+        player->pPos1->playerPositionRect.h
     };
 
-    load_map(game);
-    draw_map(game);
+    load_map(map);
+    draw_map(map);
 
-    switch (game->p1->pPos1->playerDirection) {
+    switch (player->pPos1->playerDirection) {
         case 0 :
-            SDL_RenderCopy(game->pRenderer, game->p1->pTexPlayerRight, NULL, &destinationPlayer); 
+            SDL_RenderCopy(game->pRenderer, player->pTexPlayerRight, NULL, &destinationPlayer); 
             break;
         case 1 :
-            SDL_RenderCopyEx(game->pRenderer,game->p1->pTexPlayerLeft, NULL, &destinationPlayer, 0, NULL, flip);
+            SDL_RenderCopyEx(game->pRenderer, player->pTexPlayerLeft, NULL, &destinationPlayer, 0, NULL, flip);
             break;
         case 2 :
-            SDL_RenderCopy(game->pRenderer, game->p1->pTexPlayerBack, NULL, &destinationPlayer); 
+            SDL_RenderCopy(game->pRenderer, player->pTexPlayerBack, NULL, &destinationPlayer); 
             break;
         case 3 :
-            SDL_RenderCopy(game->pRenderer, game->p1->pTexPlayerFront, NULL, &destinationPlayer); 
+            SDL_RenderCopy(game->pRenderer, player->pTexPlayerFront, NULL, &destinationPlayer); 
             break;
     }
 
-    SDL_Rect destinationBombe = { game->map->bombPositionRect.x, game->map->bombPositionRect.y,48,48};
-    SDL_RenderCopy(game->pRenderer, game->map->pTexBomb, NULL, &destinationBombe);
+    SDL_Rect destinationBombe = { map->bombPositionRect.x, map->bombPositionRect.y,48,48};
+    SDL_RenderCopy(game->pRenderer, map->pTexBomb, NULL, &destinationBombe);
     
-    SDL_RenderPresent(game->pRenderer);
+    SDL_RenderPresent(map->pRenderer);
+}
+
+int game_event(stGame *game) {
+    int quit = 0;
+    SDL_Event e;
+
+    while(SDL_PollEvent( &e ) != 0) {
+        if(e.type == SDL_QUIT) {
+            quit = 1;
+        } else if(e.type == SDL_KEYDOWN) {
+            switch(e.key.keysym.sym) {
+                case SDLK_RIGHT:
+                case SDLK_LEFT:
+                case SDLK_UP:
+                case SDLK_DOWN:
+                case SDLK_SPACE:
+                    character_move(e.key.keysym.sym, game);
+                    break; 
+                case SDLK_ESCAPE :   
+                    quit = 1;
+                    break; 
+            }
+        }
+    }
+    return quit;
 }
 
 void game_destroy(stGame *game) {
     if (game) {
-        SDL_DestroyWindow(game->pWindow);
-        SDL_DestroyRenderer(game->pRenderer);
+       // SDL_DestroyWindow(game->pWindow);
+       // SDL_DestroyRenderer(game->pRenderer);
 
         free(game);
     }
