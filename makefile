@@ -1,11 +1,8 @@
-NAME = test	
+NAME = server
 
 # Files
-SRC= sourceFiles/main.c\
-sourceFiles/game_event_2.c\
-sourceFiles/game_destroy_2.c\
-sourceFiles/game_init_2.c\
-sourceFiles/game_draw_2.c\
+SRC= sourceFiles/server.c\
+sourceFiles/read_client.c\
 sourceFiles/my_strlen.c
 
 OBJ	= $(SRC:%.c=%.o)

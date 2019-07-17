@@ -4,7 +4,7 @@ stGame *game_init()
 {
 
     stGame *game = NULL;
-    game = malloc(sizeof(stGame));
+    game = (sizeof(stGame));
 
     game->screenSize.x = 640;
     game->screenSize.y = 480;

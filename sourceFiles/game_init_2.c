@@ -10,10 +10,11 @@ stGame *game_init_2()
     game->screenSize.y = 480;
     game->pWindow = NULL;
     game->pRenderer = NULL;
-    TTF_Font *police = NULL;
-    game->text = NULL;
-    game->textPositionRect.x = 60;
-    game->textPositionRect.y = 370;
+    game->police = NULL;
+    game->SurfHostname = NULL;
+    game->SurfPortname = NULL;
+    // game->textPositionRect.x = 60;
+    // game->textPositionRect.y = 370;
     //SDL_Texture *texture, *text;
 
     //initialiser la ttf pour les textes
@@ -54,30 +55,57 @@ stGame *game_init_2()
 
     //création de la surface pour charger la police
 
-    police = TTF_OpenFont("assets/font/angelina.TTF", 65);
+    game->police = TTF_OpenFont("assets/font/angelina.TTF", 65);
 
-    /*Écriture du texte dans la SDL_Surface texte en mode Blended (optimal) */
+    // HOSTAME initialisation de l'invation de commande
+    /*Écriture du texte Hostname dans la SDL_Surface texte hostname en mode Blended (optimal) */
 
     SDL_Color noir = {0, 0, 0};
-    game->text = TTF_RenderText_Blended(police, "entrer l'hostname !", noir);
+    game->SurfHostname = TTF_RenderText_Blended(game->police, "entrer l'hostname :", noir);
 
-    if (!game->text)
+    if (!game->SurfHostname) //condition si pas de surface
     {
         fprintf(stderr, "Erreur au chargement du text : %s\n", IMG_GetError());
         game_destroy_2(game);
         return NULL;
     }
     else
-    {
-        game->pTexText = SDL_CreateTextureFromSurface(game->pRenderer, game->text);
-        if (!game->pTexText)
+    { //si surface créée on construit la texture
+        game->pTextHostname = SDL_CreateTextureFromSurface(game->pRenderer, game->SurfHostname);
+        if (!game->pTextHostname)
         {
             fprintf(stderr, "Erreur au chargement de la texture : %s\n", SDL_GetError());
             game_destroy_2(game);
             return NULL;
         }
-        SDL_FreeSurface(game->text);
+        //on free la surface qui était temporaire
+        SDL_FreeSurface(game->SurfHostname);
     }
+
+    // PORTNAME initialisation de l'invation de commande
+    /*Écriture du texte portname dans la SDL_Surface texte hostname en mode Blended (optimal) */
+
+    game->SurfPortname = TTF_RenderText_Blended(game->police, "entrer le numéro de port !", noir);
+
+    if (!game->SurfPortname) //condition si pas de surface
+    {
+        fprintf(stderr, "Erreur au chargement du text : %s\n", IMG_GetError());
+        game_destroy_2(game);
+        return NULL;
+    }
+    else
+    { //si surface créée on construit la texture
+        game->pTextPortname = SDL_CreateTextureFromSurface(game->pRenderer, game->SurfPortname);
+        if (!game->pTextPortname)
+        {
+            fprintf(stderr, "Erreur au chargement de la texture : %s\n", SDL_GetError());
+            game_destroy_2(game);
+            return NULL;
+        }
+        //on free la surface qui était temporaire
+        SDL_FreeSurface(game->SurfPortname);
+    }
+
     SDL_StartTextInput();
 
     return game;

@@ -22,22 +22,28 @@ typedef struct
     SDL_Window *pWindow;
     SDL_Renderer *pRenderer;
 
-    SDL_Surface *text;
+    SDL_Surface *SurfHostname;
+    SDL_Surface *SurfPortname;
+    TTF_Font *police;
 
     //Textures
     SDL_Texture *pTexPlayer;
     SDL_Texture *pTexBomb;
-    SDL_Texture *pTexText;
+    SDL_Texture *pTextHostname;
+    SDL_Texture *pTextPortname;
 
     SDL_Rect playerPositionRect;
     SDL_Rect bombPositionRect;
-    SDL_Rect textPositionRect;
+    SDL_Rect hostamePositionRect;
+    SDL_Rect portPositionRect;
 } stGame;
 
 stGame *game_init_2();
 void game_destroy_2(stGame *game);
-int game_event_2(char *test);
-void game_draw_2(stGame *game, char *test);
+int game_event_hostname(char *hostname);
+int game_event_port(char *hostname);
+void game_draw_hostname(stGame *game, char *hostname);
+void game_draw_port(stGame *game, char *port);
 
 int my_strlen(char *str);
 int read_client(int client);
