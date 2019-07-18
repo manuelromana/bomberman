@@ -2,7 +2,6 @@ NAME = server
 
 # Files
 SRC= sourceFiles/server.c\
-sourceFiles/read_client.c\
 sourceFiles/my_strlen.c
 
 OBJ	= $(SRC:%.c=%.o)

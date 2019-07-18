@@ -113,7 +113,7 @@ int main(int argc, char *argv[])
             if (new_socket >= 8)
             {
                 puts("nombre client max atteint");
-                        }
+            }
             //client accepté ? on parcours le tableau pour affecter la new socket
 
             for (int i = 0; i < max_client; i++)
@@ -153,4 +153,34 @@ int main(int argc, char *argv[])
         puts("looping");
     }
     close(server_socket);
+}
+
+int read_client(int client)
+{
+    int n;
+    char buff[128];
+
+    if (client == -1)
+    {
+        return 1;
+    }
+
+    n = 0; //utilité ?
+    memset(buff, '\0', 128);
+    while ((n = recv(client, buff, 128, 0)) >= 0)
+    {
+        if (n == 0)
+        {
+            return -1;
+        }
+
+        printf("received %s", buff);
+
+        if (buff[n - 1] == '\n')
+        {
+            memset(buff, '\0', 128);
+            break;
+        }
+    }
+    return n;
 }

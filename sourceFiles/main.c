@@ -21,10 +21,10 @@ int main(int argc, char *argv[])
         port[i] = '\0';
     }
 
-    int stepConnection = 0;
+    int step = 0;
     char *currentText = hostname;
 
-    while (stepConnection != -1)
+    while (step != -1)
     {
 
         while (SDL_PollEvent(&event) != 0)
@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
             switch (event.type)
             {
             case (SDL_QUIT):
-                stepConnection = -1;
+                step = -1;
             case (SDL_TEXTINPUT):
                 strcat(currentText, event.text.text);
                 break;
@@ -43,9 +43,9 @@ int main(int argc, char *argv[])
                 case SDLK_BACKSPACE:
                     strcpy(currentText, "");
                     break;
-                case SDLK_DOWN:
-                    stepConnection++;
-                    if (stepConnection == 1)
+                case SDLK_RETURN:
+                    step++;
+                    if (step == 1)
                     {
                         currentText = port;
                     }
@@ -53,15 +53,15 @@ int main(int argc, char *argv[])
             }
         }
 
-        if (stepConnection == 0) //quand quit = 2 on dessine l'invitation pour le port
+        if (step == 0) //quand quit = 2 on dessine l'invitation pour le port
         {
             game_draw_hostname(game, hostname);
         }
-        else if (stepConnection == 1)
+        else if (step == 1)
         {
             game_draw_port(game, port);
         }
-        else if (stepConnection == 2)
+        else if (step == 2)
         {
 
             mysocket = socket(AF_INET, SOCK_STREAM, 0);
@@ -89,10 +89,10 @@ int main(int argc, char *argv[])
             memset(message, '\0', 128);
             read(mysocket, message, 128);
             printf("%s\n", message);
-            stepConnection++;
+            step++;
         }
 
-        else if (stepConnection == 3)
+        else if (step == 3)
         {
             memset(message, '\0', 128);
 
