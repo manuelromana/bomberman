@@ -24,6 +24,7 @@ typedef struct
 
     SDL_Surface *SurfHostname;
     SDL_Surface *SurfPortname;
+    SDL_Surface *SurfWelcome;
     TTF_Font *police1;
     TTF_Font *police2;
 
@@ -32,11 +33,13 @@ typedef struct
     SDL_Texture *pTexBomb;
     SDL_Texture *pTextHostname;
     SDL_Texture *pTextPortname;
+    SDL_Texture *pTextWelcome;
 
     SDL_Rect playerPositionRect;
     SDL_Rect bombPositionRect;
     SDL_Rect hostamePositionRect;
     SDL_Rect portPositionRect;
+    SDL_Rect welcomePositionRect;
 } stGame;
 
 stGame *game_init_2();
@@ -46,6 +49,7 @@ int game_event_port(char *hostname);
 void game_draw_hostname(stGame *game, char *hostname);
 void game_draw_port(stGame *game, char *port);
 void send_key(SDL_Keycode keydown, int mysocket);
+void game_draw_welcome(stGame *game);
 
 int my_strlen(char *str);
 int read_client(int client);

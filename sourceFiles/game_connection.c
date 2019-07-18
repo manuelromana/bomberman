@@ -14,9 +14,7 @@ stGame *game_init_2()
     game->police2 = NULL;
     game->SurfHostname = NULL;
     game->SurfPortname = NULL;
-    // game->textPositionRect.x = 60;
-    // game->textPositionRect.y = 370;
-    //SDL_Texture *texture, *text;
+    game->SurfWelcome = NULL;
 
     //initialiser la ttf pour les textes
     TTF_Init();
@@ -54,15 +52,14 @@ stGame *game_init_2()
         return NULL;
     }
 
-    //création de la surface pour charger la police
+    //création de la surface pour charger la police et de la couleur pour le texte
 
     game->police1 = TTF_OpenFont("assets/font/Grafiti.ttf", 70);
     game->police2 = TTF_OpenFont("assets/font/Neon.ttf", 45);
-
+    SDL_Color noir = {0, 0, 0};
     // HOSTAME initialisation de l'invation de commande
     /*Écriture du texte Hostname dans la SDL_Surface texte hostname en mode Blended (optimal) */
 
-    SDL_Color noir = {0, 0, 0};
     game->SurfHostname = TTF_RenderText_Blended(game->police1, "Tapez l'hostname suivi d'entree :", noir);
 
     if (!game->SurfHostname) //condition si pas de surface
@@ -85,7 +82,7 @@ stGame *game_init_2()
     }
 
     // PORTNAME initialisation de l'invation de commande
-    /*Écriture du texte portname dans la SDL_Surface texte hostname en mode Blended (optimal) */
+    /*Écriture du texte portname dans la SDL_Surface pour le port en mode Blended (optimal) */
 
     game->SurfPortname = TTF_RenderText_Blended(game->police1, "Tapez le numero de port puis entree : ", noir);
 
@@ -108,6 +105,30 @@ stGame *game_init_2()
         SDL_FreeSurface(game->SurfPortname);
     }
 
+    // Welcome page
+    /*Écriture du texte de bienvenu dans la SDL_Surface correspondante*/
+
+    game->SurfWelcome = TTF_RenderText_Blended(game->police1, "Bienvenue, tapez une commande pour le server", noir);
+
+    if (!game->SurfWelcome) //condition si pas de surface
+    {
+        fprintf(stderr, "Erreur au chargement du text : %s\n", IMG_GetError());
+        game_destroy_2(game);
+        return NULL;
+    }
+    else
+    { //si surface créée on construit la texture
+        game->pTextWelcome = SDL_CreateTextureFromSurface(game->pRenderer, game->SurfWelcome);
+        if (!game->pTextWelcome)
+        {
+            fprintf(stderr, "Erreur au chargement de la texture : %s\n", SDL_GetError());
+            game_destroy_2(game);
+            return NULL;
+        }
+        //on free la surface qui était temporaire
+        SDL_FreeSurface(game->SurfWelcome);
+    }
+
     SDL_StartTextInput();
 
     return game;
@@ -120,6 +141,7 @@ void game_draw_hostname(stGame *game, char *hostname)
     SDL_Texture *pInputText = NULL;
     SDL_Rect inputPositionRect;
 
+    //render fenêtre blanche
     SDL_SetRenderDrawColor(game->pRenderer, 255, 255, 255, 255);
     SDL_RenderClear(game->pRenderer);
 
@@ -176,6 +198,7 @@ void game_draw_port(stGame *game, char *port)
     SDL_Texture *pInputText = NULL;
     SDL_Rect inputPositionRect;
 
+    //render fenêtre blanche
     SDL_SetRenderDrawColor(game->pRenderer, 255, 255, 255, 255);
     SDL_RenderClear(game->pRenderer);
 
@@ -222,6 +245,22 @@ void game_draw_port(stGame *game, char *port)
         SDL_RenderCopy(game->pRenderer, pInputText, NULL, &destinationInput);
     }
 
+    SDL_RenderPresent(game->pRenderer);
+}
+
+void game_draw_welcome(stGame *game)
+{
+    //render fenêtre blanche
+    SDL_SetRenderDrawColor(game->pRenderer, 255, 255, 255, 255);
+    SDL_RenderClear(game->pRenderer);
+
+    //render Welcome Message
+    game->welcomePositionRect.x = 60;
+    game->welcomePositionRect.y = 60;
+    game->welcomePositionRect.w = 550;
+    game->welcomePositionRect.h = 100;
+    SDL_Rect welcomeMess = {game->welcomePositionRect.x, game->welcomePositionRect.y, game->welcomePositionRect.w, game->welcomePositionRect.h};
+    SDL_RenderCopy(game->pRenderer, game->pTextWelcome, NULL, &welcomeMess);
     SDL_RenderPresent(game->pRenderer);
 }
 

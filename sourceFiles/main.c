@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
 
         while (SDL_PollEvent(&event) != 0)
         {
-            //User requests quit
+
             switch (event.type)
             {
             case (SDL_QUIT):
@@ -61,15 +61,17 @@ int main(int argc, char *argv[])
             }
         }
 
-        if (step == 0) //quand quit = 2 on dessine l'invitation pour le port
+        if (step == 0) //étape entrer le numéro de host
         {
+
             game_draw_hostname(game, hostname);
         }
         else if (step == 1)
         {
+
             game_draw_port(game, port);
         }
-        else if (step == 2)
+        else if (step == 2) //étape création du client
         {
 
             mysocket = socket(AF_INET, SOCK_STREAM, 0);
@@ -79,7 +81,7 @@ int main(int argc, char *argv[])
                 break;
             }
 
-            //récupérer les arguments et les transformer
+            //récupérer les paramètres et les transformer
             //numéro de port
             portno = atoi(port);
             addr.sin_addr.s_addr = inet_addr(hostname);
@@ -93,11 +95,17 @@ int main(int argc, char *argv[])
                 perror("connect()");
                 break;
             }
-
+            //lecture et affichage du message de bienvenu du client dans la console
             memset(message, '\0', 128);
             read(mysocket, message, 128);
             printf("%s\n", message);
             step++;
+
+            printf("step%i\n", step);
+        }
+        else if (step == 3)
+        {
+            game_draw_welcome(game);
         }
 
         SDL_Delay(30);
