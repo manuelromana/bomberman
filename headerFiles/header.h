@@ -24,7 +24,8 @@ typedef struct
 
     SDL_Surface *SurfHostname;
     SDL_Surface *SurfPortname;
-    TTF_Font *police;
+    TTF_Font *police1;
+    TTF_Font *police2;
 
     //Textures
     SDL_Texture *pTexPlayer;

@@ -10,7 +10,8 @@ stGame *game_init_2()
     game->screenSize.y = 480;
     game->pWindow = NULL;
     game->pRenderer = NULL;
-    game->police = NULL;
+    game->police1 = NULL;
+    game->police2 = NULL;
     game->SurfHostname = NULL;
     game->SurfPortname = NULL;
     // game->textPositionRect.x = 60;
@@ -55,13 +56,14 @@ stGame *game_init_2()
 
     //création de la surface pour charger la police
 
-    game->police = TTF_OpenFont("assets/font/angelina.TTF", 65);
+    game->police1 = TTF_OpenFont("assets/font/Grafiti.ttf", 70);
+    game->police2 = TTF_OpenFont("assets/font/Neon.ttf", 45);
 
     // HOSTAME initialisation de l'invation de commande
     /*Écriture du texte Hostname dans la SDL_Surface texte hostname en mode Blended (optimal) */
 
     SDL_Color noir = {0, 0, 0};
-    game->SurfHostname = TTF_RenderText_Blended(game->police, "entrer l'hostname :", noir);
+    game->SurfHostname = TTF_RenderText_Blended(game->police1, "entrez l'hostname puis tapez Entree :", noir);
 
     if (!game->SurfHostname) //condition si pas de surface
     {
@@ -85,7 +87,7 @@ stGame *game_init_2()
     // PORTNAME initialisation de l'invation de commande
     /*Écriture du texte portname dans la SDL_Surface texte hostname en mode Blended (optimal) */
 
-    game->SurfPortname = TTF_RenderText_Blended(game->police, "entrer le numero de port !", noir);
+    game->SurfPortname = TTF_RenderText_Blended(game->police1, "entrez le numero de port, puis tapez Entree : ", noir);
 
     if (!game->SurfPortname) //condition si pas de surface
     {
@@ -124,7 +126,7 @@ void game_draw_hostname(stGame *game, char *hostname)
     //render invitation
     game->hostamePositionRect.x = 60;
     game->hostamePositionRect.y = 60;
-    game->hostamePositionRect.w = 400;
+    game->hostamePositionRect.w = 500;
     game->hostamePositionRect.h = 100;
     SDL_Rect hostnameInvite = {game->hostamePositionRect.x, game->hostamePositionRect.y, game->hostamePositionRect.w, game->hostamePositionRect.h};
     SDL_RenderCopy(game->pRenderer, game->pTextHostname, NULL, &hostnameInvite);
@@ -134,7 +136,7 @@ void game_draw_hostname(stGame *game, char *hostname)
     SDL_Color noir = {0, 0, 0};
     if (*hostname != '\0')
     {
-        pInputsurface = TTF_RenderText_Blended(game->police, hostname, noir);
+        pInputsurface = TTF_RenderText_Blended(game->police2, hostname, noir);
         if (!pInputsurface)
         {
             fprintf(stderr, "Erreur au chargement du texte : %s\n", IMG_GetError());
@@ -156,7 +158,7 @@ void game_draw_hostname(stGame *game, char *hostname)
 
         //déclaration de la position
         inputPositionRect.x = 60;
-        inputPositionRect.y = 130;
+        inputPositionRect.y = 160;
         inputPositionRect.w = 15 * width;
         inputPositionRect.h = 50;
         //positionnner l'input dans la fenêtre
@@ -180,7 +182,7 @@ void game_draw_port(stGame *game, char *port)
     //render invitation port
     game->portPositionRect.x = 60;
     game->portPositionRect.y = 60;
-    game->portPositionRect.w = 400;
+    game->portPositionRect.w = 550;
     game->portPositionRect.h = 100;
     SDL_Rect portInvite = {game->portPositionRect.x, game->portPositionRect.y, game->portPositionRect.w, game->portPositionRect.h};
     SDL_RenderCopy(game->pRenderer, game->pTextPortname, NULL, &portInvite);
@@ -190,7 +192,7 @@ void game_draw_port(stGame *game, char *port)
     SDL_Color noir = {0, 0, 0};
     if (*port != '\0')
     {
-        pInputsurface = TTF_RenderText_Blended(game->police, port, noir);
+        pInputsurface = TTF_RenderText_Blended(game->police2, port, noir);
         if (!pInputsurface)
         {
             fprintf(stderr, "Erreur au chargement du texte : %s\n", IMG_GetError());
@@ -212,7 +214,7 @@ void game_draw_port(stGame *game, char *port)
 
         //déclaration de la position
         inputPositionRect.x = 60;
-        inputPositionRect.y = 130;
+        inputPositionRect.y = 160;
         inputPositionRect.w = 15 * width;
         inputPositionRect.h = 50;
         //positionnner l'input dans la fenêtre
@@ -227,7 +229,8 @@ void game_destroy_2(stGame *game)
 {
     if (game)
     {
-        TTF_CloseFont(game->police);
+        TTF_CloseFont(game->police1);
+        TTF_CloseFont(game->police2);
         SDL_StopTextInput();
         SDL_DestroyWindow(game->pWindow);
         SDL_DestroyRenderer(game->pRenderer);
