@@ -13,6 +13,7 @@ stGame *game_init_2()
     game->police2 = NULL;
     game->SurfHostname = NULL;
     game->SurfPortname = NULL;
+    game->SurfWelcome = NULL;
 
     TTF_Init();
     if (TTF_Init() == -1)
@@ -47,8 +48,9 @@ stGame *game_init_2()
 
     game->police1 = TTF_OpenFont("assets/font/Grafiti.ttf", 70);
     game->police2 = TTF_OpenFont("assets/font/Neon.ttf", 45);
-
     SDL_Color noir = {0, 0, 0};
+
+    //initialisation de l'invite de commande pour le hostname
     game->SurfHostname = TTF_RenderText_Blended(game->police1, "Tapez l'hostname suivi d'entree :", noir);
 
     if (!game->SurfHostname)
@@ -71,6 +73,7 @@ stGame *game_init_2()
         SDL_FreeSurface(game->SurfHostname);
     }
 
+    //initialisation ttf de l'invite de commande pour portname
     game->SurfPortname = TTF_RenderText_Blended(game->police1, "Tapez le numero de port puis entree : ", noir);
 
     if (!game->SurfPortname)
@@ -131,6 +134,7 @@ void game_draw_hostname(stGame *game, char *hostname)
     SDL_SetRenderDrawColor(game->pRenderer, 255, 255, 255, 255);
     SDL_RenderClear(game->pRenderer);
 
+    //render de l'invit de commande
     game->hostamePositionRect.x = 10;
     game->hostamePositionRect.y = 60;
     game->hostamePositionRect.w = 600;
@@ -138,6 +142,7 @@ void game_draw_hostname(stGame *game, char *hostname)
     SDL_Rect hostnameInvite = {game->hostamePositionRect.x, game->hostamePositionRect.y, game->hostamePositionRect.w, game->hostamePositionRect.h};
     SDL_RenderCopy(game->pRenderer, game->pTextHostname, NULL, &hostnameInvite);
 
+    //render de l'input
     SDL_Color noir = {0, 0, 0};
     if (*hostname != '\0')
     {
