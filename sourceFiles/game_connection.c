@@ -63,7 +63,7 @@ stGame *game_init_2()
     /*Écriture du texte Hostname dans la SDL_Surface texte hostname en mode Blended (optimal) */
 
     SDL_Color noir = {0, 0, 0};
-    game->SurfHostname = TTF_RenderText_Blended(game->police1, "entrez l'hostname puis tapez Entree :", noir);
+    game->SurfHostname = TTF_RenderText_Blended(game->police1, "Tapez l'hostname suivi d'entree :", noir);
 
     if (!game->SurfHostname) //condition si pas de surface
     {
@@ -87,7 +87,7 @@ stGame *game_init_2()
     // PORTNAME initialisation de l'invation de commande
     /*Écriture du texte portname dans la SDL_Surface texte hostname en mode Blended (optimal) */
 
-    game->SurfPortname = TTF_RenderText_Blended(game->police1, "entrez le numero de port, puis tapez Entree : ", noir);
+    game->SurfPortname = TTF_RenderText_Blended(game->police1, "Tapez le numero de port puis entree : ", noir);
 
     if (!game->SurfPortname) //condition si pas de surface
     {
@@ -124,9 +124,9 @@ void game_draw_hostname(stGame *game, char *hostname)
     SDL_RenderClear(game->pRenderer);
 
     //render invitation
-    game->hostamePositionRect.x = 60;
+    game->hostamePositionRect.x = 10;
     game->hostamePositionRect.y = 60;
-    game->hostamePositionRect.w = 500;
+    game->hostamePositionRect.w = 600;
     game->hostamePositionRect.h = 100;
     SDL_Rect hostnameInvite = {game->hostamePositionRect.x, game->hostamePositionRect.y, game->hostamePositionRect.w, game->hostamePositionRect.h};
     SDL_RenderCopy(game->pRenderer, game->pTextHostname, NULL, &hostnameInvite);
@@ -254,7 +254,7 @@ void send_key(SDL_Keycode keydown, int mysocket)
         }
         break;
     case SDLK_DOWN:
-        if (send(mysocket, "Down\n", 6, MSG_NOSIGNAL) < 0)
+        if (send(mysocket, "Down\n", 5, MSG_NOSIGNAL) < 0)
         {
             puts("send failed");
             close(mysocket);
