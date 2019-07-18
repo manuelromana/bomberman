@@ -44,6 +44,7 @@ int game_event_hostname(char *hostname);
 int game_event_port(char *hostname);
 void game_draw_hostname(stGame *game, char *hostname);
 void game_draw_port(stGame *game, char *port);
+void send_key(SDL_Keycode keydown, int mysocket);
 
 int my_strlen(char *str);
 int read_client(int client);

@@ -1,7 +1,8 @@
-NAME = server
+NAME = client_sdl
 
 # Files
-SRC= sourceFiles/server.c\
+SRC= sourceFiles/game_connection.c\
+sourceFiles/main.c\
 sourceFiles/my_strlen.c
 
 OBJ	= $(SRC:%.c=%.o)

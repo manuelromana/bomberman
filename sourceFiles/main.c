@@ -49,6 +49,14 @@ int main(int argc, char *argv[])
                     {
                         currentText = port;
                     }
+                    break;
+                case SDLK_UP:
+                case SDLK_DOWN:
+                case SDLK_RIGHT:
+                case SDLK_LEFT:
+                case SDLK_SPACE:
+                    send_key(event.key.keysym.sym, mysocket);
+                    break;
                 }
             }
         }
@@ -90,25 +98,6 @@ int main(int argc, char *argv[])
             read(mysocket, message, 128);
             printf("%s\n", message);
             step++;
-        }
-
-        else if (step == 3)
-        {
-            memset(message, '\0', 128);
-
-            printf("écrivez votre message : \n"); //invitation de commande pour l'utilisateur
-            fgets(message, 128, stdin);
-            //le programme attend qu'on rentre une valeur
-            int length = my_strlen(message); //une fois le message écris on calcule son length
-
-            //message utilisateur est écris sur le socket si jamais write return un int positif sinon message erreur ainsi le server peut le récupérer
-            //et on utilise send car cette fonction catch les erreurs en cas de server interrompu
-            if (send(mysocket, message, length, MSG_NOSIGNAL) < 0)
-            {
-                puts("send failed");
-                close(mysocket);
-                break;
-            }
         }
 
         SDL_Delay(30);
