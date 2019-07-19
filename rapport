@@ -1,0 +1,24 @@
+Nous avons avancé jusqu’à l’étape 4 du quest.
+Pour cette étape nous avons créé d’abord un branche client, pour réalisé le client et le server séparé. 
+
+Une fois cette étape réussie nous avons créé une branche input pour réalisé le client fusionné avec le sdl. 
+
+Voici les différents fichiers pour cette étape :
+
+1) Client et sdl
+
+game_connexion .c : 
+Dans la fonction game_init2 : l’initalisation de la sdl et de la ttf , les créations des surface texture et rectangle nécessaire à l’ouverture de la fenêtre sdl.
+Egalement les fonctions pour dessiner les différentes texture nécessaire (draw).
+la fonction destroy pour free l’espace.
+Ainsi que la fonction send pour envoyer au server
+
+str_len appelées pour des opérations sur les strings.
+
+main.c :
+création de la socket client et boucle de la fenêtre sdl.
+
+
+2) pour le server
+Server.c (le read client se trouve à l’intérieur) ;
+str_len ;
