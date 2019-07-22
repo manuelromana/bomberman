@@ -34,8 +34,8 @@ stGame* game_init() {
     game->playerPositionRect.h = PLAYERPOSITIONRECTH;
     game->bombPositionRect.x = BOMBPOSITION;
     game->bombPositionRect.y = BOMBPOSITION;
-    game->wallPosition.w = WALLPOSITION;
-    game->wallPosition.h = WALLPOSITION;
+    game->wallPosition.w = WALLPOSITIONW;
+    game->wallPosition.h = WALLPOSITIONW;
 
     game->pWindow = SDL_CreateWindow(
         "Bomberman",
