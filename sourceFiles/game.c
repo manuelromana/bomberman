@@ -19,7 +19,7 @@ int map[HAUTEURMAP][LARGEURMAP] = {
     };
 
 stGame* game_init() {
-    stGame* game = NULL;
+    stGame* game = {0};
     game = malloc(sizeof (stGame));
 
     for (int x = 0; x < LARGEURMAP; x++) {
@@ -27,28 +27,17 @@ stGame* game_init() {
             game->map[y][x] = map[y][x];
         }
     }
-    
 
-    game->screenSize.x = 1216;
-    game->screenSize.y = 960;
-    game->pWindow = NULL;
-    game->pRenderer = NULL;
-    game->pTexPlayerFront = NULL;
-    game->pTexPlayerBack = NULL;
-    game->pTexBomb = NULL;
-    game->pTexWall = NULL;
-    game->playerPositionRect.x = game->screenSize.x / 2;
-    game->playerPositionRect.y = game->screenSize.y / 2;
-    game->playerPositionRect.w = 64;
-    game->playerPositionRect.h = 128;
-    game->bombPositionRect.x = 900;
-    game->bombPositionRect.y = 900;
-    game->playerDirection = 0;
-    game->wallPosition.x = 0;
-    game->wallPosition.y = 0;
-     game->wallPosition.w = 64;
-      game->wallPosition.h = 128;
-
+    game->screenSize.x = SCREENSIZEX;
+    game->screenSize.y = SCREENSIZEY;
+    game->playerPositionRect.x = PLPOSITIONX;
+    game->playerPositionRect.y = PLPOSITIONY;
+    game->playerPositionRect.w = PLAYERPOSITIONRECTW;
+    game->playerPositionRect.h = PLAYERPOSITIONRECTH;
+    game->bombPositionRect.x = BOMBPOSITION;
+    game->bombPositionRect.y = BOMBPOSITION;
+    game->wallPosition.w = WALLPOSITION;
+    game->wallPosition.h = WALLPOSITION;
 
     game->pWindow = SDL_CreateWindow(
         "Bomberman",
