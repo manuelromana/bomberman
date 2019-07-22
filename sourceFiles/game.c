@@ -28,8 +28,6 @@ stGame* game_init() {
         }
     }
 
-    game->screenSize.x = SCREENSIZEX;
-    game->screenSize.y = SCREENSIZEY;
     game->playerPositionRect.x = PLPOSITIONX;
     game->playerPositionRect.y = PLPOSITIONY;
     game->playerPositionRect.w = PLAYERPOSITIONRECTW;
@@ -43,8 +41,8 @@ stGame* game_init() {
         "Bomberman",
         SDL_WINDOWPOS_UNDEFINED,
         SDL_WINDOWPOS_UNDEFINED,
-        game->screenSize.x,
-        game->screenSize.y,
+        SCREENSIZEX,
+        SCREENSIZEY,
         SDL_WINDOW_OPENGL
     );
 

@@ -3,7 +3,7 @@
 void character_move(SDL_Keycode direction, stGame *game) {
     switch (direction) {
             case SDLK_RIGHT:
-                if(game->playerPositionRect.x < (game->screenSize.x - game->playerPositionRect.w))
+                if(game->playerPositionRect.x < (SCREENSIZEX - game->playerPositionRect.w))
                     game->playerPositionRect.x += 20;
                 game->playerDirection = 0;
                 break;
@@ -18,7 +18,7 @@ void character_move(SDL_Keycode direction, stGame *game) {
                 game->playerDirection = 2;
                 break;
             case SDLK_DOWN: 
-                if(game->playerPositionRect.y < (game->screenSize.y - game->playerPositionRect.h))
+                if(game->playerPositionRect.y < (SCREENSIZEY - game->playerPositionRect.h))
                     game->playerPositionRect.y += 20;
                 game->playerDirection = 3;
                 break;  
