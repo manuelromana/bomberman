@@ -9,8 +9,8 @@ void draw_map(stGame* game) {
 for (int y = 0;  y < HAUTEURMAP; y++ ) {
     for (int x = 0; x < LARGEURMAP; x++) {
         if (game->map[y][x] == 1) {
-            game->wallPosition.x = x*64;
-            game->wallPosition.y = y*64;
+            game->wallPosition.x = x * WALLPOSITIONW;
+            game->wallPosition.y = y * WALLPOSITIONW;
             SDL_RenderCopy(game->pRenderer, game->pTexWall, NULL, &game->wallPosition);
         }
     }
