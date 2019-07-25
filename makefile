@@ -1,9 +1,9 @@
-NAME = server
+NAME = client_sdl
 
 # Files
-SRC= sourceFiles/server.c\
+SRC= sourceFiles/main.c\
+sourceFiles/game_connection.c\
 sourceFiles/my_strlen.c
-
 OBJ	= $(SRC:%.c=%.o)
 
 # Build settings

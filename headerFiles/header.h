@@ -25,6 +25,7 @@ typedef struct
     SDL_Surface *SurfHostname;
     SDL_Surface *SurfPortname;
     SDL_Surface *SurfWelcome;
+
     TTF_Font *police1;
     TTF_Font *police2;
 
