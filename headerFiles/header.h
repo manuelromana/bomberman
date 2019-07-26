@@ -17,6 +17,13 @@
 
 typedef struct
 {
+    SDL_Surface *surface;
+    SDL_Texture *texture;
+    SDL_Rect rectangle;
+    char *text;
+} stImgInit;
+typedef struct
+{
     //Fenêtre
     SDL_Point screenSize;
     SDL_Window *pWindow;
