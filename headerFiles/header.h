@@ -15,13 +15,26 @@
 #include <sys/time.h>
 #include <string.h>
 
+#define SCREENSIZEX 1216
+#define SCREENSIZEY 960
+
 typedef struct
 {
     SDL_Surface *surface;
     SDL_Texture *texture;
     SDL_Rect rectangle;
-    char *text;
-} stImgInit;
+    char *path;
+} st_img;
+
+typedef struct
+{
+    //Fenêtre
+    SDL_Point screenSize;
+    SDL_Window *pWindow;
+    SDL_Renderer *pRenderer;
+    st_img *images[10];
+} st_game;
+
 typedef struct
 {
     //Fenêtre
@@ -51,6 +64,7 @@ typedef struct
 } stGame;
 
 stGame *game_init_2();
+
 void game_destroy_2(stGame *game);
 int game_event_hostname(char *hostname);
 int game_event_port(char *hostname);
@@ -66,5 +80,9 @@ int read_server(int server);
 void game_draw(stGame *game, int flagBomb);
 void character_move(SDL_Keycode direction, stGame *game);
 void Redraw();
+
+st_game *game_init_test();
+void game_destroy(st_game *game);
+void draw_game_test(st_game *game);
 
 #endif

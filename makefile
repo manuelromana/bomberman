@@ -1,7 +1,8 @@
 NAME = test
 
 # Files
-SRC= sourceFiles/gameInitTest.c
+SRC= sourceFiles/gameInitTest.c\
+sourceFiles/main_test.c
 OBJ	= $(SRC:%.c=%.o)
 
 # Build settings
