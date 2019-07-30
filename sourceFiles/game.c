@@ -9,11 +9,9 @@ stGame* game_init() {
 
   if (game == NULL || game->player == NULL || game->map == NULL) return NULL;
 
-  game->screenSize.x = 1216;
-  game->screenSize.y = 960;
   game->pWindow = SDL_CreateWindow("Bomberman", SDL_WINDOWPOS_UNDEFINED,
-                                   SDL_WINDOWPOS_UNDEFINED, game->screenSize.x,
-                                   game->screenSize.y, SDL_WINDOW_OPENGL);
+                                   SDL_WINDOWPOS_UNDEFINED, SCREENSIZEX,
+                                   SCREENSIZEY, SDL_WINDOW_OPENGL);
 
   if (game->pWindow) {
     game->pRenderer =
@@ -130,7 +128,8 @@ void game_destroy(stGame* game) {
 void game_boucle(stGame* game) {
   int quit = 0;
   game->LastTime = SDL_GetTicks();
-  unsigned int lastFps, fps = 0;
+  unsigned int lastFps = 0;
+  unsigned int fps = 0;
 
   while (quit != 1) {
     game->PresentTime = SDL_GetTicks();

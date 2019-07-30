@@ -3,14 +3,14 @@
 #include "../headerFiles/player.h"
 
 void player_init(stGame* game) {
-  game->player->playerPositionRect.x = game->screenSize.x / 2;
-  game->player->playerPositionRect.y = game->screenSize.y / 2;
-  game->player->playerPositionRect.w = 64;
-  game->player->playerPositionRect.h = 128;
-  game->player->playerColisionRect.x = 10;
-  game->player->playerColisionRect.y = 100;
-  game->player->playerColisionRect.h = 32;
-  game->player->playerColisionRect.w = 45;
+  game->player->playerPositionRect.x = PLPOSITIONX;
+  game->player->playerPositionRect.y = PLPOSITIONY;
+  game->player->playerPositionRect.w = PLAYERPOSITIONRECTW;
+  game->player->playerPositionRect.h = PLAYERPOSITIONRECTH;
+  game->player->playerColisionRect.x = PLAYERCOLISONX;
+  game->player->playerColisionRect.y = PLAYERCOLISONY;
+  game->player->playerColisionRect.h = PLAYERCOLISONH;
+  game->player->playerColisionRect.w = PLAYERCOLISONW;
   game->player->playerX = game->player->playerPositionRect.x;
   game->player->playerY = game->player->playerPositionRect.y;
 

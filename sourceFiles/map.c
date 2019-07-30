@@ -23,11 +23,9 @@ void map_init(stGame* game) {
       game->map->map[y][x] = map[y][x];
     }
   }
-
-  game->map->wallPosition.x = 0;
-  game->map->wallPosition.y = 0;
-  game->map->wallPosition.w = 64;
-  game->map->wallPosition.h = 128;
+  
+  game->map->wallPosition.w = WALLPOSITIONW;
+  game->map->wallPosition.h = WALLPOSITIONH;
 }
 
 void draw_map(stGame* game) {
@@ -39,8 +37,8 @@ void draw_map(stGame* game) {
   for (int y = 0; y < HAUTEURMAP; y++) {
     for (int x = 0; x < LARGEURMAP; x++) {
       if (game->map->map[y][x] == 1) {
-        game->map->wallPosition.x = x * 64;
-        game->map->wallPosition.y = y * 64;
+        game->map->wallPosition.x = x * WALLPOSITIONW;
+        game->map->wallPosition.y = y * WALLPOSITIONW;
         SDL_RenderCopy(game->pRenderer, game->map->pTexWall, NULL,
                        &game->map->wallPosition);
       }

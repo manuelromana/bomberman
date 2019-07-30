@@ -23,8 +23,8 @@ void draw_bomb(stGame *game) {
   while (CurrentBomb != NULL) {
     game->bomb->bombPositionRect.x = CurrentBomb->x;
     game->bomb->bombPositionRect.y = CurrentBomb->y;
-    game->bomb->bombPositionRect.w = 64;
-    game->bomb->bombPositionRect.h = 64;
+    game->bomb->bombPositionRect.w = PLAYERPOSITIONRECTW;
+    game->bomb->bombPositionRect.h = PLAYERPOSITIONRECTW;
     SDL_RenderCopy(game->pRenderer, game->bomb->pTexBomb, NULL,
                    &game->bomb->bombPositionRect);
     CurrentBomb = CurrentBomb->next;

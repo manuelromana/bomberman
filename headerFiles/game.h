@@ -10,6 +10,8 @@
 #include "player.h"
 
 #define SPEED 1
+#define SCREENSIZEX 1216
+#define SCREENSIZEY 960
 
 typedef struct stGame {
   SDL_Point screenSize;

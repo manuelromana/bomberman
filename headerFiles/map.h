@@ -7,6 +7,8 @@
 
 #define HAUTEURMAP 15
 #define LARGEURMAP 19
+#define WALLPOSITIONW 64
+#define WALLPOSITIONH 128
 
 typedef struct stMap {
   int map[HAUTEURMAP][LARGEURMAP];
