@@ -3,66 +3,103 @@
 stGame* game_init() {
     stGame* game = {0};
     game = malloc(sizeof (stGame));
-
+    game->player = (struct stPlayer*)malloc(sizeof(stPlayer));
+    game->map = (struct stMap*)malloc(sizeof(stMap));
+    
+    if (game == NULL || game->player == NULL || game->map == NULL )
+        return NULL;
+    
+    game = map_init(game);
     game->screenSize.x = 1216;
     game->screenSize.y = 960;
-    game->pWindow = SDL_CreateWindow(
-        "Bomberman",
-        SDL_WINDOWPOS_UNDEFINED,
-        SDL_WINDOWPOS_UNDEFINED,
-        game->screenSize.x,
-        game->screenSize.y,
+    game->pWindow = SDL_CreateWindow("Bomberman", 
+        SDL_WINDOWPOS_UNDEFINED,SDL_WINDOWPOS_UNDEFINED, 
+        game->screenSize.x, game->screenSize.y, 
         SDL_WINDOW_OPENGL
     );
+    game = player_init(game);
+    
 
     if(game->pWindow) { 
         game->pRenderer = SDL_CreateRenderer(game->pWindow, -1, SDL_RENDERER_ACCELERATED);
-
         if (!game->pRenderer) {
             printf("Could not create renderer: %s\n", SDL_GetError());
             return NULL;
         }
-
     } else {
         printf("Could not create window: %s\n", SDL_GetError());
         return NULL;
     }
 
+    SDL_Surface* frontBomberman = IMG_Load("assets/Bomberman/Front/Bman_F_f00.png");
+    SDL_Surface* backBomberman = IMG_Load("assets/Bomberman/Back/Bman_B_f00.png");
+    SDL_Surface* rightSideBomberman = IMG_Load("assets/Bomberman/Side/Bman_F_f00.png");
+    SDL_Surface* leftSideBomberman = IMG_Load("assets/Bomberman/Side/Bman_F_f00.png");
+
+    if (!frontBomberman || !backBomberman || !rightSideBomberman || !leftSideBomberman) {
+        fprintf(stderr, "Erreur au chargement de l'image : %s\n", IMG_GetError());
+        game_destroy(game);
+        return NULL;
+    } else {
+        game->player->pTexPlayerFront = SDL_CreateTextureFromSurface(game->pRenderer, frontBomberman);
+        game->player->pTexPlayerBack = SDL_CreateTextureFromSurface(game->pRenderer, backBomberman);
+        game->player->pTexPlayerRight = SDL_CreateTextureFromSurface(game->pRenderer, rightSideBomberman);
+        game->player->pTexPlayerLeft = SDL_CreateTextureFromSurface(game->pRenderer, leftSideBomberman);
+        if (!game->player->pTexPlayerFront || !game->player->pTexPlayerBack) {
+            fprintf(stderr, "Erreur au chargement de la texture ! %s\n", SDL_GetError());
+            game_destroy(game);
+            return NULL;
+        }
+    }
+    
+    SDL_Surface* surfaceBombe = IMG_Load("assets/Bomb/Bomb_f03.png");
+    if (!surfaceBombe) {
+        fprintf(stderr, "Erreur au chargement de l'image : %s\n", IMG_GetError());
+        game_destroy(game);
+        return NULL;
+    } else {
+        game->map->pTexBomb = SDL_CreateTextureFromSurface(game->pRenderer, surfaceBombe);
+        if (!game->map->pTexBomb) {
+            fprintf(stderr, "Erreur au chargement de la texture ?? %s\n", SDL_GetError());
+            game_destroy(game);
+            return NULL;
+        }
+    }
+
     return game;
 }
 
-void game_draw(stGame* game, stPlayer* player, stMap* map) {
+void game_draw(stGame* game) {
     SDL_SetRenderDrawColor(game->pRenderer, 10, 50, 10, 255);
     SDL_RenderClear(game->pRenderer);
     SDL_RendererFlip flip = SDL_FLIP_HORIZONTAL;
     SDL_Rect destinationPlayer = {
-        player->playerPositionRect.x,
-        player->playerPositionRect.y,
-        player->playerPositionRect.w,
-        player->playerPositionRect.h
+        game->player->playerPositionRect.x,
+        game->player->playerPositionRect.y,
+        game->player->playerPositionRect.w,
+        game->player->playerPositionRect.h
     };
-
     
- draw_map(map, game);
- load_map( map, game);
+    load_map(game);
+    draw_map(game);
 
-    switch (player->playerDirection) {
+    switch (game->player->playerDirection) {
         case 0 :
-            SDL_RenderCopy(game->pRenderer, player->pTexPlayerRight, NULL, &destinationPlayer); 
+            SDL_RenderCopy(game->pRenderer, game->player->pTexPlayerRight, NULL, &destinationPlayer); 
             break;
         case 1 :
-            SDL_RenderCopyEx(game->pRenderer, player->pTexPlayerLeft, NULL, &destinationPlayer, 0, NULL, flip);
+            SDL_RenderCopyEx(game->pRenderer, game->player->pTexPlayerLeft, NULL, &destinationPlayer, 0, NULL, flip);
             break;
         case 2 :
-            SDL_RenderCopy(game->pRenderer, player->pTexPlayerBack, NULL, &destinationPlayer); 
+            SDL_RenderCopy(game->pRenderer, game->player->pTexPlayerBack, NULL, &destinationPlayer); 
             break;
         case 3 :
-            SDL_RenderCopy(game->pRenderer, player->pTexPlayerFront, NULL, &destinationPlayer); 
+            SDL_RenderCopy(game->pRenderer, game->player->pTexPlayerFront, NULL, &destinationPlayer); 
             break;
     }
 
-    SDL_Rect destinationBombe = { map->bombPositionRect.x, map->bombPositionRect.y,48,48};
-    SDL_RenderCopy(game->pRenderer, map->pTexBomb, NULL, &destinationBombe);
+    SDL_Rect destinationBombe = { game->map->bombPositionRect.x, game->map->bombPositionRect.y,48,48};
+    SDL_RenderCopy(game->pRenderer, game->map->pTexBomb, NULL, &destinationBombe);
     
     SDL_RenderPresent(game->pRenderer);
 }
@@ -96,20 +133,15 @@ void game_destroy(stGame *game) {
     if (game) {
         SDL_DestroyWindow(game->pWindow);
         SDL_DestroyRenderer(game->pRenderer);
+        SDL_DestroyTexture(game->player->pTexPlayerFront);
+        SDL_DestroyTexture(game->player->pTexPlayerBack);
+        SDL_DestroyTexture(game->player->pTexPlayerLeft);
+        SDL_DestroyTexture(game->player->pTexPlayerRight);
+        SDL_DestroyTexture(game->map->pTexBomb);
+        SDL_DestroyTexture(game->map->pTexWall);
 
+        free(game->map);
+        free(game->player);
         free(game);
     }
-    /*    if(p1){
-        SDL_DestroyTexture(p1->pTexPlayerFront);
-        SDL_DestroyTexture(p1->pTexPlayerBack);
-        SDL_DestroyTexture(p1->pTexPlayerLeft);
-        SDL_DestroyTexture(p1->pTexPlayerRight);
-        free(p1->pPos1);
-        free(p1);
-    }
-    if(map) {
-        SDL_DestroyTexture(map->pTexBomb);
-        free(map);
-    }*/
-    SDL_Quit();
 }

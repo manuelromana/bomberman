@@ -13,15 +13,15 @@ typedef struct stGame {
     SDL_Window* pWindow;
     SDL_Renderer* pRenderer;
 
-    stPlayer player;
-    stMap map;
+    stPlayer *player;
+    stMap *map;
 } stGame;
 
-stGame* game_init();
-stPlayer* player_init(stGame* game);
-stMap* map_init(stGame* game);
-void draw_map(stMap* map, stGame* game);
-void load_map(stMap* map, stGame* game);
+stGame *game_init();
+stGame *player_init(stGame* game);
+stGame *map_init(stGame* game);
+void draw_map(stGame* game);
+void load_map(stGame* game);
 
 void draw_bomb(stGame* game);
 
@@ -29,7 +29,7 @@ int game_event(stGame *game);
 void game_destroy(stGame *game);
 
 
-void game_draw(stGame* game, stPlayer* player, stMap* map);
+void game_draw(stGame* game);
 void character_move(SDL_Keycode direction,stGame* game);
 
 #endif

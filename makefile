@@ -9,7 +9,7 @@ SRC = sourceFiles/main.c\
 OBJ	= $(SRC:%.c=%.o)
 
 CC=gcc
-CC_SDL= -Wall -Wextra -Werror -lSDL2_image  `sdl2-config --cflags --libs`
+CC_SDL=-ggdb -g -Wall -Wextra -Werror -lSDL2_image  `sdl2-config --cflags --libs`
 
 $(NAME): $(OBJ) 
 	$(CC) $(OBJ) $(CC_SDL) -o $(NAME) 

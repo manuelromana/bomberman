@@ -7,15 +7,13 @@
 
 typedef struct stPlayer {
     
-    SDL_Texture* pTexPlayerFront;
-    SDL_Texture* pTexPlayerBack;
-    SDL_Texture* pTexPlayerRight;
-    SDL_Texture* pTexPlayerLeft;
+    SDL_Texture *pTexPlayerFront;
+    SDL_Texture *pTexPlayerBack;
+    SDL_Texture *pTexPlayerRight;
+    SDL_Texture *pTexPlayerLeft;
 
     SDL_Rect playerPositionRect;
     int playerDirection;
 } stPlayer;
 
-
-void player_destroy(stPlayer* p1);
 #endif

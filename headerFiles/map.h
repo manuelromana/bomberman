@@ -11,18 +11,10 @@
 typedef struct stMap {
     int map[HAUTEURMAP][LARGEURMAP];
     
-    SDL_Texture* pTexBomb;
-    SDL_Texture* pTexWall;
+    SDL_Texture *pTexBomb;
+    SDL_Texture *pTexWall;
     SDL_Rect bombPositionRect;
     SDL_Rect wallPosition;
-
 } stMap;
 
-
-
-/* 
-void load_surface(SDL_Surface* surface, stGame *game);
-
-*/
-void map_destroy(stMap* map);
 #endif
