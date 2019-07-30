@@ -1,13 +1,11 @@
 #include "../headerFiles/game.h"
 
 stGame* game_init() {
-    stGame* game = NULL;
+    stGame* game = {0};
     game = malloc(sizeof (stGame));
 
     game->screenSize.x = 1216;
     game->screenSize.y = 960;
-    game->pWindow = NULL;
-    game->pRenderer = NULL;
     game->pWindow = SDL_CreateWindow(
         "Bomberman",
         SDL_WINDOWPOS_UNDEFINED,
@@ -38,16 +36,17 @@ void game_draw(stGame* game, stPlayer* player, stMap* map) {
     SDL_RenderClear(game->pRenderer);
     SDL_RendererFlip flip = SDL_FLIP_HORIZONTAL;
     SDL_Rect destinationPlayer = {
-        player->pPos1->playerPositionRect.x,
-        player->pPos1->playerPositionRect.y,
-        player->pPos1->playerPositionRect.w,
-        player->pPos1->playerPositionRect.h
+        player->playerPositionRect.x,
+        player->playerPositionRect.y,
+        player->playerPositionRect.w,
+        player->playerPositionRect.h
     };
 
-    load_map(map);
-    draw_map(map);
+    
+ draw_map(map, game);
+ load_map( map, game);
 
-    switch (player->pPos1->playerDirection) {
+    switch (player->playerDirection) {
         case 0 :
             SDL_RenderCopy(game->pRenderer, player->pTexPlayerRight, NULL, &destinationPlayer); 
             break;
@@ -65,7 +64,7 @@ void game_draw(stGame* game, stPlayer* player, stMap* map) {
     SDL_Rect destinationBombe = { map->bombPositionRect.x, map->bombPositionRect.y,48,48};
     SDL_RenderCopy(game->pRenderer, map->pTexBomb, NULL, &destinationBombe);
     
-    SDL_RenderPresent(map->pRenderer);
+    SDL_RenderPresent(game->pRenderer);
 }
 
 int game_event(stGame *game) {
@@ -95,8 +94,8 @@ int game_event(stGame *game) {
 
 void game_destroy(stGame *game) {
     if (game) {
-       // SDL_DestroyWindow(game->pWindow);
-       // SDL_DestroyRenderer(game->pRenderer);
+        SDL_DestroyWindow(game->pWindow);
+        SDL_DestroyRenderer(game->pRenderer);
 
         free(game);
     }

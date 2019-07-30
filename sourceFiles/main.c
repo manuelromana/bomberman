@@ -6,8 +6,8 @@ int main(int argc, char *argv[])
 {
     //initialiser le jeu
     stGame *game = game_init();
-    stMap *map = map_init();
-    stPlayer *player = player_init();
+    stMap *map = map_init(game);
+    stPlayer *player = player_init(game);
 
     int quit = 0;
     

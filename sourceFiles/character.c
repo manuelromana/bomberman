@@ -2,15 +2,9 @@
 #include "../headerFiles/game.h"
 #include "../headerFiles/map.h"
 
-stPlayer* player_init() {
-    stPlayer* player = NULL;
+stPlayer* player_init(stGame* game) {
+    stPlayer* player = {0};
     player = malloc(sizeof (player));
-
-    player->pRenderer = NULL;
-    player->pTexPlayerFront = NULL;
-    player->pTexPlayerBack = NULL;
-    player->pTexPlayerRight = NULL;
-    player->pTexPlayerLeft = NULL;
 
     SDL_Surface* frontBomberman = IMG_Load("assets/Bomberman/Front/Bman_F_f00.png");
     SDL_Surface* backBomberman = IMG_Load("assets/Bomberman/Back/Bman_B_f00.png");
@@ -22,50 +16,44 @@ stPlayer* player_init() {
         player_destroy(player);
         return NULL;
     } else {
-        player->pTexPlayerFront = SDL_CreateTextureFromSurface(player->pRenderer, frontBomberman);
-        player->pTexPlayerBack = SDL_CreateTextureFromSurface(player->pRenderer, backBomberman);
-        player->pTexPlayerRight = SDL_CreateTextureFromSurface(player->pRenderer, rightSideBomberman);
-        player->pTexPlayerLeft = SDL_CreateTextureFromSurface(player->pRenderer, leftSideBomberman);
+        player->pTexPlayerFront = SDL_CreateTextureFromSurface(game->pRenderer, frontBomberman);
+        player->pTexPlayerBack = SDL_CreateTextureFromSurface(game->pRenderer, backBomberman);
+        player->pTexPlayerRight = SDL_CreateTextureFromSurface(game->pRenderer, rightSideBomberman);
+        player->pTexPlayerLeft = SDL_CreateTextureFromSurface(game->pRenderer, leftSideBomberman);
         if (!player->pTexPlayerFront || !player->pTexPlayerBack) {
             fprintf(stderr, "Erreur au chargement de la texture : %s\n", SDL_GetError());
             player_destroy(player);
             return NULL;
         }
     }
-}
-
-stPlayerPosition* playerPosition_init(stPlayer* player,stGame* game) {
-    stPlayerPosition* pPos1 = NULL;
-    pPos1 = malloc(sizeof (pPos1));
-
-    player->pPos1->playerDirection = 0;
-    player->pPos1->playerPositionRect.x = game->screenSize.x / 2;
-    player->pPos1->playerPositionRect.y = game->screenSize.y / 2;
-    player->pPos1->playerPositionRect.w = 64;
-    player->pPos1->playerPositionRect.h = 128;
+    
+    player->playerPositionRect.x = 60;
+    player->playerPositionRect.y = 60;
+    player->playerPositionRect.w = 64;
+    player->playerPositionRect.h = 128;
 }
     
-void character_move(SDL_Keycode direction, stPlayer *player,stGame* game) {
+void character_move(SDL_Keycode direction,stGame* game) {
     switch (direction) {
             case SDLK_RIGHT:
-                if(game->player->pPos1->playerPositionRect.x < (game->screenSize.x - game->player->pPos1->playerPositionRect.w))
-                    game->player->pPos1->playerPositionRect.x += 20;
-                game->player->pPos1->playerDirection = 0;
+                if(game->player.playerPositionRect.x < (game->screenSize.x - game->player.playerPositionRect.w))
+                    game->player.playerPositionRect.x += 20;
+                game->player.playerDirection = 0;
                 break;
             case SDLK_LEFT:
-                if(game->player->pPos1->playerPositionRect.x > 0)
-                    game->player->pPos1->playerPositionRect.x -= 20;
-                game->player->pPos1->playerDirection = 1;
+                if(game->player.playerPositionRect.x > 0)
+                    game->player.playerPositionRect.x -= 20;
+                game->player.playerDirection = 1;
                 break;
             case SDLK_UP:
-                if(game->player->pPos1->playerPositionRect.y > 0)
-                    game->player->pPos1->playerPositionRect.y -= 20;
-                game->player->pPos1->playerDirection = 2;
+                if(game->player.playerPositionRect.y > 0)
+                    game->player.playerPositionRect.y -= 20;
+                game->player.playerDirection = 2;
                 break;
             case SDLK_DOWN: 
-                if(game->player->pPos1->playerPositionRect.y < (game->screenSize.y - game->player->pPos1->playerPositionRect.h))
-                    game->player->pPos1->playerPositionRect.y += 20;
-                game->player->pPos1->playerDirection = 3;
+                if(game->player.playerPositionRect.y < (game->screenSize.y - game->player.playerPositionRect.h))
+                    game->player.playerPositionRect.y += 20;
+                game->player.playerDirection = 3;
                 break;  
             case SDLK_SPACE:
                 draw_bomb(game);
