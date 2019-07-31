@@ -5,17 +5,15 @@ stGame* game_init() {
   game = malloc(sizeof(stGame));
   game->player = (struct stPlayer*)malloc(sizeof(stPlayer));
   game->map = (struct stMap*)malloc(sizeof(stMap));
+  game->bomb = (struct stBomb*)malloc(sizeof(stBomb));
 
   if (game == NULL || game->player == NULL || game->map == NULL) return NULL;
 
-  game = map_init(game);
   game->screenSize.x = 1216;
   game->screenSize.y = 960;
   game->pWindow = SDL_CreateWindow("Bomberman", SDL_WINDOWPOS_UNDEFINED,
                                    SDL_WINDOWPOS_UNDEFINED, game->screenSize.x,
                                    game->screenSize.y, SDL_WINDOW_OPENGL);
-  game = player_init(game);
-  game = bomb_init(game);
 
   if (game->pWindow) {
     game->pRenderer =
@@ -28,6 +26,10 @@ stGame* game_init() {
     printf("Could not create window: %s\n", SDL_GetError());
     return NULL;
   }
+
+  map_init(game);
+  player_init(game);
+  bomb_init(game);
 
   SDL_Surface* frontBomberman =
       IMG_Load("assets/Bomberman/Front/Bman_F_f00.png");
@@ -59,21 +61,7 @@ stGame* game_init() {
     }
   }
 
-  SDL_Surface* surfaceBombe = IMG_Load("assets/Bomb/Bomb_f03.png");
-  if (!surfaceBombe) {
-    fprintf(stderr, "Erreur au chargement de l'image : %s\n", IMG_GetError());
-    game_destroy(game);
-    return NULL;
-  } else {
-    game->map->pTexBomb =
-        SDL_CreateTextureFromSurface(game->pRenderer, surfaceBombe);
-    if (!game->map->pTexBomb) {
-      fprintf(stderr, "Erreur au chargement de la texture ?? %s\n",
-              SDL_GetError());
-      game_destroy(game);
-      return NULL;
-    }
-  }
+  load_map(game);
 
   return game;
 }
@@ -91,12 +79,19 @@ void game_draw(stGame* game) {
       game->player->playerY + game->player->playerColisionRect.y,
       game->player->playerColisionRect.w, game->player->playerColisionRect.h};
 
-  load_map(game);
   draw_map(game);
 
   SDL_SetRenderDrawColor(game->pRenderer, 10, 50, 10, 255);
   SDL_RenderFillRect(game->pRenderer, &destinationPlayerColision);
   SDL_RenderPresent(game->pRenderer);
+
+  draw_bomb(game);
+  while (game->bomb->bombs != NULL) {
+    if (game->PresentTime - game->bomb->bombs->startTime > 3000)
+      destroy_bomb(game, game->bomb->bombs);
+    else
+      break;
+  }
 
   switch (game->player->playerDirection) {
     case 0:
@@ -114,14 +109,6 @@ void game_draw(stGame* game) {
     case 3:
       SDL_RenderCopy(game->pRenderer, game->player->pTexPlayerFront, NULL,
                      &destinationPlayer);
-      break;
-  }
-
-  draw_bomb(game);
-  while (game->bomb->bombs != NULL) {
-    if (game->PresentTime - game->bomb->bombs->startTime)
-      destroy_bomb(game, game->bomb);
-    else
       break;
   }
   SDL_RenderPresent(game->pRenderer);

@@ -7,14 +7,13 @@
 
 #define HAUTEURMAP 15
 #define LARGEURMAP 19
- 
+
 typedef struct stMap {
-    int map[HAUTEURMAP][LARGEURMAP];
-    
-    SDL_Texture *pTexBomb;
-    SDL_Texture *pTexWall;
-    SDL_Rect bombPositionRect;
-    SDL_Rect wallPosition;
+  int map[HAUTEURMAP][LARGEURMAP];
+
+  SDL_Texture *pTexBomb;
+  SDL_Texture *pTexWall;
+  SDL_Rect wallPosition;
 } stMap;
 
 #endif

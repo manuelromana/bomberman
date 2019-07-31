@@ -2,7 +2,7 @@
 #include "../headerFiles/map.h"
 #include "../headerFiles/player.h"
 
-stGame* player_init(stGame* game) {
+void player_init(stGame* game) {
   game->player->playerPositionRect.x = game->screenSize.x / 2;
   game->player->playerPositionRect.y = game->screenSize.y / 2;
   game->player->playerPositionRect.w = 64;
@@ -13,8 +13,6 @@ stGame* player_init(stGame* game) {
   game->player->playerColisionRect.w = 45;
   game->player->playerX = game->player->playerPositionRect.x;
   game->player->playerY = game->player->playerPositionRect.y;
-
-  return game;
 }
 
 void character_move(SDL_Keycode direction, stGame* game) {

@@ -1,25 +1,37 @@
 #include "../headerFiles/game.h"
 #include "../headerFiles/map.h"
 
-stGame *bomb_init(stGame *game) {
-  game->bomb->bombPositionRect.x = 1000;
-  game->bomb->bombPositionRect.y = 1000;
-
-  return game;
+void bomb_init(stGame *game) {
+  SDL_Surface *surfaceBombe = IMG_Load("assets/Bomb/Bomb_f03.png");
+  if (!surfaceBombe) {
+    fprintf(stderr, "Erreur au chargement de l'image : %s\n", IMG_GetError());
+    game_destroy(game);
+  } else {
+    game->bomb->pTexBomb =
+        SDL_CreateTextureFromSurface(game->pRenderer, surfaceBombe);
+    if (!game->bomb->pTexBomb) {
+      fprintf(stderr, "Erreur au chargement de la texture ?? %s\n",
+              SDL_GetError());
+      game_destroy(game);
+    }
+  }
+  game->bomb->bombs = NULL;
 }
 
 void draw_bomb(stGame *game) {
   bomb *CurrentBomb = game->bomb->bombs;
   while (CurrentBomb != NULL) {
-    SDL_Rect destinationBombe = {CurrentBomb->x, CurrentBomb->y, 64, 64};
+    game->bomb->bombPositionRect.x = CurrentBomb->x;
+    game->bomb->bombPositionRect.y = CurrentBomb->y;
+    game->bomb->bombPositionRect.w = 64;
+    game->bomb->bombPositionRect.h = 64;
     SDL_RenderCopy(game->pRenderer, game->bomb->pTexBomb, NULL,
-                   &destinationBombe);
+                   &game->bomb->bombPositionRect);
     CurrentBomb = CurrentBomb->next;
   }
 }
 
 void create_bomb(stGame *game) {
-  printf("%s\n", "toto");
   bomb *newBomb;
   newBomb = (bomb *)malloc(sizeof(bomb));
   if (newBomb == NULL) {
@@ -41,6 +53,7 @@ void add_NewBomb(stGame *game, bomb *newBomb) {
     return;
   }
   bomb *CurrentBomb = game->bomb->bombs;
+
   while (CurrentBomb->next != NULL) {
     CurrentBomb = CurrentBomb->next;
   }

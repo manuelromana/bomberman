@@ -23,8 +23,9 @@ typedef struct stGame {
 } stGame;
 
 stGame* game_init();
-stGame* player_init(stGame* game);
-stGame* map_init(stGame* game);
+void player_init(stGame* game);
+void map_init(stGame* game);
+void bomb_init(stGame* game);
 void draw_map(stGame* game);
 void load_map(stGame* game);
 

@@ -17,21 +17,17 @@ int map[HAUTEURMAP][LARGEURMAP] = {
     {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}};
 
-stGame* map_init(stGame* game) {
+void map_init(stGame* game) {
   for (int x = 0; x < LARGEURMAP; x++) {
     for (int y = 0; y < HAUTEURMAP; y++) {
       game->map->map[y][x] = map[y][x];
     }
   }
 
-  game->map->bombPositionRect.x = 900;
-  game->map->bombPositionRect.y = 900;
   game->map->wallPosition.x = 0;
   game->map->wallPosition.y = 0;
   game->map->wallPosition.w = 64;
   game->map->wallPosition.h = 128;
-
-  return game;
 }
 
 void draw_map(stGame* game) {
