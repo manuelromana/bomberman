@@ -72,7 +72,7 @@ void game_draw_hostname(stGame *game, char *hostname);
 void game_draw_port(stGame *game, char *port);
 void send_key(SDL_Keycode keydown, int mysocket);
 void game_draw_welcome(stGame *game);
-
+void control_event(SDL_Event event, int *step, char **currentText, char **port, int mysocket);
 int my_strlen(char *str);
 int read_client(int client);
 int read_server(int server);

@@ -124,6 +124,47 @@ stGame *game_init_2()
     return game;
 }
 
+void control_event(SDL_Event event, int *step, char **currentText, char **port, int mysocket)
+{
+
+    while (SDL_PollEvent(&event) != 0)
+    {
+        switch (event.type)
+        {
+        case (SDL_QUIT):
+            *step = -1;
+        case (SDL_TEXTINPUT):
+            strcat(*currentText, event.text.text);
+
+            break;
+        case (SDL_KEYDOWN):
+            switch (event.key.keysym.sym)
+            {
+            case SDLK_BACKSPACE:
+                strcpy(*currentText, "");
+                break;
+            case SDLK_RETURN:
+                (*step)++;
+
+                if (*step == 1)
+                {
+                    puts("return hit");
+
+                    *currentText = *port;
+                }
+
+                break;
+            case SDLK_UP:
+            case SDLK_DOWN:
+            case SDLK_RIGHT:
+            case SDLK_LEFT:
+            case SDLK_SPACE:
+                send_key(event.key.keysym.sym, mysocket);
+                break;
+            }
+        }
+    }
+}
 void game_draw_hostname(stGame *game, char *hostname)
 {
     SDL_Surface *pInputsurface = NULL;

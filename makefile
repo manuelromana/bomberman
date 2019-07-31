@@ -1,9 +1,18 @@
-NAME = test
-
+NAME = draw
+NAME2 = client
+NAME3 = server
 # Files
 SRC= sourceFiles/gameInitTest.c\
 sourceFiles/main_test.c
+
+SRC2 = sourceFiles/game_connection.c\
+sourceFiles/main.c  sourceFiles/my_strlen.c
+
+SRC3 = sourceFiles/server.c sourceFiles/my_strlen.c
+
 OBJ	= $(SRC:%.c=%.o)
+OBJ2 = $(SRC2:%.c=%.o)
+OBJ3 = $(SRC3:%.c=%.o)
 
 # Build settings
 CC=gcc
@@ -14,6 +23,12 @@ $(NAME): $(OBJ)
 	$(CC) $(OBJ) $(CC_SDL) -o $(NAME) 
 
 all: $(NAME)
+
+client : $(OBJ2)
+	$(CC) $(OBJ2) $(CC_SDL) -o $(NAME2)
+
+server : $(OBJ3)
+	$(CC) $(OBJ3) $(CC_SDL) -o $(NAME3)
 
 clean:
 		rm -f $(OBJ)
