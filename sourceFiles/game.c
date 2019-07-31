@@ -30,37 +30,6 @@ stGame* game_init() {
   map_init(game);
   player_init(game);
   bomb_init(game);
-
-  SDL_Surface* frontBomberman =
-      IMG_Load("assets/Bomberman/Front/Bman_F_f00.png");
-  SDL_Surface* backBomberman = IMG_Load("assets/Bomberman/Back/Bman_B_f00.png");
-  SDL_Surface* rightSideBomberman =
-      IMG_Load("assets/Bomberman/Side/Bman_F_f00.png");
-  SDL_Surface* leftSideBomberman =
-      IMG_Load("assets/Bomberman/Side/Bman_F_f00.png");
-
-  if (!frontBomberman || !backBomberman || !rightSideBomberman ||
-      !leftSideBomberman) {
-    fprintf(stderr, "Erreur au chargement de l'image : %s\n", IMG_GetError());
-    game_destroy(game);
-    return NULL;
-  } else {
-    game->player->pTexPlayerFront =
-        SDL_CreateTextureFromSurface(game->pRenderer, frontBomberman);
-    game->player->pTexPlayerBack =
-        SDL_CreateTextureFromSurface(game->pRenderer, backBomberman);
-    game->player->pTexPlayerRight =
-        SDL_CreateTextureFromSurface(game->pRenderer, rightSideBomberman);
-    game->player->pTexPlayerLeft =
-        SDL_CreateTextureFromSurface(game->pRenderer, leftSideBomberman);
-    if (!game->player->pTexPlayerFront || !game->player->pTexPlayerBack) {
-      fprintf(stderr, "Erreur au chargement de la texture ! %s\n",
-              SDL_GetError());
-      game_destroy(game);
-      return NULL;
-    }
-  }
-
   load_map(game);
 
   return game;
