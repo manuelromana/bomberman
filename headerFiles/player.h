@@ -6,14 +6,15 @@
 #include <stdio.h>
 
 typedef struct stPlayer {
-    
-    SDL_Texture *pTexPlayerFront;
-    SDL_Texture *pTexPlayerBack;
-    SDL_Texture *pTexPlayerRight;
-    SDL_Texture *pTexPlayerLeft;
+  SDL_Texture *pTexPlayerFront;
+  SDL_Texture *pTexPlayerBack;
+  SDL_Texture *pTexPlayerRight;
+  SDL_Texture *pTexPlayerLeft;
 
-    SDL_Rect playerPositionRect;
-    int playerDirection;
+  SDL_Rect playerColisionRect;
+  SDL_Rect playerPositionRect;
+  int playerDirection;
+  double playerX, playerY;
 } stPlayer;
 
 #endif
