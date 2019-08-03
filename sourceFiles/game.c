@@ -1,6 +1,7 @@
 #include "../headerFiles/game.h"
 
 stGame* game_init() {
+<<<<<<< HEAD
   stGame* game = {0};
   game = malloc(sizeof(stGame));
   game->player = (struct stPlayer*)malloc(sizeof(stPlayer));
@@ -19,6 +20,46 @@ stGame* game_init() {
     if (!game->pRenderer) {
       printf("Could not create renderer: %s\n", SDL_GetError());
       return NULL;
+=======
+    stGame* game = {0};
+    game = malloc(sizeof (stGame));
+
+    for (int x = 0; x < LARGEURMAP; x++) {
+        for (int y = 0; y < HAUTEURMAP; y++) {
+            game->map[y][x] = map[y][x];
+        }
+    }
+
+    game->playerPositionRect.x = PLPOSITIONX;
+    game->playerPositionRect.y = PLPOSITIONY;
+    game->playerPositionRect.w = PLAYERPOSITIONRECTW;
+    game->playerPositionRect.h = PLAYERPOSITIONRECTH;
+    game->bombPositionRect.x = BOMBPOSITION;
+    game->bombPositionRect.y = BOMBPOSITION;
+    game->wallPosition.w = WALLPOSITIONW;
+    game->wallPosition.h = WALLPOSITIONH;
+
+    game->pWindow = SDL_CreateWindow(
+        "Bomberman",
+        SDL_WINDOWPOS_UNDEFINED,
+        SDL_WINDOWPOS_UNDEFINED,
+        SCREENSIZEX,
+        SCREENSIZEY,
+        SDL_WINDOW_OPENGL
+    );
+
+    if(game->pWindow) { 
+        game->pRenderer = SDL_CreateRenderer(game->pWindow, -1, SDL_RENDERER_ACCELERATED);
+
+        if (!game->pRenderer) {
+            printf("Could not create renderer: %s\n", SDL_GetError());
+            return NULL;
+        }
+
+    } else {
+        printf("Could not create window: %s\n", SDL_GetError());
+        return NULL;
+>>>>>>> develop
     }
   } else {
     printf("Could not create window: %s\n", SDL_GetError());

@@ -36,12 +36,22 @@ void draw_map(stGame* game) {
   }
   for (int y = 0; y < HAUTEURMAP; y++) {
     for (int x = 0; x < LARGEURMAP; x++) {
+<<<<<<< HEAD
       if (game->map->map[y][x] == 1) {
         game->map->wallPosition.x = x * WALLPOSITIONW;
         game->map->wallPosition.y = y * WALLPOSITIONW;
         SDL_RenderCopy(game->pRenderer, game->map->pTexWall, NULL,
                        &game->map->wallPosition);
       }
+=======
+        if (game->map[y][x] == 1) {
+            game->wallPosition.x = x * WALLPOSITIONW;
+            game->wallPosition.y = y * WALLPOSITIONW;
+            SDL_RenderCopy(game->pRenderer, game->pTexWall, NULL, &game->wallPosition);
+        }
+    }
+        
+>>>>>>> develop
     }
   }
 }
