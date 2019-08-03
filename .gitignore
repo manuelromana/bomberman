@@ -1,3 +1,10 @@
 sourceFiles/*.o
 bomberman
+<<<<<<< HEAD
+.vscode/settings.json
+assets/Bomberman/Front/BmanBackup.png
+server
+client
+=======
 .vscode/
+>>>>>>> develop

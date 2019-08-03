@@ -1,19 +1,11 @@
-#include "../headerFiles/header.h"
+#include "../headerFiles/game.h"
 
-int main(int argc, char* argv[]) {
-    stGame* game = game_init();
-    int quit = 0;
-    
-    while(quit != 1) {
-        game_draw(game);
+int main(int argc, char *argv[]) {
+  stGame *game = game_init();
 
-        quit = game_event(game);
+  game_boucle(game);
+  game_destroy(game);
 
-        SDL_Delay(30);
-    }
-        
-    //Destruction
-    game_destroy(game);
-
-    return (EXIT_SUCCESS);
-}   
+  SDL_Quit();
+  return (EXIT_SUCCESS);
+}
