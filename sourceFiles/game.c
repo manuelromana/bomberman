@@ -7,15 +7,14 @@ stGame* game_init() {
   game->map = (struct stMap*)malloc(sizeof(stMap));
   game->bomb = (struct stBomb*)malloc(sizeof(stBomb));
 
-  if (game == NULL || game->player == NULL || game->map == NULL) return NULL;
+  if (game == NULL || game->player == NULL || game->map == NULL || game->bomb == NULL) return NULL;
 
   game->pWindow = SDL_CreateWindow("Bomberman", SDL_WINDOWPOS_UNDEFINED,
                                    SDL_WINDOWPOS_UNDEFINED, SCREENSIZEX,
                                    SCREENSIZEY, SDL_WINDOW_OPENGL);
 
   if (game->pWindow) {
-    game->pRenderer =
-        SDL_CreateRenderer(game->pWindow, -1, SDL_RENDERER_ACCELERATED);
+    game->pRenderer = SDL_CreateRenderer(game->pWindow, -1, SDL_RENDERER_ACCELERATED);
     if (!game->pRenderer) {
       printf("Could not create renderer: %s\n", SDL_GetError());
       return NULL;
