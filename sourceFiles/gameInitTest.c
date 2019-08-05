@@ -45,35 +45,32 @@ st_game *game_init_test()
         game_destroy(game);
         return NULL;
     }
+    
+    char *paths[] = {PATHBOMB, PATHPL};
+    int arrayLength = LEN(paths);
+    sdl_load(game, paths, arrayLength);    
 
-    //charger les images
-    char *paths[] = {"assets/bomberman.png"};
+    return game;
+}
 
-    for (int i = 0; i < 1; i++)
+void sdl_load(st_game *game, char *paths[], int arrayLength) 
+{
+    for (int i = 0; i < arrayLength; i++)
     {
         game->images[i]->path = paths[i];
-
         game->images[i]->surface = IMG_Load(paths[i]);
-        if (!game->images[i]->surface)
-        {
+        if (!game->images[i]->surface) {
             fprintf(stderr, "Erreur au chargement de l'image : %s,%s\n", paths[i], IMG_GetError());
             game_destroy(game);
-            return NULL;
-        }
-        else
-        {
+        } else {
             game->images[i]->texture = SDL_CreateTextureFromSurface(game->pRenderer, game->images[i]->surface);
-            if (!game->images[i]->texture)
-            {
+            if (!game->images[i]->texture) {
                 fprintf(stderr, "Erreur au chargement de la texture : %s,%s\n", paths[i], SDL_GetError());
                 game_destroy(game);
-                return NULL;
             }
             SDL_FreeSurface(game->images[i]->surface);
         }
     }
-
-    return game;
 }
 
 void draw_game_test(st_game *game)
@@ -88,6 +85,15 @@ void draw_game_test(st_game *game)
 
     SDL_Rect test = {game->images[0]->rectangle.x, game->images[0]->rectangle.y, game->images[0]->rectangle.w, game->images[0]->rectangle.h};
     SDL_RenderCopy(game->pRenderer, game->images[0]->texture, NULL, &test);
+
+    game->images[1]->rectangle.y = 100;
+    game->images[1]->rectangle.x = 100;
+    game->images[1]->rectangle.w = 100;
+    game->images[1]->rectangle.h = 100;
+
+    SDL_Rect test1 = {game->images[1]->rectangle.x, game->images[1]->rectangle.y, game->images[1]->rectangle.w, game->images[1]->rectangle.h};
+    SDL_RenderCopy(game->pRenderer, game->images[1]->texture, NULL, &test1);
+
     SDL_RenderPresent(game->pRenderer);
 }
 
