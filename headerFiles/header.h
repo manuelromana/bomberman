@@ -20,6 +20,10 @@
 #define SCREENSIZEX 1216
 #define SCREENSIZEY 960
 
+#define LEN(arr)  ( (int) (sizeof(arr)/sizeof(arr[0])) )
+
+#define PATHBOMB "assets/Flame/Flame_f00.png"
+#define PATHPL "assets/bomberman.png"
 typedef struct
 {
     SDL_Surface *surface;
@@ -86,5 +90,7 @@ void Redraw();
 st_game *game_init_test();
 void game_destroy(st_game *game);
 void draw_game_test(st_game *game);
+
+void sdl_load(st_game *game, char *paths[], int arrayLength);
 
 #endif
