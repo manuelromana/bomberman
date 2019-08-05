@@ -29,12 +29,16 @@ void player_init(stGame* game) {
   } else {
     game->player->pTexPlayerFront =
         SDL_CreateTextureFromSurface(game->pRenderer, frontBomberman);
+    SDL_FreeSurface(frontBomberman);
     game->player->pTexPlayerBack =
         SDL_CreateTextureFromSurface(game->pRenderer, backBomberman);
+    SDL_FreeSurface(backBomberman);
     game->player->pTexPlayerRight =
         SDL_CreateTextureFromSurface(game->pRenderer, rightSideBomberman);
+    SDL_FreeSurface(rightSideBomberman);
     game->player->pTexPlayerLeft =
         SDL_CreateTextureFromSurface(game->pRenderer, leftSideBomberman);
+    SDL_FreeSurface(leftSideBomberman);
     if (!game->player->pTexPlayerFront || !game->player->pTexPlayerBack) {
       fprintf(stderr, "Erreur au chargement de la texture ! %s\n",
               SDL_GetError());

@@ -55,6 +55,7 @@ void load_map(stGame* game) {
   } else {
     game->map->pTexWall =
         SDL_CreateTextureFromSurface(game->pRenderer, SolidBlock);
+        SDL_FreeSurface(SolidBlock);
     if (!game->map->pTexWall) {
       fprintf(stderr, "Erreur au chargement de la texture : %s\n",
               SDL_GetError());

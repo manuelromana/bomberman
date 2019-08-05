@@ -9,6 +9,7 @@ void bomb_init(stGame *game) {
   } else {
     game->bomb->pTexBomb =
         SDL_CreateTextureFromSurface(game->pRenderer, surfaceBombe);
+        SDL_FreeSurface(surfaceBombe);
     if (!game->bomb->pTexBomb) {
       fprintf(stderr, "Erreur au chargement de la texture ?? %s\n",
               SDL_GetError());
