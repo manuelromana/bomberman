@@ -14,7 +14,6 @@ struct bomb {
 
 typedef struct stBomb {
   SDL_Rect bombPositionRect;
-  SDL_Texture *pTexBomb;
   bomb *bombs;
 } stBomb;
 

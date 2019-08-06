@@ -8,6 +8,7 @@
 #include "map.h"
 #include "objects.h"
 #include "player.h"
+#include "textures.h"
 
 #define SPEED 1
 #define SCREENSIZEX 1216
@@ -21,10 +22,13 @@ typedef struct stGame {
   stPlayer* player;
   stBomb* bomb;
   stMap* map;
+  stTexture* texture[10];
+
   unsigned int LastTime, PresentTime, Delta;
 } stGame;
 
 stGame* game_init();
+void sdl_load(stGame* game, char *paths[], int arrayLength);
 void player_init(stGame* game);
 void map_init(stGame* game);
 void bomb_init(stGame* game);

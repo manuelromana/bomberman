@@ -14,6 +14,12 @@ void player_init(stGame* game) {
   game->player->playerX = game->player->playerPositionRect.x;
   game->player->playerY = game->player->playerPositionRect.y;
 
+/* 
+  char *paths[] = {PATHPLFR,PATHPLBCK, PATHPLSIDE};
+  int arrayLength = LEN(paths);
+  sdl_load(game, paths, arrayLength);  
+  */
+/* 
   SDL_Surface* frontBomberman =
       IMG_Load("assets/Bomberman/Front/Bman_F_f00.png");
   SDL_Surface* backBomberman = IMG_Load("assets/Bomberman/Back/Bman_B_f00.png");
@@ -45,6 +51,7 @@ void player_init(stGame* game) {
       game_destroy(game);
     }
   }
+  */
 }
 
 void character_move(SDL_Keycode direction, stGame* game) {

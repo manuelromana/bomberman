@@ -26,6 +26,10 @@ void map_init(stGame* game) {
   
   game->map->wallPosition.w = WALLPOSITIONW;
   game->map->wallPosition.h = WALLPOSITIONH;
+
+  char *paths[] = {PATHWALL};
+  int arrayLength = LEN(paths);
+  sdl_load(game, paths, arrayLength);
 }
 
 void draw_map(stGame* game) {
@@ -39,7 +43,7 @@ void draw_map(stGame* game) {
       if (game->map->map[y][x] == 1) {
         game->map->wallPosition.x = x * WALLPOSITIONW;
         game->map->wallPosition.y = y * WALLPOSITIONW;
-        SDL_RenderCopy(game->pRenderer, game->map->pTexWall, NULL,
+        SDL_RenderCopy(game->pRenderer, game->texture[3]->texture, NULL,
                        &game->map->wallPosition);
       }
     }

@@ -24,6 +24,15 @@ stGame* game_init() {
     return NULL;
   }
 
+  for (int i = 0; i < 10; i++) {
+        game->texture[i] = NULL;
+        game->texture[i] = malloc(sizeof(stTexture *));
+  }
+  
+  char *paths[] = {PATHPLFR, PATHPLBCK, PATHPLSIDE,PATHWALL, PATHBOMB};
+  int arrayLength = LEN(paths);
+  sdl_load(game, paths, arrayLength);
+  
   map_init(game);
   player_init(game);
   bomb_init(game);
@@ -61,19 +70,19 @@ void game_draw(stGame* game) {
 
   switch (game->player->playerDirection) {
     case 0:
-      SDL_RenderCopy(game->pRenderer, game->player->pTexPlayerRight, NULL,
-                     &destinationPlayer);
+      SDL_RenderCopy(game->pRenderer, game->texture[2]->texture, NULL,
+                     &destinationPlayer); 
       break;
     case 1:
-      SDL_RenderCopyEx(game->pRenderer, game->player->pTexPlayerLeft, NULL,
+      SDL_RenderCopyEx(game->pRenderer, game->texture[2]->texture, NULL,
                        &destinationPlayer, 0, NULL, flip);
       break;
     case 2:
-      SDL_RenderCopy(game->pRenderer, game->player->pTexPlayerBack, NULL,
+      SDL_RenderCopy(game->pRenderer, game->texture[1]->texture, NULL,
                      &destinationPlayer);
       break;
     case 3:
-      SDL_RenderCopy(game->pRenderer, game->player->pTexPlayerFront, NULL,
+      SDL_RenderCopy(game->pRenderer, game->texture[0]->texture, NULL,
                      &destinationPlayer);
       break;
   }
