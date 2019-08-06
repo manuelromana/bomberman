@@ -1,10 +1,6 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
-#include <stdio.h>
-
 #define PLAYERPOSITIONRECTW 64
 #define PLAYERPOSITIONRECTH 128
 #define PLAYERCOLISONX 10

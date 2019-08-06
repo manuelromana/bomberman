@@ -1,10 +1,6 @@
 #ifndef HEADER_H
 #define HEADER_H
 
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
-#include <stdio.h>
-
 #define HAUTEURMAP 15
 #define LARGEURMAP 19
 #define WALLPOSITIONW 64
