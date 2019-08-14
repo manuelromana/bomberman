@@ -26,14 +26,10 @@ void map_init(stGame* game) {
   
   game->map->wallPosition.w = WALLPOSITIONW;
   game->map->wallPosition.h = WALLPOSITIONH;
-
-  char *paths[] = {PATHWALL};
-  int arrayLength = LEN(paths);
-  sdl_load(game, paths, arrayLength);
 }
 
 void draw_map(stGame* game) {
-  if (SDL_QueryTexture(game->map->pTexWall, NULL, NULL,
+  if (SDL_QueryTexture(game->texture[3]->texture, NULL, NULL,
                        &game->map->wallPosition.w,
                        &game->map->wallPosition.h) != 0) {
     fprintf(stderr, "Impossible d'afficher la texture !");
@@ -46,24 +42,6 @@ void draw_map(stGame* game) {
         SDL_RenderCopy(game->pRenderer, game->texture[3]->texture, NULL,
                        &game->map->wallPosition);
       }
-    }
-  }
-}
-
-void load_map(stGame* game) {
-  SDL_Surface* SolidBlock = IMG_Load("assets/Blocks/SolidBlock.png");
-
-  if (!SolidBlock) {
-    fprintf(stderr, "Erreur au chargement de l'image : %s\n", IMG_GetError());
-    game_destroy(game);
-  } else {
-    game->map->pTexWall =
-        SDL_CreateTextureFromSurface(game->pRenderer, SolidBlock);
-        SDL_FreeSurface(SolidBlock);
-    if (!game->map->pTexWall) {
-      fprintf(stderr, "Erreur au chargement de la texture : %s\n",
-              SDL_GetError());
-      game_destroy(game);
     }
   }
 }

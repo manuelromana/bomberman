@@ -13,45 +13,6 @@ void player_init(stGame* game) {
   game->player->playerColisionRect.w = PLAYERCOLISONW;
   game->player->playerX = game->player->playerPositionRect.x;
   game->player->playerY = game->player->playerPositionRect.y;
-
-/* 
-  char *paths[] = {PATHPLFR,PATHPLBCK, PATHPLSIDE};
-  int arrayLength = LEN(paths);
-  sdl_load(game, paths, arrayLength);  
-  */
-/* 
-  SDL_Surface* frontBomberman =
-      IMG_Load("assets/Bomberman/Front/Bman_F_f00.png");
-  SDL_Surface* backBomberman = IMG_Load("assets/Bomberman/Back/Bman_B_f00.png");
-  SDL_Surface* rightSideBomberman =
-      IMG_Load("assets/Bomberman/Side/Bman_F_f00.png");
-  SDL_Surface* leftSideBomberman =
-      IMG_Load("assets/Bomberman/Side/Bman_F_f00.png");
-
-  if (!frontBomberman || !backBomberman || !rightSideBomberman ||
-      !leftSideBomberman) {
-    fprintf(stderr, "Erreur au chargement de l'image : %s\n", IMG_GetError());
-    game_destroy(game);
-  } else {
-    game->player->pTexPlayerFront =
-        SDL_CreateTextureFromSurface(game->pRenderer, frontBomberman);
-    SDL_FreeSurface(frontBomberman);
-    game->player->pTexPlayerBack =
-        SDL_CreateTextureFromSurface(game->pRenderer, backBomberman);
-    SDL_FreeSurface(backBomberman);
-    game->player->pTexPlayerRight =
-        SDL_CreateTextureFromSurface(game->pRenderer, rightSideBomberman);
-    SDL_FreeSurface(rightSideBomberman);
-    game->player->pTexPlayerLeft =
-        SDL_CreateTextureFromSurface(game->pRenderer, leftSideBomberman);
-    SDL_FreeSurface(leftSideBomberman);
-    if (!game->player->pTexPlayerFront || !game->player->pTexPlayerBack) {
-      fprintf(stderr, "Erreur au chargement de la texture ! %s\n",
-              SDL_GetError());
-      game_destroy(game);
-    }
-  }
-  */
 }
 
 void character_move(SDL_Keycode direction, stGame* game) {

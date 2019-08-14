@@ -2,27 +2,6 @@
 #include "../headerFiles/map.h"
 
 void bomb_init(stGame *game) {
-/*
-  char *paths[] = {PATHBOMB};
-  int arrayLength = LEN(paths);
-  sdl_load(game, paths, arrayLength);
-*/
-  /*SDL_Surface *surfaceBombe = IMG_Load("assets/Bomb/Bomb_f03.png");
-  if (!surfaceBombe) {
-    fprintf(stderr, "Erreur au chargement de l'image : %s\n", IMG_GetError());
-    game_destroy(game);
-  } else {
-     
-    game->bomb->pTexBomb =
-        SDL_CreateTextureFromSurface(game->pRenderer, game->texture[0]->surface);
-        SDL_FreeSurface(game->texture[0]->texture);
-    if (!game->bomb->pTexBomb) {
-      fprintf(stderr, "Erreur au chargement de la texture ?? %s\n",
-              SDL_GetError());
-              
-      game_destroy(game);
-    }*/
-  
   game->bomb->bombs = NULL;
 }
 

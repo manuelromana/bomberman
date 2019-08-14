@@ -1,5 +1,22 @@
 #include "../headerFiles/game.h"
 
+void textures_init(stGame *game)
+{
+    for (int i = 0; i < TEXTURESSIZE; i++) {
+        game->texture[i] = NULL;
+        game->texture[i] = malloc(sizeof(stTexture *));
+    }
+
+    char *paths[] = {
+        PATHPLFR, PATHPLBCK, PATHPLSIDE,
+        PATHWALL,
+        PATHBOMB
+    };
+    int arrayLength = LEN(paths);
+    
+    sdl_load(game, paths, arrayLength);
+}
+
 void sdl_load(stGame *game, char *paths[], int arrayLength) {
     for (int i = 0; i < arrayLength; i++) {
         game->texture[i]->path = paths[i];
@@ -18,4 +35,11 @@ void sdl_load(stGame *game, char *paths[], int arrayLength) {
     }
 }
 
-void sdl_destroy();
+void textures_destroy(stGame* game) {
+    for (int j = 0; j < 5; j++)
+        SDL_DestroyTexture(game->texture[j]->texture);
+
+    for (int i = 0; i < TEXTURESSIZE; i++)
+        free(game->texture[i]);
+
+}

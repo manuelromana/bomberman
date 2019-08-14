@@ -15,7 +15,6 @@ typedef struct stTexture {
     SDL_Surface *surface;
     SDL_Texture *texture;
     char *path;
-
 } stTexture;
 
 #endif

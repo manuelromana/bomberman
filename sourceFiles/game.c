@@ -24,19 +24,10 @@ stGame* game_init() {
     return NULL;
   }
 
-  for (int i = 0; i < 10; i++) {
-        game->texture[i] = NULL;
-        game->texture[i] = malloc(sizeof(stTexture *));
-  }
-  
-  char *paths[] = {PATHPLFR, PATHPLBCK, PATHPLSIDE,PATHWALL, PATHBOMB};
-  int arrayLength = LEN(paths);
-  sdl_load(game, paths, arrayLength);
-  
+  textures_init(game);
   map_init(game);
   player_init(game);
   bomb_init(game);
-  load_map(game);
 
   return game;
 }
@@ -120,13 +111,8 @@ void game_destroy(stGame* game) {
   if (game) {
     SDL_DestroyWindow(game->pWindow);
     SDL_DestroyRenderer(game->pRenderer);
-    SDL_DestroyTexture(game->player->pTexPlayerFront);
-    SDL_DestroyTexture(game->player->pTexPlayerBack);
-    SDL_DestroyTexture(game->player->pTexPlayerLeft);
-    SDL_DestroyTexture(game->player->pTexPlayerRight);
-    SDL_DestroyTexture(game->map->pTexBomb);
-    SDL_DestroyTexture(game->map->pTexWall);
-
+    
+    textures_destroy(game);
     free(game->map);
     free(game->player);
     free(game);
