@@ -40,5 +40,4 @@ void textures_destroy(stGame* game) {
         SDL_DestroyTexture(game->texture[i]->texture);
         free(game->texture[i]);
     }
-
 }
