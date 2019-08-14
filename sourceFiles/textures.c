@@ -36,10 +36,9 @@ void sdl_load(stGame *game, char *paths[], int arrayLength) {
 }
 
 void textures_destroy(stGame* game) {
-    for (int j = 0; j < 5; j++)
-        SDL_DestroyTexture(game->texture[j]->texture);
-
-    for (int i = 0; i < TEXTURESSIZE; i++)
+    for (int i = 0; i < TEXTURESSIZE; i++) {
+        SDL_DestroyTexture(game->texture[i]->texture);
         free(game->texture[i]);
+    }
 
 }
