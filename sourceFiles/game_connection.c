@@ -124,7 +124,7 @@ stGame *game_init_2()
     return game;
 }
 
-void control_event(SDL_Event event, int *step, char **currentText, char **port, int mysocket)
+void control_event(SDL_Event event, int *step, char **currentText, char **port, int socket_target)
 {
 
     while (SDL_PollEvent(&event) != 0)
@@ -148,19 +148,19 @@ void control_event(SDL_Event event, int *step, char **currentText, char **port, 
 
                 if (*step == 1)
                 {
-                    puts("return hit");
 
                     *currentText = *port;
                 }
 
                 break;
-            case SDLK_UP:
-            case SDLK_DOWN:
-            case SDLK_RIGHT:
-            case SDLK_LEFT:
-            case SDLK_SPACE:
-                send_key(event.key.keysym.sym, mysocket);
-                break;
+
+                // case SDLK_UP:
+                // case SDLK_DOWN:
+                // case SDLK_RIGHT:
+                // case SDLK_LEFT:
+                // case SDLK_SPACE:
+                //     send_key(event.key.keysym.sym, socket_target);
+                //     break;
             }
         }
     }

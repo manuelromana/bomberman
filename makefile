@@ -5,10 +5,9 @@ NAME3 = server
 SRC= sourceFiles/gameInitTest.c\
 sourceFiles/main_test.c
 
-SRC2 = sourceFiles/game_connection.c\
-sourceFiles/main.c  sourceFiles/my_strlen.c
+SRC2 = sourceFiles/client.c  sourceFiles/my_strlen.c
 
-SRC3 = sourceFiles/server.c sourceFiles/my_strlen.c
+SRC3 = sourceFiles/main.c sourceFiles/my_strlen.c sourceFiles/game_connection.c
 
 OBJ	= $(SRC:%.c=%.o)
 OBJ2 = $(SRC2:%.c=%.o)

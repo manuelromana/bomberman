@@ -62,9 +62,13 @@ int main(int argc, char *argv[])
 
     while (1)
     {
+        //initialisation du fd set qui va permettre de surveiller l'activité sur les socket avec select, c'est la première initialisation donc il n'y a que le socket du server
         FD_ZERO(&read_fs);
         FD_SET(server_socket, &read_fs);
         max_sd = server_socket;
+        //max sd sert pour le select il abesoin du max socket + 1
+
+        //on rentre les client dans le fd set pour rentrer dans la surveillance en changeant le max
 
         for (int i = 0; i < max_client; i++)
         {
@@ -76,12 +80,12 @@ int main(int argc, char *argv[])
             if (sd > max_sd)
                 max_sd = sd;
         }
-
+        //surveillance des clients qui se connectent
         select(max_sd + 1, &read_fs, NULL, NULL, NULL);
 
         if (FD_ISSET(server_socket, &read_fs))
         {
-
+            //accept attribut à new_socket un nouvel integer
             if ((new_socket = accept(server_socket, (struct sockaddr *)&addr, &client_addr_size)) < 0)
             {
                 perror("accept");
@@ -123,6 +127,7 @@ int main(int argc, char *argv[])
                     close(sd);
                     clients_array[i] = 0;
                 }
+                //dans les autres cas read client se lance quand même
             }
         }
 
@@ -136,7 +141,7 @@ int read_client(int client)
     int n = 0;
     char buff[128];
 
-    if (client == -1)
+    if (client == -1) //normalement il n'a pas de cas ou sd = -1
         return 1;
 
     memset(buff, '\0', 128);
