@@ -1,15 +1,16 @@
 NAME = bomberman	
 
 SRC = sourceFiles/main.c\
-	sourceFiles/character.c\
 	sourceFiles/game.c\
+	sourceFiles/textures.c\
+	sourceFiles/character.c\
 	sourceFiles/objects.c\
 	sourceFiles/map.c
 
 OBJ	= $(SRC:%.c=%.o)
 
 CC=gcc
-CC_SDL=-ggdb -g -Wall -Wextra -Werror -lSDL2_image  `sdl2-config --cflags --libs`
+CC_SDL=-Wall -Wextra -Werror -lSDL2_image  `sdl2-config --cflags --libs`
 
 $(NAME): $(OBJ) 
 	$(CC) $(OBJ) $(CC_SDL) -o $(NAME) 
