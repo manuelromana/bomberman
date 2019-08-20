@@ -12,5 +12,7 @@
 #include <string.h>
 
 int load_server(int *my_socket, char *hostname, char *portname);
+int create_track_client(int *my_socket, int max_client, int clients_array[]);
+int read_client(int client);
 
 #endif
