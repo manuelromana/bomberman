@@ -154,13 +154,13 @@ void control_event(SDL_Event event, int *step, char **currentText, char **port, 
 
                 break;
 
-                // case SDLK_UP:
-                // case SDLK_DOWN:
-                // case SDLK_RIGHT:
-                // case SDLK_LEFT:
-                // case SDLK_SPACE:
-                //     send_key(event.key.keysym.sym, socket_target);
-                //     break;
+            case SDLK_UP:
+            case SDLK_DOWN:
+            case SDLK_RIGHT:
+            case SDLK_LEFT:
+            case SDLK_SPACE:
+                send_key(event.key.keysym.sym, socket_target);
+                break;
             }
         }
     }
