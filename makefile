@@ -19,6 +19,8 @@ OBJ2 = $(SRC2:%.c=%.o)
 OBJ3 = $(SRC3:%.c=%.o)
 OBJ4	= $(SRC4:%.c=%.o)
 
+OBJ0 = $(SRC:%.c=%.o), $(SRC2:%.c=%.o), $(SRC3:%.c=%.o), $(SRC4:%.c=%.o)
+
 # Build settings
 CC=gcc
 # SDL options
@@ -39,11 +41,11 @@ bomberman : $(OBJ4)
 	$(CC) $(OBJ4) $(CC_SDL) -o $(NAME4)
 
 clean:
-		rm -f $(OBJ)
+		rm -f $(OBJ0)
 
 fclean:	clean
 		rm -f $(NAME)
-		rm -f $(OBJ)
+		rm -f $(OBJ0)
 
 re:		fclean all
 
