@@ -81,7 +81,6 @@ int read_client(int client);
 int read_server(int server);
 void track_client(int *server_socket);
 
-void game_draw(stGame *game, int flagBomb);
 void character_move(SDL_Keycode direction, stGame *game);
 void Redraw();
 

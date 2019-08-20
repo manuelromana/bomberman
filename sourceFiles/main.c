@@ -86,8 +86,6 @@ int main(void)
     free(my_socket);
     free(hostname);
     free(portname);
-    free(*hostname);
-    free(*portname);
     free(current_text);
     free(step);
 

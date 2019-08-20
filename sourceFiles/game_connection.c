@@ -1,19 +1,13 @@
 #include "../headerFiles/header.h"
+#include "../headerFiles/fonts.h"
 
 stGame *game_init_2()
 {
-    stGame *game = NULL;
+    stGame *game = {0};
     game = malloc(sizeof(stGame));
-
+    
     game->screenSize.x = 640;
     game->screenSize.y = 480;
-    game->pWindow = NULL;
-    game->pRenderer = NULL;
-    game->police1 = NULL;
-    game->police2 = NULL;
-    game->SurfHostname = NULL;
-    game->SurfPortname = NULL;
-    game->SurfWelcome = NULL;
 
     TTF_Init();
     if (TTF_Init() == -1)
@@ -46,78 +40,13 @@ stGame *game_init_2()
         return NULL;
     }
 
-    game->police1 = TTF_OpenFont("assets/font/Grafiti.ttf", 70);
-    game->police2 = TTF_OpenFont("assets/font/Neon.ttf", 45);
+    game->police1 = TTF_OpenFont(PATHFGRAFITI, 70);
+    game->police2 = TTF_OpenFont(PATHFNEON, 45);
     SDL_Color noir = {0, 0, 0};
 
-    //initialisation de l'invite de commande pour le hostname
-    game->SurfHostname = TTF_RenderText_Blended(game->police1, "Tapez l'hostname suivi d'entree :", noir);
-
-    if (!game->SurfHostname)
-    {
-        fprintf(stderr, "Erreur au chargement du text : %s\n", IMG_GetError());
-        game_destroy_2(game);
-        return NULL;
-    }
-    else
-    {
-        game->pTextHostname = SDL_CreateTextureFromSurface(game->pRenderer, game->SurfHostname);
-
-        if (!game->pTextHostname)
-        {
-            fprintf(stderr, "Erreur au chargement de la texture : %s\n", SDL_GetError());
-            game_destroy_2(game);
-            return NULL;
-        }
-
-        SDL_FreeSurface(game->SurfHostname);
-    }
-
-    //initialisation ttf de l'invite de commande pour portname
-    game->SurfPortname = TTF_RenderText_Blended(game->police1, "Tapez le numero de port puis entree : ", noir);
-
-    if (!game->SurfPortname)
-    {
-        fprintf(stderr, "Erreur au chargement du text : %s\n", IMG_GetError());
-        game_destroy_2(game);
-        return NULL;
-    }
-    else
-    {
-        game->pTextPortname = SDL_CreateTextureFromSurface(game->pRenderer, game->SurfPortname);
-        if (!game->pTextPortname)
-        {
-            fprintf(stderr, "Erreur au chargement de la texture : %s\n", SDL_GetError());
-            game_destroy_2(game);
-            return NULL;
-        }
-
-        SDL_FreeSurface(game->SurfPortname);
-    }
-
-    // Welcome page
-    /*Écriture du texte de bienvenu dans la SDL_Surface correspondante*/
-
-    game->SurfWelcome = TTF_RenderText_Blended(game->police1, "Bienvenue, tapez une commande pour le server", noir);
-
-    if (!game->SurfWelcome) //condition si pas de surface
-    {
-        fprintf(stderr, "Erreur au chargement du text : %s\n", IMG_GetError());
-        game_destroy_2(game);
-        return NULL;
-    }
-    else
-    { //si surface créée on construit la texture
-        game->pTextWelcome = SDL_CreateTextureFromSurface(game->pRenderer, game->SurfWelcome);
-        if (!game->pTextWelcome)
-        {
-            fprintf(stderr, "Erreur au chargement de la texture : %s\n", SDL_GetError());
-            game_destroy_2(game);
-            return NULL;
-        }
-        //on free la surface qui était temporaire
-        SDL_FreeSurface(game->SurfWelcome);
-    }
+    game->pTextHostname = font_load(game, game->police1, TXTSURFHOSTNAME);
+    game->pTextPortname = font_load(game, game->police1, TXTSURFPORTNAME);
+    game->pTextWelcome = font_load(game,game->police1, TXTWELCOMESERVEUR);
 
     SDL_StartTextInput();
 
@@ -167,7 +96,6 @@ void control_event(SDL_Event event, int *step, char **currentText, char **port, 
 }
 void game_draw_hostname(stGame *game, char *hostname)
 {
-    SDL_Surface *pInputsurface = NULL;
     SDL_Texture *pInputText = NULL;
     SDL_Rect inputPositionRect;
 
@@ -187,24 +115,8 @@ void game_draw_hostname(stGame *game, char *hostname)
     SDL_Color noir = {0, 0, 0};
     if (*hostname != '\0')
     {
-        pInputsurface = TTF_RenderText_Blended(game->police2, hostname, noir);
-        if (!pInputsurface)
-        {
-            fprintf(stderr, "Erreur au chargement du texte : %s\n", IMG_GetError());
-            game_destroy_2(game);
-            return;
-        }
-        else
-        {
-            pInputText = SDL_CreateTextureFromSurface(game->pRenderer, pInputsurface);
-            if (!pInputText)
-            {
-                fprintf(stderr, "Erreur au chargement de la texture: %s\n", SDL_GetError());
-                game_destroy_2(game);
-                return;
-            }
-            SDL_FreeSurface(pInputsurface);
-        }
+        pInputText = font_load(game, game->police2, hostname);
+
         int width = my_strlen(hostname);
 
         inputPositionRect.x = 60;
@@ -220,8 +132,6 @@ void game_draw_hostname(stGame *game, char *hostname)
 
 void game_draw_port(stGame *game, char *port)
 {
-
-    SDL_Surface *pInputsurface = NULL;
     SDL_Texture *pInputText = NULL;
     SDL_Rect inputPositionRect;
 
@@ -239,24 +149,8 @@ void game_draw_port(stGame *game, char *port)
     SDL_Color noir = {0, 0, 0};
     if (*port != '\0')
     {
-        pInputsurface = TTF_RenderText_Blended(game->police2, port, noir);
-        if (!pInputsurface)
-        {
-            fprintf(stderr, "Erreur au chargement du texte : %s\n", IMG_GetError());
-            game_destroy_2(game);
-            return;
-        }
-        else
-        {
-            pInputText = SDL_CreateTextureFromSurface(game->pRenderer, pInputsurface);
-            if (!pInputText)
-            {
-                fprintf(stderr, "Erreur au chargement de la texture: %s\n", SDL_GetError());
-                game_destroy_2(game);
-                return;
-            }
-            SDL_FreeSurface(pInputsurface);
-        }
+        pInputText = font_load(game, game->police2, port);
+
         int width = my_strlen(port);
 
         inputPositionRect.x = 60;

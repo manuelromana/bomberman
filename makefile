@@ -5,7 +5,8 @@ NAME4 = bomberman
 SRC2 = sourceFiles/client.c  sourceFiles/my_strlen.c
 
 SRC3 = sourceFiles/main.c sourceFiles/my_strlen.c sourceFiles/game_connection.c\
-sourceFiles/networkFunction.c
+sourceFiles/networkFunction.c\
+sourceFiles/fonts.c
 
 SRC4 = sourceFiles/game/main.c\
 	sourceFiles/game/game.c\
