@@ -1,4 +1,4 @@
-#include "../headerFiles/game/game.h"
+#include "../../headerFiles/game/game.h"
 
 int main(int argc, char *argv[]) {
   stGame *game = game_init();

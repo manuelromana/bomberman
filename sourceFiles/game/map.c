@@ -1,4 +1,4 @@
-#include "../headerFiles/game/game.h"
+#include "../../headerFiles/game/game.h"
 
 int map[HAUTEURMAP][LARGEURMAP] = {
     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},

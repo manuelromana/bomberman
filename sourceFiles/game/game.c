@@ -1,4 +1,4 @@
-#include "../headerFiles/game/game.h"
+#include "../../headerFiles/game/game.h"
 
 stGame* game_init() {
   stGame* game = {0};

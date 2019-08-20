@@ -1,23 +1,18 @@
-NAME = draw
 NAME2 = client
 NAME3 = server
 NAME4 = bomberman	
-
-# Files
-SRC= sourceFiles/gameInitTest.c\
-sourceFiles/main_test.c
 
 SRC2 = sourceFiles/client.c  sourceFiles/my_strlen.c
 
 SRC3 = sourceFiles/main.c sourceFiles/my_strlen.c sourceFiles/game_connection.c\
 sourceFiles/networkFunction.c
 
-SRC4 = sourceFiles/main.c\
-	sourceFiles/game.c\
-	sourceFiles/textures.c\
-	sourceFiles/character.c\
-	sourceFiles/objects.c\
-	sourceFiles/map.c
+SRC4 = sourceFiles/game/main.c\
+	sourceFiles/game/game.c\
+	sourceFiles/game/textures.c\
+	sourceFiles/game/character.c\
+	sourceFiles/game/objects.c\
+	sourceFiles/game/map.c
 
 OBJ	= $(SRC:%.c=%.o)
 OBJ2 = $(SRC2:%.c=%.o)

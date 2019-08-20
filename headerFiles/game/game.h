@@ -5,10 +5,10 @@
 #include <SDL2/SDL_image.h>
 #include <stdio.h>
 
-#include "game/map.h"
-#include "game/objects.h"
-#include "game/player.h"
-#include "game/textures.h"
+#include "../game/map.h"
+#include "../game/objects.h"
+#include "../game/player.h"
+#include "../game/textures.h"
 
 #define SPEED 1
 #define SCREENSIZEX 1216

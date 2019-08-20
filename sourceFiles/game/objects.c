@@ -1,5 +1,5 @@
-#include "../headerFiles/game/game.h"
-#include "../headerFiles/game/map.h"
+#include "../../headerFiles/game/game.h"
+#include "../../headerFiles/game/map.h"
 
 void bomb_init(stGame *game) {
   game->bomb->bombs = NULL;

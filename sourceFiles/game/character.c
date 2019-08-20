@@ -1,6 +1,6 @@
-#include "../headerFiles/game/game.h"
-#include "../headerFiles/game/map.h"
-#include "../headerFiles/game/player.h"
+#include "../../headerFiles/game/game.h"
+#include "../../headerFiles/game/map.h"
+#include "../../headerFiles/game/player.h"
 
 void player_init(stGame* game) {
   game->player->playerPositionRect.x = PLPOSITIONX;
