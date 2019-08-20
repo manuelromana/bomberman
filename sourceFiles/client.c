@@ -6,7 +6,7 @@ int main(int argc, char *argv[])
 
     // on fait un client qui va prendre des arguments lors de son lancement avec argc (le nombre d'arguments) et argv les arguments qui doivent être rentrés
     //argv[0] : c'est le nom du binaire
-    //argv[1] : adresse de l'hôte (on peut aussi la mettre en bianaire ou littéral genre localhost)
+    //argv[1] : adresse de l'hôte (on peut aussi la mettre en binaire ou littéral genre localhost)
     //argv[2] : port de l'hôte
 
     // on vérifie qu'il y a le bon nombre d'argument

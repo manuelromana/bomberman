@@ -4,6 +4,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
+#include <stdbool.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -14,6 +15,7 @@
 #include <sys/select.h>
 #include <sys/time.h>
 #include <string.h>
+#include "../headerFiles/network.h"
 
 #define SCREENSIZEX 1216
 #define SCREENSIZEY 960
