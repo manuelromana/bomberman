@@ -148,7 +148,6 @@ void control_event(SDL_Event event, int *step, char **currentText, char **port, 
 
                 if (*step == 1)
                 {
-                    puts("return hit");
 
                     *currentText = *port;
                 }

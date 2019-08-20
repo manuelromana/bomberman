@@ -18,7 +18,7 @@
 #define SCREENSIZEX 1216
 #define SCREENSIZEY 960
 
-#define LEN(arr)  ( (int) (sizeof(arr)/sizeof(arr[0])) )
+#define LEN(arr) ((int)(sizeof(arr) / sizeof(arr[0])))
 
 #define PATHBOMB "assets/Flame/Flame_f00.png"
 #define PATHPL "assets/bomberman.png"
@@ -80,6 +80,7 @@ void control_event(SDL_Event event, int *step, char **currentText, char **port, 
 int my_strlen(char *str);
 int read_client(int client);
 int read_server(int server);
+void track_client(int *server_socket);
 
 void game_draw(stGame *game, int flagBomb);
 void character_move(SDL_Keycode direction, stGame *game);

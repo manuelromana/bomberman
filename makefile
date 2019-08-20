@@ -8,7 +8,9 @@ sourceFiles/main_test.c
 SRC2 = sourceFiles/game_connection.c\
 sourceFiles/main.c  sourceFiles/my_strlen.c
 
-SRC3 = sourceFiles/server.c sourceFiles/my_strlen.c
+SRC3 = sourceFiles/main.c\
+sourceFiles/game_connection.c\
+sourceFiles/my_strlen.c
 
 OBJ	= $(SRC:%.c=%.o)
 OBJ2 = $(SRC2:%.c=%.o)
