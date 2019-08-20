@@ -22,7 +22,7 @@ OBJ4	= $(SRC4:%.c=%.o)
 OBJ0 = $(SRC:%.c=%.o), $(SRC2:%.c=%.o), $(SRC3:%.c=%.o), $(SRC4:%.c=%.o)
 
 CC=gcc
-CC_SDL=-Wall -Wextra -Werror -lSDL2_image  `sdl2-config --cflags --libs`
+CC_SDL=-Wall -Wextra -Werror -lSDL2_image -lSDL2_ttf `sdl2-config --cflags --libs`
 
 $(NAME): $(OBJ) 
 	$(CC) $(OBJ) $(CC_SDL) -o $(NAME) 
