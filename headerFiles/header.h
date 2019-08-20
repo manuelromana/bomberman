@@ -20,10 +20,8 @@
 #define SCREENSIZEX 1216
 #define SCREENSIZEY 960
 
-#define LEN(arr) ((int)(sizeof(arr) / sizeof(arr[0])))
 
-#define PATHBOMB "assets/Flame/Flame_f00.png"
-#define PATHPL "assets/bomberman.png"
+#include "fonts.h"
 typedef struct
 {
     SDL_Surface *surface;
@@ -48,12 +46,11 @@ typedef struct
     SDL_Window *pWindow;
     SDL_Renderer *pRenderer;
 
-    SDL_Surface *SurfHostname;
-    SDL_Surface *SurfPortname;
-    SDL_Surface *SurfWelcome;
-
     TTF_Font *police1;
     TTF_Font *police2;
+
+    SDL_Surface *surface;
+    SDL_Texture *texture;
 
     //Textures
     SDL_Texture *pTexPlayer;
@@ -92,6 +89,5 @@ st_game *game_init_test();
 void game_destroy(st_game *game);
 void draw_game_test(st_game *game);
 
-void sdl_load(st_game *game, char *paths[], int arrayLength);
-
+SDL_Texture *font_load(stGame *game,TTF_Font *police, char* content);
 #endif
