@@ -23,12 +23,12 @@ void character_move(SDL_Keycode direction, stGame* game) {
   int xInMap, yInMap, yInMap2, xInMap2;
   switch (direction) {
     case SDLK_RIGHT:
-      xInMap = (x + w + SPEED * game->Delta) / 64;
+      xInMap = (x + w + SPEED * game->delta) / 64;
       yInMap = y / 64;
       yInMap2 = (y + h) / 64;
       if (check_collision(game, xInMap, yInMap) == 0 &&
           check_collision(game, xInMap, yInMap2) == 0) {
-        game->player->playerX += SPEED * game->Delta;
+        game->player->playerX += SPEED * game->delta;
       } else {
         game->player->playerX =
             xInMap * 64 - 1 - w - game->player->playerColisionRect.x;
@@ -36,12 +36,12 @@ void character_move(SDL_Keycode direction, stGame* game) {
       game->player->playerDirection = 0;
       break;
     case SDLK_LEFT:
-      xInMap = (x - SPEED * game->Delta) / 64;
+      xInMap = (x - SPEED * game->delta) / 64;
       yInMap = y / 64;
       yInMap2 = (y + h) / 64;
       if (check_collision(game, xInMap, yInMap) == 0 &&
           check_collision(game, xInMap, yInMap2) == 0) {
-        game->player->playerX -= SPEED * game->Delta;
+        game->player->playerX -= SPEED * game->delta;
       } else {
         game->player->playerX =
             xInMap * 64 + 65 - game->player->playerColisionRect.x;
@@ -50,11 +50,11 @@ void character_move(SDL_Keycode direction, stGame* game) {
       break;
     case SDLK_UP:
       xInMap = x / 64;
-      yInMap = (y - SPEED * game->Delta) / 64;
+      yInMap = (y - SPEED * game->delta) / 64;
       xInMap2 = (x + w) / 64;
       if (check_collision(game, xInMap, yInMap) == 0 &&
           check_collision(game, xInMap2, yInMap) == 0) {
-        game->player->playerY -= SPEED * game->Delta;
+        game->player->playerY -= SPEED * game->delta;
       } else {
         game->player->playerY =
             yInMap * 64 + 65 - game->player->playerColisionRect.y;
@@ -63,11 +63,11 @@ void character_move(SDL_Keycode direction, stGame* game) {
       break;
     case SDLK_DOWN:
       xInMap = x / 64;
-      yInMap = (y + h + SPEED * game->Delta) / 64;
+      yInMap = (y + h + SPEED * game->delta) / 64;
       xInMap2 = (x + w) / 64;
       if (check_collision(game, xInMap, yInMap) == 0 &&
           check_collision(game, xInMap2, yInMap) == 0) {
-        game->player->playerY += SPEED * game->Delta;
+        game->player->playerY += SPEED * game->delta;
       } else {
         game->player->playerY =
             yInMap * 64 - 1 - h - game->player->playerColisionRect.y;

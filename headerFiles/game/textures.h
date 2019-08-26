@@ -8,13 +8,14 @@
 #define PATHPLBCK "assets/Bomberman/Back/Bman_B_f00.png"
 #define PATHPLSIDE "assets/Bomberman/Side/Bman_F_f00.png"
 #define PATHWALL "assets/Blocks/SolidBlock.png"
+#define PATHFLAME "assets/Flame/Flame_f00.png"
 
-#define LEN(arr)  ( (int) (sizeof(arr)/sizeof(arr[0])) )
+#define LEN(arr) ((int)(sizeof(arr) / sizeof(arr[0])))
 
 typedef struct stTexture {
-    SDL_Surface *surface;
-    SDL_Texture *texture;
-    char *path;
+  SDL_Surface *surface;
+  SDL_Texture *texture;
+  char *path;
 } stTexture;
 
 #endif
