@@ -143,6 +143,9 @@ int create_child_explosion(stGame *game, int tileX, int tileY,
   if (game->map->map[tileY][tileX] == 1) {
     return -1;
   }
+  if (game->map->map[tileY][tileX] == 3) {
+    game->map->map[tileY][tileX] = 0;
+  }
   explosion *newExplosion;
   newExplosion = (explosion *)malloc(sizeof(explosion));
   if (newExplosion == NULL) {
