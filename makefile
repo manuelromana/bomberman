@@ -39,11 +39,22 @@ server : $(OBJ3)
 bomberman : $(OBJ4)
 	$(CC) $(OBJ4) $(CC_SDL) -o $(NAME4)
 
-clean:
-		rm -f $(OBJ0)
+cleanBomberman:
+	rm -f $(NAME4)
+	rm -f $(OBJ4)
+
+cleanClient :
+	rm -f $(NAME2)
+	rm -f $(OBJ2)
+
+cleanServer :
+	rm -f $(NAME3)
+	rm -f $(OBJ3)
 
 fclean:	clean
-		rm -f $(NAME)
+		rm -f $(NAME2)
+		rm -f $(NAME3)
+		rm -f $(NAME4)
 		rm -f $(OBJ0)
 
 re:		fclean all
