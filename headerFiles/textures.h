@@ -9,6 +9,7 @@
 #define PATHPLSIDE "assets/Bomberman/Side/Bman_F_f00.png"
 #define PATHWALL "assets/Blocks/SolidBlock.png"
 #define PATHFLAME "assets/Flame/Flame_f00.png"
+#define PATHEXPBCK "assets/Blocks/ExplodableBlock.png"
 
 #define LEN(arr) ((int)(sizeof(arr) / sizeof(arr[0])))
 

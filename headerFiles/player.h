@@ -7,8 +7,8 @@
 #define PLAYERCOLISONY 100
 #define PLAYERCOLISONH 32
 #define PLAYERCOLISONW 45
-#define PLPOSITIONX ( SCREENSIZEX / 2 )
-#define PLPOSITIONY ( SCREENSIZEY / 2 )
+#define PLPOSITIONX 64
+#define PLPOSITIONY 1
 
 typedef struct stPlayer {
   SDL_Texture *pTexPlayerFront;

@@ -11,7 +11,10 @@ typedef struct stMap {
 
   SDL_Texture *pTexBomb;
   SDL_Texture *pTexWall;
+  SDL_Texture *pTexExplosionWall;
   SDL_Rect wallPosition;
+  SDL_Rect exploWallPosition;
+
 } stMap;
 
 #endif

@@ -6,8 +6,8 @@ void textures_init(stGame *game) {
     game->texture[i] = malloc(sizeof(stTexture *));
   }
 
-  char *paths[] = {PATHPLFR, PATHPLBCK, PATHPLSIDE,
-                   PATHWALL, PATHBOMB,  PATHFLAME};
+  char *paths[] = {PATHPLFR, PATHPLBCK, PATHPLSIDE, PATHWALL,
+                   PATHBOMB, PATHFLAME, PATHEXPBCK};
   int arrayLength = LEN(paths);
 
   sdl_load(game, paths, arrayLength);
