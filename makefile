@@ -1,11 +1,13 @@
+NAME = game
 NAME2 = client
 NAME3 = server
-NAME4 = bomberman	
+NAME4 = bomberman
 
-SRC2 = sourceFiles/client.c  sourceFiles/my_strlen.c
+SRC2 = sourceFiles/client.c sourceFiles/my_strlen.c
 
-SRC3 = sourceFiles/main.c sourceFiles/my_strlen.c sourceFiles/game_connection.c\
+SRC3 = sourceFiles/main.c sourceFiles/game_connection.c\
 sourceFiles/networkFunction.c\
+sourceFiles/my_strlen.c\
 sourceFiles/fonts.c
 
 SRC4 = sourceFiles/game/main.c\
@@ -20,13 +22,12 @@ OBJ2 = $(SRC2:%.c=%.o)
 OBJ3 = $(SRC3:%.c=%.o)
 OBJ4	= $(SRC4:%.c=%.o)
 
-OBJ0 = $(SRC:%.c=%.o), $(SRC2:%.c=%.o), $(SRC3:%.c=%.o), $(SRC4:%.c=%.o)
+OBJ0 =$(SRC2:%.c=%.o)\
+	$(SRC3:%.c=%.o)\
+	$(SRC4:%.c=%.o)
 
 CC=gcc
 CC_SDL=-Wall -Wextra -Werror -lSDL2_image -lSDL2_ttf `sdl2-config --cflags --libs`
-
-$(NAME): $(OBJ) 
-	$(CC) $(OBJ) $(CC_SDL) -o $(NAME) 
 
 all: $(NAME)
 
@@ -38,6 +39,9 @@ server : $(OBJ3)
 
 bomberman : $(OBJ4)
 	$(CC) $(OBJ4) $(CC_SDL) -o $(NAME4)
+
+game : $(OBJ0)
+	$(CC) $(OBJ0) $(CC_SDL) -o $(NAME)
 
 cleanBomberman:
 	rm -f $(NAME4)
