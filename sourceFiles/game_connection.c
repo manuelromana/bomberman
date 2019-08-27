@@ -6,9 +6,6 @@ stGame *game_init_2()
     stGame *game = {0};
     game = malloc(sizeof(stGame));
 
-    game->screenSize.x = 640;
-    game->screenSize.y = 480;
-
     TTF_Init();
     if (TTF_Init() == -1)
     {
@@ -20,29 +17,23 @@ stGame *game_init_2()
         "Bomberman",
         SDL_WINDOWPOS_UNDEFINED,
         SDL_WINDOWPOS_UNDEFINED,
-        game->screenSize.x,
-        game->screenSize.y,
+        SCREENSIZEX,
+        SCREENSIZEY,
         SDL_WINDOW_OPENGL);
-    if (game->pWindow)
-    {
+    if (game->pWindow) {
         game->pRenderer = SDL_CreateRenderer(game->pWindow, -1, SDL_RENDERER_ACCELERATED);
 
-        if (!game->pRenderer)
-        {
+        if (!game->pRenderer) {
             printf("Could not create renderer: %s\n", SDL_GetError());
             return NULL;
         }
-    }
-    else
-    {
+    } else {
         printf("Could not create window: %s\n", SDL_GetError());
-
         return NULL;
     }
 
     game->police1 = TTF_OpenFont(PATHFGRAFITI, 70);
     game->police2 = TTF_OpenFont(PATHFNEON, 45);
-    SDL_Color noir = {0, 0, 0};
 
     game->pTextChoix = font_load(game, game->police2, TXTSURFCHOIX);
     game->pTextHostname = font_load(game, game->police1, TXTSURFHOSTNAME);
@@ -56,37 +47,27 @@ stGame *game_init_2()
 
 void control_event(SDL_Event event, int *step, char **currentText, char *hostname, char *port, int socket_target)
 {
-
-    while (SDL_PollEvent(&event) != 0)
-    {
-        switch (event.type)
-        {
+    while (SDL_PollEvent(&event) != 0) {
+        switch (event.type) {
         case (SDL_QUIT):
             *step = -1;
         case (SDL_TEXTINPUT):
             strcat(*currentText, event.text.text);
-
             break;
         case (SDL_KEYDOWN):
-            switch (event.key.keysym.sym)
-            {
+            switch (event.key.keysym.sym) {
             case SDLK_BACKSPACE:
                 strcpy(*currentText, "");
                 break;
             case SDLK_RETURN:
                 (*step)++;
-
-                if (*step == 1)
-                {
+                if (*step == 1){
                     *currentText = hostname;
                 }
-                if (*step == 2)
-                {
+                if (*step == 2){
                     *currentText = port;
                 }
-
                 break;
-
             case SDLK_UP:
             case SDLK_DOWN:
             case SDLK_RIGHT:
@@ -101,33 +82,22 @@ void control_event(SDL_Event event, int *step, char **currentText, char *hostnam
 
 void game_draw_choix(stGame *game, char *choix)
 {
-    SDL_Texture *pInputText = NULL;
-    SDL_Rect inputPositionRect;
-
-    //render fenêtre blanche
     SDL_SetRenderDrawColor(game->pRenderer, 255, 255, 255, 255);
     SDL_RenderClear(game->pRenderer);
 
-    //render de l'invit de commande
-    game->choixPositionRect.x = 10;
-    game->choixPositionRect.y = 60;
-    game->choixPositionRect.w = 600;
-    game->choixPositionRect.h = 100;
-    SDL_Rect modeChoixText = {game->choixPositionRect.x, game->choixPositionRect.y, game->choixPositionRect.w, game->choixPositionRect.h};
+    SDL_Rect modeChoixText = {MENUDISPLAYX, MENUDISPLAYY, MENUDISPLAYW, MENUDISPLAYH};
     SDL_RenderCopy(game->pRenderer, game->pTextChoix, NULL, &modeChoixText);
-
-    //render de l'input
-    SDL_Color noir = {0, 0, 0};
+    
     if (*choix != '\0')
     {
-        pInputText = font_load(game, game->police2, choix);
+        game->pInputText = font_load(game, game->police2, choix);
 
-        inputPositionRect.x = 60;
-        inputPositionRect.y = 160;
-        inputPositionRect.w = 15;
-        inputPositionRect.h = 50;
-        SDL_Rect destinationInput = {inputPositionRect.x, inputPositionRect.y, inputPositionRect.w, inputPositionRect.h};
-        SDL_RenderCopy(game->pRenderer, pInputText, NULL, &destinationInput);
+        game->inputPositionRect.x = 60;
+        game->inputPositionRect.y = 160;
+        game->inputPositionRect.w = 15;
+        game->inputPositionRect.h = 50;
+        SDL_Rect destinationInput = {game->inputPositionRect.x, game->inputPositionRect.y, game->inputPositionRect.w, game->inputPositionRect.h};
+        SDL_RenderCopy(game->pRenderer, game->pInputText, NULL, &destinationInput);
     }
 
     SDL_RenderPresent(game->pRenderer);
@@ -135,35 +105,18 @@ void game_draw_choix(stGame *game, char *choix)
 
 void game_draw_hostname(stGame *game, char *hostname)
 {
-    SDL_Texture *pInputText = NULL;
-    SDL_Rect inputPositionRect;
-
-    //render fenêtre blanche
     SDL_SetRenderDrawColor(game->pRenderer, 255, 255, 255, 255);
     SDL_RenderClear(game->pRenderer);
-
-    //render de l'invit de commande
-    game->hostamePositionRect.x = 10;
-    game->hostamePositionRect.y = 60;
-    game->hostamePositionRect.w = 600;
-    game->hostamePositionRect.h = 100;
-    SDL_Rect hostnameInvite = {game->hostamePositionRect.x, game->hostamePositionRect.y, game->hostamePositionRect.w, game->hostamePositionRect.h};
+    
+    SDL_Rect hostnameInvite = {MENUDISPLAYX, MENUDISPLAYY, MENUDISPLAYW, MENUDISPLAYH};
     SDL_RenderCopy(game->pRenderer, game->pTextHostname, NULL, &hostnameInvite);
 
-    //render de l'input
-    SDL_Color noir = {0, 0, 0};
-    if (*hostname != '\0')
-    {
-        pInputText = font_load(game, game->police2, hostname);
+    if (*hostname != '\0') {
+        game->pInputText = font_load(game, game->police2, hostname);
 
         int width = my_strlen(hostname);
-
-        inputPositionRect.x = 60;
-        inputPositionRect.y = 160;
-        inputPositionRect.w = 15 * width;
-        inputPositionRect.h = 50;
-        SDL_Rect destinationInput = {inputPositionRect.x, inputPositionRect.y, inputPositionRect.w, inputPositionRect.h};
-        SDL_RenderCopy(game->pRenderer, pInputText, NULL, &destinationInput);
+        SDL_Rect destinationInput = {INPUTPOSITIONX, INPUTPOSITIONY, INPUTPOSITIONW(width), INPUTPOSITIONH};
+        SDL_RenderCopy(game->pRenderer, game->pInputText, NULL, &destinationInput);
     }
 
     SDL_RenderPresent(game->pRenderer);
@@ -171,34 +124,19 @@ void game_draw_hostname(stGame *game, char *hostname)
 
 void game_draw_port(stGame *game, char *port)
 {
-    SDL_Texture *pInputText = NULL;
-    SDL_Rect inputPositionRect;
-
-    //render fenêtre blanche
     SDL_SetRenderDrawColor(game->pRenderer, 255, 255, 255, 255);
     SDL_RenderClear(game->pRenderer);
 
-    game->portPositionRect.x = 60;
-    game->portPositionRect.y = 60;
-    game->portPositionRect.w = 550;
-    game->portPositionRect.h = 100;
-    SDL_Rect portInvite = {game->portPositionRect.x, game->portPositionRect.y, game->portPositionRect.w, game->portPositionRect.h};
+    SDL_Rect portInvite = {MENUDISPLAYX, MENUDISPLAYY, MENUDISPLAYW, MENUDISPLAYH};
     SDL_RenderCopy(game->pRenderer, game->pTextPortname, NULL, &portInvite);
 
-    SDL_Color noir = {0, 0, 0};
     if (*port != '\0')
     {
-        pInputText = font_load(game, game->police2, port);
+        game->pInputText = font_load(game, game->police2, port);
 
         int width = my_strlen(port);
-
-        inputPositionRect.x = 60;
-        inputPositionRect.y = 160;
-        inputPositionRect.w = 15 * width;
-        inputPositionRect.h = 50;
-
-        SDL_Rect destinationInput = {inputPositionRect.x, inputPositionRect.y, inputPositionRect.w, inputPositionRect.h};
-        SDL_RenderCopy(game->pRenderer, pInputText, NULL, &destinationInput);
+        SDL_Rect destinationInput = {INPUTPOSITIONX, INPUTPOSITIONY, INPUTPOSITIONW(width), INPUTPOSITIONH};
+        SDL_RenderCopy(game->pRenderer, game->pInputText, NULL, &destinationInput);
     }
 
     SDL_RenderPresent(game->pRenderer);
@@ -206,11 +144,9 @@ void game_draw_port(stGame *game, char *port)
 
 void game_draw_welcome(stGame *game)
 {
-    //render fenêtre blanche
     SDL_SetRenderDrawColor(game->pRenderer, 255, 255, 255, 255);
     SDL_RenderClear(game->pRenderer);
 
-    //render Welcome Message
     game->welcomePositionRect.x = 60;
     game->welcomePositionRect.y = 60;
     game->welcomePositionRect.w = 550;
@@ -222,8 +158,7 @@ void game_draw_welcome(stGame *game)
 
 void game_destroy_2(stGame *game)
 {
-    if (game)
-    {
+    if (game) {
         TTF_CloseFont(game->police1);
         TTF_CloseFont(game->police2);
         SDL_StopTextInput();
@@ -238,43 +173,36 @@ void game_destroy_2(stGame *game)
 
 void send_key(SDL_Keycode keydown, int mysocket)
 {
-
-    switch (keydown)
-    {
-    case SDLK_UP:
-        if (send(mysocket, "up\n", 3, MSG_NOSIGNAL) < 0)
-        {
-            puts("send failed");
-            close(mysocket);
-        }
-        break;
-    case SDLK_DOWN:
-        if (send(mysocket, "Down\n", 5, MSG_NOSIGNAL) < 0)
-        {
-            puts("send failed");
-            close(mysocket);
-        }
-        break;
-    case SDLK_RIGHT:
-        if (send(mysocket, "Right\n", 6, MSG_NOSIGNAL) < 0)
-        {
-            puts("send failed");
-            close(mysocket);
-        }
-        break;
-    case SDLK_LEFT:
-        if (send(mysocket, "Left\n", 5, MSG_NOSIGNAL) < 0)
-        {
-            puts("send failed");
-            close(mysocket);
-        }
-        break;
-    case SDLK_SPACE:
-        if (send(mysocket, "Action\n", 7, MSG_NOSIGNAL) < 0)
-        {
-            puts("send failed");
-            close(mysocket);
-        }
-        break;
+    switch (keydown) {
+        case SDLK_UP:
+            if (send(mysocket, "up\n", 3, MSG_NOSIGNAL) < 0) {
+                puts("send failed");
+                close(mysocket);
+            }
+            break;
+        case SDLK_DOWN:
+            if (send(mysocket, "Down\n", 5, MSG_NOSIGNAL) < 0) {
+                puts("send failed");
+                close(mysocket);
+            }
+            break;
+        case SDLK_RIGHT:
+            if (send(mysocket, "Right\n", 6, MSG_NOSIGNAL) < 0) {
+                puts("send failed");
+                close(mysocket);
+            }
+            break;
+        case SDLK_LEFT:
+            if (send(mysocket, "Left\n", 5, MSG_NOSIGNAL) < 0) {
+                puts("send failed");
+                close(mysocket);
+            }
+            break;
+        case SDLK_SPACE:
+            if (send(mysocket, "Action\n", 7, MSG_NOSIGNAL) < 0) {
+                puts("send failed");
+                close(mysocket);
+            }
+            break;
     }
 }

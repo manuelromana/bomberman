@@ -17,8 +17,19 @@
 #include <string.h>
 #include "../headerFiles/network.h"
 
-#define SCREENSIZEX 1216
-#define SCREENSIZEY 960
+#define SCREENSIZEX 640
+#define SCREENSIZEY 480
+
+#define MENUDISPLAYX 10
+#define MENUDISPLAYY 60
+#define MENUDISPLAYW 600
+#define MENUDISPLAYH 100
+
+#define INPUTPOSITIONX 60
+#define INPUTPOSITIONY 160
+#define INPUTPOSITIONW(width) ( 15 * width )
+#define INPUTPOSITIONH 50
+
 
 #include "fonts.h"
 typedef struct
@@ -58,6 +69,10 @@ typedef struct
     SDL_Texture *pTextPortname;
     SDL_Texture *pTextWelcome;
     SDL_Texture *pTextChoix;
+
+    SDL_Texture *pInputText;
+
+    SDL_Rect inputPositionRect;
 
     SDL_Rect playerPositionRect;
     SDL_Rect bombPositionRect;
