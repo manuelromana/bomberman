@@ -1,10 +1,9 @@
-#include "../headerFiles/header.h"
-#include "../headerFiles/fonts.h"
+#include "../headerFiles/menu.h"
 
-stGame *game_init_2()
+stMenu *menu_init_2()
 {
-    stGame *game = {0};
-    game = malloc(sizeof(stGame));
+    stMenu *menu = {0};
+    menu = malloc(sizeof(stMenu));
 
     TTF_Init();
     if (TTF_Init() == -1)
@@ -13,17 +12,17 @@ stGame *game_init_2()
         exit(EXIT_FAILURE);
     }
 
-    game->pWindow = SDL_CreateWindow(
+    menu->pWindow = SDL_CreateWindow(
         "Bomberman",
         SDL_WINDOWPOS_UNDEFINED,
         SDL_WINDOWPOS_UNDEFINED,
         SCREENSIZEX,
         SCREENSIZEY,
         SDL_WINDOW_OPENGL);
-    if (game->pWindow) {
-        game->pRenderer = SDL_CreateRenderer(game->pWindow, -1, SDL_RENDERER_ACCELERATED);
+    if (menu->pWindow) {
+        menu->pRenderer = SDL_CreateRenderer(menu->pWindow, -1, SDL_RENDERER_ACCELERATED);
 
-        if (!game->pRenderer) {
+        if (!menu->pRenderer) {
             printf("Could not create renderer: %s\n", SDL_GetError());
             return NULL;
         }
@@ -32,17 +31,17 @@ stGame *game_init_2()
         return NULL;
     }
 
-    game->police1 = TTF_OpenFont(PATHFGRAFITI, 70);
-    game->police2 = TTF_OpenFont(PATHFNEON, 45);
+    menu->police1 = TTF_OpenFont(PATHFGRAFITI, 70);
+    menu->police2 = TTF_OpenFont(PATHFNEON, 45);
 
-    game->pTextChoix = font_load(game, game->police2, TXTSURFCHOIX);
-    game->pTextHostname = font_load(game, game->police1, TXTSURFHOSTNAME);
-    game->pTextPortname = font_load(game, game->police1, TXTSURFPORTNAME);
-    game->pTextWelcome = font_load(game, game->police1, TXTWELCOMESERVEUR);
+    menu->pTextChoix = font_load(menu, menu->police2, TXTSURFCHOIX);
+    menu->pTextHostname = font_load(menu, menu->police1, TXTSURFHOSTNAME);
+    menu->pTextPortname = font_load(menu, menu->police1, TXTSURFPORTNAME);
+    menu->pTextWelcome = font_load(menu, menu->police1, TXTWELCOMESERVEUR);
 
     SDL_StartTextInput();
 
-    return game;
+    return menu;
 }
 
 void control_event(SDL_Event event, int *step, char **currentText, char *hostname, char *port, int socket_target)
@@ -80,92 +79,92 @@ void control_event(SDL_Event event, int *step, char **currentText, char *hostnam
     }
 }
 
-void game_draw_choix(stGame *game, char *choix)
+void menu_draw_choix(stMenu *menu, char *choix)
 {
-    SDL_SetRenderDrawColor(game->pRenderer, 255, 255, 255, 255);
-    SDL_RenderClear(game->pRenderer);
+    SDL_SetRenderDrawColor(menu->pRenderer, 255, 255, 255, 255);
+    SDL_RenderClear(menu->pRenderer);
 
     SDL_Rect modeChoixText = {MENUDISPLAYX, MENUDISPLAYY, MENUDISPLAYW, MENUDISPLAYH};
-    SDL_RenderCopy(game->pRenderer, game->pTextChoix, NULL, &modeChoixText);
+    SDL_RenderCopy(menu->pRenderer, menu->pTextChoix, NULL, &modeChoixText);
     
     if (*choix != '\0')
     {
-        game->pInputText = font_load(game, game->police2, choix);
+        menu->pInputText = font_load(menu, menu->police2, choix);
 
-        game->inputPositionRect.x = 60;
-        game->inputPositionRect.y = 160;
-        game->inputPositionRect.w = 15;
-        game->inputPositionRect.h = 50;
-        SDL_Rect destinationInput = {game->inputPositionRect.x, game->inputPositionRect.y, game->inputPositionRect.w, game->inputPositionRect.h};
-        SDL_RenderCopy(game->pRenderer, game->pInputText, NULL, &destinationInput);
+        menu->inputPositionRect.x = 60;
+        menu->inputPositionRect.y = 160;
+        menu->inputPositionRect.w = 15;
+        menu->inputPositionRect.h = 50;
+        SDL_Rect destinationInput = {menu->inputPositionRect.x, menu->inputPositionRect.y, menu->inputPositionRect.w, menu->inputPositionRect.h};
+        SDL_RenderCopy(menu->pRenderer, menu->pInputText, NULL, &destinationInput);
     }
 
-    SDL_RenderPresent(game->pRenderer);
+    SDL_RenderPresent(menu->pRenderer);
 }
 
-void game_draw_hostname(stGame *game, char *hostname)
+void menu_draw_hostname(stMenu *menu, char *hostname)
 {
-    SDL_SetRenderDrawColor(game->pRenderer, 255, 255, 255, 255);
-    SDL_RenderClear(game->pRenderer);
+    SDL_SetRenderDrawColor(menu->pRenderer, 255, 255, 255, 255);
+    SDL_RenderClear(menu->pRenderer);
     
     SDL_Rect hostnameInvite = {MENUDISPLAYX, MENUDISPLAYY, MENUDISPLAYW, MENUDISPLAYH};
-    SDL_RenderCopy(game->pRenderer, game->pTextHostname, NULL, &hostnameInvite);
+    SDL_RenderCopy(menu->pRenderer, menu->pTextHostname, NULL, &hostnameInvite);
 
     if (*hostname != '\0') {
-        game->pInputText = font_load(game, game->police2, hostname);
+        menu->pInputText = font_load(menu, menu->police2, hostname);
 
         int width = strlen(hostname);
         SDL_Rect destinationInput = {INPUTPOSITIONX, INPUTPOSITIONY, INPUTPOSITIONW(width), INPUTPOSITIONH};
-        SDL_RenderCopy(game->pRenderer, game->pInputText, NULL, &destinationInput);
+        SDL_RenderCopy(menu->pRenderer, menu->pInputText, NULL, &destinationInput);
     }
 
-    SDL_RenderPresent(game->pRenderer);
+    SDL_RenderPresent(menu->pRenderer);
 }
 
-void game_draw_port(stGame *game, char *port)
+void menu_draw_port(stMenu *menu, char *port)
 {
-    SDL_SetRenderDrawColor(game->pRenderer, 255, 255, 255, 255);
-    SDL_RenderClear(game->pRenderer);
+    SDL_SetRenderDrawColor(menu->pRenderer, 255, 255, 255, 255);
+    SDL_RenderClear(menu->pRenderer);
 
     SDL_Rect portInvite = {MENUDISPLAYX, MENUDISPLAYY, MENUDISPLAYW, MENUDISPLAYH};
-    SDL_RenderCopy(game->pRenderer, game->pTextPortname, NULL, &portInvite);
+    SDL_RenderCopy(menu->pRenderer, menu->pTextPortname, NULL, &portInvite);
 
     if (*port != '\0')
     {
-        game->pInputText = font_load(game, game->police2, port);
+        menu->pInputText = font_load(menu, menu->police2, port);
 
         int width = strlen(port);
         SDL_Rect destinationInput = {INPUTPOSITIONX, INPUTPOSITIONY, INPUTPOSITIONW(width), INPUTPOSITIONH};
-        SDL_RenderCopy(game->pRenderer, game->pInputText, NULL, &destinationInput);
+        SDL_RenderCopy(menu->pRenderer, menu->pInputText, NULL, &destinationInput);
     }
 
-    SDL_RenderPresent(game->pRenderer);
+    SDL_RenderPresent(menu->pRenderer);
 }
 
-void game_draw_welcome(stGame *game)
+void menu_draw_welcome(stMenu *menu)
 {
-    SDL_SetRenderDrawColor(game->pRenderer, 255, 255, 255, 255);
-    SDL_RenderClear(game->pRenderer);
+    SDL_SetRenderDrawColor(menu->pRenderer, 255, 255, 255, 255);
+    SDL_RenderClear(menu->pRenderer);
 
-    game->welcomePositionRect.x = 60;
-    game->welcomePositionRect.y = 60;
-    game->welcomePositionRect.w = 550;
-    game->welcomePositionRect.h = 100;
-    SDL_Rect welcomeMess = {game->welcomePositionRect.x, game->welcomePositionRect.y, game->welcomePositionRect.w, game->welcomePositionRect.h};
-    SDL_RenderCopy(game->pRenderer, game->pTextWelcome, NULL, &welcomeMess);
-    SDL_RenderPresent(game->pRenderer);
+    menu->welcomePositionRect.x = 60;
+    menu->welcomePositionRect.y = 60;
+    menu->welcomePositionRect.w = 550;
+    menu->welcomePositionRect.h = 100;
+    SDL_Rect welcomeMess = {menu->welcomePositionRect.x, menu->welcomePositionRect.y, menu->welcomePositionRect.w, menu->welcomePositionRect.h};
+    SDL_RenderCopy(menu->pRenderer, menu->pTextWelcome, NULL, &welcomeMess);
+    SDL_RenderPresent(menu->pRenderer);
 }
 
-void game_destroy_2(stGame *game)
+void menu_destroy_2(stMenu *menu)
 {
-    if (game) {
-        TTF_CloseFont(game->police1);
-        TTF_CloseFont(game->police2);
+    if (menu) {
+        TTF_CloseFont(menu->police1);
+        TTF_CloseFont(menu->police2);
         SDL_StopTextInput();
-        SDL_DestroyWindow(game->pWindow);
-        SDL_DestroyRenderer(game->pRenderer);
+        SDL_DestroyWindow(menu->pWindow);
+        SDL_DestroyRenderer(menu->pRenderer);
 
-        free(game);
+        free(menu);
     }
 
     SDL_Quit();

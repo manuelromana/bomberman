@@ -1,8 +1,8 @@
-#include "../headerFiles/header.h"
+#include "../headerFiles/menu.h"
 
 int main(void)
 {
-    stGame *game = game_init_2();
+    stMenu *menu = menu_init_2();
     stInfos infos = {0};
     infos.current_text = infos.choix;
     SDL_Event event;
@@ -19,11 +19,11 @@ int main(void)
         control_event(event, step, &infos.current_text, infos.hostname, infos.portname, *my_socket);
 
         if (*step == 0) {
-            game_draw_choix(game, infos.choix);
+            menu_draw_choix(menu, infos.choix);
         }  else if (*step == 1) {
-            game_draw_hostname(game, infos.hostname);
+            menu_draw_hostname(menu, infos.hostname);
         } else if (*step == 2) {
-            game_draw_port(game, infos.portname);
+            menu_draw_port(menu, infos.portname);
         } else if (*step == 3) {
             if (*infos.choix == '1')
                 load_server(my_socket, infos.hostname, infos.portname);
@@ -31,7 +31,7 @@ int main(void)
                 load_client(my_socket, infos.hostname, infos.portname);
             (*step)++;
         } else if (*step == 4) {
-            game_draw_welcome(game);
+            menu_draw_welcome(menu);
             create_track_client(my_socket, infos.clients_array);
         }
 
@@ -39,7 +39,7 @@ int main(void)
     }
     TTF_Quit();
 
-    game_destroy_2(game);
+    menu_destroy_2(menu);
     close(*my_socket);
     free(my_socket);
     free(step);

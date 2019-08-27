@@ -1,5 +1,4 @@
-#include "../headerFiles/header.h"
-#include <string.h>
+#include "../headerFiles/menu.h"
 
 int main(int argc, char *argv[])
 {

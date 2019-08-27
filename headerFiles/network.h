@@ -1,6 +1,8 @@
 #ifndef NETWORK_H
 #define NETWORK_H
 
+#include <SDL2/SDL.h>
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -31,9 +33,15 @@ typedef struct stTrackClient {
 
 int read_client(int client);
 int read_server(int server);
-void track_client(int *server_socket);
 int load_server(int *my_socket, char *hostname, char *portname);
 int load_client(int *mysocket, char *hostname, char *portname);
+void send_key(SDL_Keycode keydown, int mysocket);
+
+void track_client(int *server_socket);
 int create_track_client(int *my_socket, int clients_array[]);
 int read_client(int client);
+
+void send_key(SDL_Keycode keydown, int mysocket);
+
+void control_event(SDL_Event event, int *step, char **currentText, char *hostname, char *port, int mysocket);
 #endif
