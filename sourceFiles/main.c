@@ -82,7 +82,7 @@ int main(void)
             create_track_client(my_socket, max_client, clients_array);
         }
 
-        SDL_Delay(30);
+        SDL_Delay(10);
     }
     TTF_Quit();
 

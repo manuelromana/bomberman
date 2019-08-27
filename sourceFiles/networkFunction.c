@@ -115,7 +115,6 @@ int create_track_client(int *my_socket, int max_client, int clients_array[])
             //dans les autres cas read client se lance quand même
         }
     }
-    puts("loop");
 }
 
 int read_client(int client)
