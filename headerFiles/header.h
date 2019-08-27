@@ -84,7 +84,6 @@ typedef struct
 
 stGame *game_init_2();
 
-int my_strlen(char *str);
 void game_destroy_2(stGame *game);
 int game_event_hostname(char *hostname);
 int game_event_port(char *hostname);
@@ -94,7 +93,6 @@ void game_draw_port(stGame *game, char *port);
 void send_key(SDL_Keycode keydown, int mysocket);
 void game_draw_welcome(stGame *game);
 void control_event(SDL_Event event, int *step, char **currentText, char *hostname, char *port, int mysocket);
-int my_strlen(char *str);
 void track_client(int *server_socket);
 
 void character_move(SDL_Keycode direction, stGame *game);

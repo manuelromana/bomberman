@@ -114,7 +114,7 @@ void game_draw_hostname(stGame *game, char *hostname)
     if (*hostname != '\0') {
         game->pInputText = font_load(game, game->police2, hostname);
 
-        int width = my_strlen(hostname);
+        int width = strlen(hostname);
         SDL_Rect destinationInput = {INPUTPOSITIONX, INPUTPOSITIONY, INPUTPOSITIONW(width), INPUTPOSITIONH};
         SDL_RenderCopy(game->pRenderer, game->pInputText, NULL, &destinationInput);
     }
@@ -134,7 +134,7 @@ void game_draw_port(stGame *game, char *port)
     {
         game->pInputText = font_load(game, game->police2, port);
 
-        int width = my_strlen(port);
+        int width = strlen(port);
         SDL_Rect destinationInput = {INPUTPOSITIONX, INPUTPOSITIONY, INPUTPOSITIONW(width), INPUTPOSITIONH};
         SDL_RenderCopy(game->pRenderer, game->pInputText, NULL, &destinationInput);
     }

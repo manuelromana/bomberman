@@ -3,11 +3,10 @@ NAME2 = client
 NAME3 = server
 NAME4 = bomberman
 
-SRC2 = sourceFiles/client.c sourceFiles/my_strlen.c
+SRC2 = sourceFiles/client.c
 
 SRC3 = sourceFiles/main.c sourceFiles/game_connection.c\
 sourceFiles/networkFunction.c\
-sourceFiles/my_strlen.c\
 sourceFiles/fonts.c
 
 SRC4 = sourceFiles/game/main.c\

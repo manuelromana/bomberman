@@ -29,7 +29,6 @@ typedef struct stTrackClient {
     int sd;
 } stTrackClient;
 
-int my_strlen(char *str);
 int read_client(int client);
 int read_server(int server);
 void track_client(int *server_socket);
