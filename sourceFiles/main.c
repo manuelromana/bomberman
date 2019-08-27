@@ -3,52 +3,36 @@
 int main(void)
 {
     stGame *game = game_init_2();
+    stInfos infos = {0};
+    infos.current_text = infos.choix;
     SDL_Event event;
-
     int *my_socket = malloc(sizeof(int *));
+    int *step = malloc(sizeof(int));
+    
+    if (!my_socket | !step)
+        exit -1;
+    
+    *step = 0;
     memset(my_socket, '\0', 1);
 
-    int clients_array[4];
+    while (*step != -1) {
+        control_event(event, step, &infos.current_text, infos.hostname, infos.portname, *my_socket);
 
-    for (int i = 0; i < MAXCLIENT; i++)
-    {
-        clients_array[i] = 0;
-    }
-
-    char choix[32];
-    choix[0] = 0;
-    char hostname[32];
-    hostname[0] = 0;
-    char portname[32];
-    portname[0] = 0;
-    char *current_text = 0;
-    current_text = choix;
-
-    int *step = malloc(sizeof(int));
-    *step = 0;
-
-    while (*step != -1)
-    {
-        control_event(event, step, &current_text, hostname, portname, *my_socket);
-
-        if (*step == 0)
-        {
-            game_draw_choix(game, choix);
-        }
-        if (*step == 1)
-        {
-            game_draw_hostname(game, hostname);
-        }
-        else if (*step == 2)
-        {
-            load_server(my_socket, *hostname, *portname);
+        if (*step == 0) {
+            game_draw_choix(game, infos.choix);
+        }  else if (*step == 1) {
+            game_draw_hostname(game, infos.hostname);
+        } else if (*step == 2) {
+            game_draw_port(game, infos.portname);
+        } else if (*step == 3) {
+            if (*infos.choix == '1')
+                load_server(my_socket, infos.hostname, infos.portname);
+            if (*infos.choix == '2')
+                load_client(my_socket, infos.hostname, infos.portname);
             (*step)++;
-        }
-        else if (*step == 4)
-        {
+        } else if (*step == 4) {
             game_draw_welcome(game);
-
-            create_track_client(my_socket, clients_array);
+            create_track_client(my_socket, infos.clients_array);
         }
 
         SDL_Delay(30);
