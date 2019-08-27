@@ -1,5 +1,4 @@
-#include "../headerFiles/header.h"
-#include <string.h>
+#include "../headerFiles/menu.h"
 
 int main(int argc, char *argv[])
 {
@@ -54,7 +53,7 @@ int main(int argc, char *argv[])
         printf("écrivez votre message : \n"); //invitation de commande pour l'utilisateur
         fgets(message, 128, stdin);
         //le programme attend qu'on rentre une valeur
-        int length = my_strlen(message); //une fois le message écris on calcule son length
+        int length = strlen(message); //une fois le message écris on calcule son length
 
         //message utilisateur est écris sur le socket si jamais write return un int positif sinon message erreur ainsi le server peut le récupérer
         //et on utilise send car cette fonction catch les erreurs en cas de server interrompu

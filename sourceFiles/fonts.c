@@ -1,27 +1,25 @@
-#include "../headerFiles/fonts.h"
-#include "../headerFiles/header.h"
 
-SDL_Texture *font_load(stGame *game, TTF_Font *police, char* content) {
+#include "../headerFiles/menu.h"
+
+SDL_Texture *font_load(stMenu *menu, TTF_Font *police, char* content) {
     SDL_Color noir = {0, 0, 0};
-    
-    //font->texture = malloc(sizeof(stFont *));
 
-    game->surface = TTF_RenderText_Blended(police, content, noir);
+    menu->surface = TTF_RenderText_Blended(police, content, noir);
 
-    if (!game->surface) {
+    if (!menu->surface) {
         fprintf(stderr, "Erreur au chargement du text : %s\n", IMG_GetError());
-        game_destroy_2(game);
+        menu_destroy_2(menu);
     } else {
-        game->texture = SDL_CreateTextureFromSurface(game->pRenderer, game->surface);
+        menu->texture = SDL_CreateTextureFromSurface(menu->pRenderer, menu->surface);
 
-        if (!game->texture) {
+        if (!menu->texture) {
             fprintf(stderr, "Erreur au chargement de la texture : %s\n", SDL_GetError());
-            game_destroy_2(game);
+            menu_destroy_2(menu);
         }
 
-        SDL_FreeSurface(game->surface);
+        SDL_FreeSurface(menu->surface);
 
-        return game->texture;
+        return menu->texture;
     }
 
 }

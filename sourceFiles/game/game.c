@@ -129,6 +129,7 @@ void game_destroy(stGame* game) {
     free(game->map);
     free(game->player);
     free(game);
+    SDL_StopTextInput();
   }
 }
 
