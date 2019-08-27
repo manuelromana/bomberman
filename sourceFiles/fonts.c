@@ -3,8 +3,6 @@
 
 SDL_Texture *font_load(stGame *game, TTF_Font *police, char* content) {
     SDL_Color noir = {0, 0, 0};
-    
-    //font->texture = malloc(sizeof(stFont *));
 
     game->surface = TTF_RenderText_Blended(police, content, noir);
 
