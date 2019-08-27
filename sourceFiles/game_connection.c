@@ -160,14 +160,11 @@ void menu_destroy_2(stMenu *menu)
     if (menu) {
         TTF_CloseFont(menu->police1);
         TTF_CloseFont(menu->police2);
-        SDL_StopTextInput();
         SDL_DestroyWindow(menu->pWindow);
         SDL_DestroyRenderer(menu->pRenderer);
 
         free(menu);
     }
-
-    SDL_Quit();
 }
 
 void send_key(SDL_Keycode keydown, int mysocket)

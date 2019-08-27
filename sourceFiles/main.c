@@ -1,4 +1,5 @@
 #include "../headerFiles/menu.h"
+#include "../headerFiles/game/game.h"
 
 int main(void)
 {
@@ -31,18 +32,21 @@ int main(void)
                 load_client(my_socket, infos.hostname, infos.portname);
             (*step)++;
         } else if (*step == 4) {
-            menu_draw_welcome(menu);
+            menu_destroy_2(menu);
+            stGame *game = game_init();
+            game_boucle(game);
             create_track_client(my_socket, infos.clients_array);
+            game_destroy(game);
         }
 
         SDL_Delay(30);
     }
     TTF_Quit();
 
-    menu_destroy_2(menu);
     close(*my_socket);
     free(my_socket);
     free(step);
+    SDL_Quit();
 
     return (EXIT_SUCCESS);
 }

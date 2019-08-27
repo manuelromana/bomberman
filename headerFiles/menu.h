@@ -31,8 +31,6 @@
 #define INPUTPOSITIONW(width) ( 15 * width )
 #define INPUTPOSITIONH 50
 
-
-
 typedef struct
 {
     SDL_Point screenSize;
