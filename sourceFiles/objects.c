@@ -98,6 +98,7 @@ void create_explosion(stGame *game, bomb *bomb) {
   newExplosion->startTime = game->presentTime;
   add_newExplosion(game, newExplosion);
   create_children_explosion(game, bomb);
+  player_flame_colision(game, game->player);
 }
 
 void create_children_explosion(stGame *game, bomb *bomb) {
@@ -201,4 +202,48 @@ int position_explosion(bomb *bomb, explosion *newExplosion) {
   newExplosion->tileY = bomb->tileY;
   newExplosion->x = bomb->tileX * CASE_SIZE;
   newExplosion->y = bomb->tileY * CASE_SIZE;
+}
+
+void player_flame_colision(stGame *game, stPlayer *player) {
+  explosion *currentExplosion;
+  int playerTileYLT = (player->playerY + player->playerColisionRect.y) / 64;
+  int playerTileXLT = (player->playerX + player->playerColisionRect.x) / 64;
+
+  int playerTileYLB = (player->playerY + player->playerColisionRect.y +
+                       player->playerColisionRect.h) /
+                      64;
+  int playerTileXLB = (player->playerX + player->playerColisionRect.x) / 64;
+
+  int playerTileYRT = (player->playerY + player->playerColisionRect.y) / 64;
+  int playerTileXRT = (player->playerX + player->playerColisionRect.x +
+                       player->playerColisionRect.w) /
+                      64;
+
+  int playerTileYRB = (player->playerY + player->playerColisionRect.y +
+                       player->playerColisionRect.h) /
+                      64;
+  int playerTileXRB = (player->playerX + player->playerColisionRect.x +
+                       player->playerColisionRect.w) /
+                      64;
+
+  currentExplosion = game->object->explosion;
+  while (currentExplosion != NULL) {
+    if ((playerTileYLT == currentExplosion->tileY &&
+         playerTileXLT == currentExplosion->tileX) ||
+        (playerTileYLB == currentExplosion->tileY &&
+         playerTileXLB == currentExplosion->tileX) ||
+        (playerTileYRT == currentExplosion->tileY &&
+         playerTileXRT == currentExplosion->tileX) ||
+        (playerTileYRB == currentExplosion->tileY &&
+         playerTileXRB == currentExplosion->tileX)) {
+      printf("dead you are\n");
+      printf("Y : %d  %d\n", playerTileYLT, currentExplosion->tileY);
+      printf("X : %d  %d\n", playerTileXLT, currentExplosion->tileX);
+      break;
+    }
+    currentExplosion = currentExplosion->next;
+  }
+  printf("x: %d y : %d w: %d h : %d\n", game->player->playerColisionRect.x,
+         game->player->playerColisionRect.y, game->player->playerColisionRect.w,
+         game->player->playerColisionRect.h);
 }

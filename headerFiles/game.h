@@ -52,6 +52,7 @@ int position_explosion(bomb* bomb, explosion* newExplosion);
 void create_children_explosion(stGame* game, bomb* bomb);
 int create_child_explosion(stGame* game, int tileX, int tileY,
                            unsigned int timer);
+void player_flame_colision(stGame* game, stPlayer* player);
 
 int game_event(stGame* game);
 void game_destroy(stGame* game);
