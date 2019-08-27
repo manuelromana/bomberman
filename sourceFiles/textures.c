@@ -7,7 +7,7 @@ void textures_init(stGame *game) {
   }
 
   char *paths[] = {PATHPLFR, PATHPLBCK, PATHPLSIDE, PATHWALL,
-                   PATHBOMB, PATHFLAME, PATHEXPBCK};
+                   PATHBOMB, PATHFLAME, PATHEXPBCK, PATHGRAVE};
   int arrayLength = LEN(paths);
 
   sdl_load(game, paths, arrayLength);

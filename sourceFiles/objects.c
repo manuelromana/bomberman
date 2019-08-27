@@ -98,7 +98,6 @@ void create_explosion(stGame *game, bomb *bomb) {
   newExplosion->startTime = game->presentTime;
   add_newExplosion(game, newExplosion);
   create_children_explosion(game, bomb);
-  player_flame_colision(game, game->player);
 }
 
 void create_children_explosion(stGame *game, bomb *bomb) {
@@ -236,14 +235,12 @@ void player_flame_colision(stGame *game, stPlayer *player) {
          playerTileXRT == currentExplosion->tileX) ||
         (playerTileYRB == currentExplosion->tileY &&
          playerTileXRB == currentExplosion->tileX)) {
-      printf("dead you are\n");
-      printf("Y : %d  %d\n", playerTileYLT, currentExplosion->tileY);
-      printf("X : %d  %d\n", playerTileXLT, currentExplosion->tileX);
+      printf("Dead you are little FreeMan\n");
+      game->texture[1] = game->texture[7];
+      game->texture[2] = game->texture[7];
+      game->texture[0] = game->texture[7];
       break;
     }
     currentExplosion = currentExplosion->next;
   }
-  printf("x: %d y : %d w: %d h : %d\n", game->player->playerColisionRect.x,
-         game->player->playerColisionRect.y, game->player->playerColisionRect.w,
-         game->player->playerColisionRect.h);
 }

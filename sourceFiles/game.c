@@ -142,6 +142,7 @@ void game_boucle(stGame* game) {
     game->presentTime = SDL_GetTicks();
     game->delta = game->presentTime - game->lastTime;
     game->lastTime = game->presentTime;
+    player_flame_colision(game, game->player);
     game_draw(game);
     quit = game_event(game);
     fps++;
