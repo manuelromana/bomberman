@@ -5,7 +5,7 @@ stGame *game_init_2()
 {
     stGame *game = {0};
     game = malloc(sizeof(stGame));
-    
+
     game->screenSize.x = 640;
     game->screenSize.y = 480;
 
@@ -44,16 +44,17 @@ stGame *game_init_2()
     game->police2 = TTF_OpenFont(PATHFNEON, 45);
     SDL_Color noir = {0, 0, 0};
 
+    game->pTextChoix = font_load(game, game->police2, TXTSURFCHOIX);
     game->pTextHostname = font_load(game, game->police1, TXTSURFHOSTNAME);
     game->pTextPortname = font_load(game, game->police1, TXTSURFPORTNAME);
-    game->pTextWelcome = font_load(game,game->police1, TXTWELCOMESERVEUR);
+    game->pTextWelcome = font_load(game, game->police1, TXTWELCOMESERVEUR);
 
     SDL_StartTextInput();
 
     return game;
 }
 
-void control_event(SDL_Event event, int *step, char **currentText, char **port, int socket_target)
+void control_event(SDL_Event event, int *step, char **currentText, char *hostname, char *port, int socket_target)
 {
 
     while (SDL_PollEvent(&event) != 0)
@@ -77,8 +78,11 @@ void control_event(SDL_Event event, int *step, char **currentText, char **port, 
 
                 if (*step == 1)
                 {
-
-                    *currentText = *port;
+                    *currentText = hostname;
+                }
+                if (*step == 2)
+                {
+                    *currentText = port;
                 }
 
                 break;
@@ -94,6 +98,41 @@ void control_event(SDL_Event event, int *step, char **currentText, char **port, 
         }
     }
 }
+
+void game_draw_choix(stGame *game, char *choix)
+{
+    SDL_Texture *pInputText = NULL;
+    SDL_Rect inputPositionRect;
+
+    //render fenêtre blanche
+    SDL_SetRenderDrawColor(game->pRenderer, 255, 255, 255, 255);
+    SDL_RenderClear(game->pRenderer);
+
+    //render de l'invit de commande
+    game->choixPositionRect.x = 10;
+    game->choixPositionRect.y = 60;
+    game->choixPositionRect.w = 600;
+    game->choixPositionRect.h = 100;
+    SDL_Rect modeChoixText = {game->choixPositionRect.x, game->choixPositionRect.y, game->choixPositionRect.w, game->choixPositionRect.h};
+    SDL_RenderCopy(game->pRenderer, game->pTextChoix, NULL, &modeChoixText);
+
+    //render de l'input
+    SDL_Color noir = {0, 0, 0};
+    if (*choix != '\0')
+    {
+        pInputText = font_load(game, game->police2, choix);
+
+        inputPositionRect.x = 60;
+        inputPositionRect.y = 160;
+        inputPositionRect.w = 15;
+        inputPositionRect.h = 50;
+        SDL_Rect destinationInput = {inputPositionRect.x, inputPositionRect.y, inputPositionRect.w, inputPositionRect.h};
+        SDL_RenderCopy(game->pRenderer, pInputText, NULL, &destinationInput);
+    }
+
+    SDL_RenderPresent(game->pRenderer);
+}
+
 void game_draw_hostname(stGame *game, char *hostname)
 {
     SDL_Texture *pInputText = NULL;

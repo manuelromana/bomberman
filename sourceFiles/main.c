@@ -17,60 +17,65 @@ int main(void)
         clients_array[i] = 0;
     }
 
-    char **hostname = malloc(sizeof(char *));
-    char **portname = malloc(sizeof(char *));
-    *hostname = malloc(sizeof(char *));
-    memset(*hostname, '\0', 1);
-    *portname = malloc(sizeof(char *));
-    memset(*portname, '\0', 1);
-    char **current_text = malloc(sizeof(char *));
-    *current_text = *hostname;
-    memset(*current_text, '\0', 1);
-    int *step = malloc(sizeof(int *));
+    char choix[32];
+    choix[0] = 0;
+    char hostname[32];
+    hostname[0] = 0;
+    char portname[32];
+    portname[0] = 0;
+    char *current_text = 0;
+    current_text = choix;
 
+    int *step = malloc(sizeof(int));
     *step = 0;
+
+    // char **choix = 0;
+    // char **hostname = 0;
+    // char **portname = 0;
+
+    // *choix = malloc(sizeof(char) * 20);
+    // memset(*choix, '\0', 1);
+    // *hostname = malloc(sizeof(char) * 20);
+    // memset(*hostname, '\0', 1);
+    // *portname = malloc(sizeof(char));
+    // memset(*portname, '\0', 1);
+    // char **current_text = malloc(sizeof(char) * 20);
+    // *current_text = *choix;
+    // memset(*current_text, '\0', 1);
+    // int *step = malloc(sizeof(int *));
+
+    // *step = 0;
 
     while (*step != -1)
     {
-        control_event(event, step, current_text, portname, *my_socket);
+        control_event(event, step, &current_text, hostname, portname, *my_socket);
 
         if (*step == 0)
         {
-            game_draw_hostname(game, *hostname);
+            game_draw_choix(game, choix);
         }
-        else if (*step == 1)
+        if (*step == 1)
         {
-            game_draw_port(game, *portname);
+            game_draw_hostname(game, hostname);
         }
         else if (*step == 2)
         {
-
-            // mysocket = socket(AF_INET, SOCK_STREAM, 0);
-            // if (mysocket < 0)
-            // {
-            //     perror("socket()");
-            //     break;
-            // }
-            // printf("%s %s\n", *hostname, *portname);
-            // portno = atoi(*portname);
-            // addr.sin_addr.s_addr = inet_addr(*hostname);
-            // addr.sin_port = htons(portno);
-            // addr.sin_family = AF_INET;
-
-            // if (connect(mysocket, (struct sockaddr *)&addr, sizeof(addr)) < 0)
-            // {
-            //     perror("connect()");
-            //     break;
-            // }
-            // //lecture et affichage du message de bienvenu du client dans la console
-            // memset(message, '\0', 128);
-            // read(mysocket, message, 128);
-            // printf("%s\n", message);
-
-            load_server(my_socket, *hostname, *portname);
-            (*step)++;
+            game_draw_port(game, portname);
         }
         else if (*step == 3)
+        {
+            if (*choix == '1')
+            {
+                load_server(my_socket, hostname, portname);
+            }
+            else if (*choix == '2')
+            {
+                load_client(my_socket, hostname, portname);
+            }
+
+            (*step)++;
+        }
+        else if (*step == 4)
         {
             game_draw_welcome(game);
 
@@ -84,9 +89,6 @@ int main(void)
     game_destroy_2(game);
     close(*my_socket);
     free(my_socket);
-    free(hostname);
-    free(portname);
-    free(current_text);
     free(step);
 
     return (EXIT_SUCCESS);

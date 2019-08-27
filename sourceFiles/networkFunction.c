@@ -143,3 +143,30 @@ int read_client(int client)
 
     return n;
 }
+
+int load_client(int *mysocket, char *hostname, char *portname)
+{
+    struct sockaddr_in addr;
+    char message[128];
+    *mysocket = socket(AF_INET, SOCK_STREAM, 0);
+    if (*mysocket < 0)
+    {
+        perror("socket()");
+        return 1;
+    }
+    printf("%s %s\n", hostname, portname);
+    int portno = atoi(portname);
+    addr.sin_addr.s_addr = inet_addr(hostname);
+    addr.sin_port = htons(portno);
+    addr.sin_family = AF_INET;
+
+    if (connect(*mysocket, (struct sockaddr *)&addr, sizeof(addr)) < 0)
+    {
+        perror("connect()");
+        return 1;
+    }
+    //lecture et affichage du message de bienvenu du client dans la console
+    memset(message, '\0', 128);
+    read(*mysocket, message, 128);
+    printf("%s\n", message);
+}
