@@ -22,7 +22,7 @@ typedef struct stGame {
   SDL_Window* pWindow;
   SDL_Renderer* pRenderer;
 
-  stPlayer* player;
+  stPlayer* players[4];
   stObject* object;
   stMap* map;
   stTexture* texture[TEXTURESSIZE];

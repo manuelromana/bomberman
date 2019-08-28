@@ -3,11 +3,11 @@
 stGame* game_init() {
   stGame* game = {0};
   game = malloc(sizeof(stGame));
-  game->player = (struct stPlayer*)malloc(sizeof(stPlayer));
+  game->players[0] = (struct stPlayer*)malloc(sizeof(stPlayer));
   game->map = (struct stMap*)malloc(sizeof(stMap));
   game->object = (struct stObject*)malloc(sizeof(stObject));
 
-  if (game == NULL || game->player == NULL || game->map == NULL ||
+  if (game == NULL || game->players[0] == NULL || game->map == NULL ||
       game->object == NULL)
     return NULL;
 
@@ -39,14 +39,16 @@ void game_draw(stGame* game) {
   SDL_SetRenderDrawColor(game->pRenderer, 10, 50, 10, 255);
   SDL_RenderClear(game->pRenderer);
   SDL_RendererFlip flip = SDL_FLIP_HORIZONTAL;
-  SDL_Rect destinationPlayer = {game->player->playerX, game->player->playerY,
-                                game->player->playerPositionRect.w,
-                                game->player->playerPositionRect.h};
+  SDL_Rect destinationPlayer = {game->players[0]->playerX,
+                                game->players[0]->playerY,
+                                game->players[0]->playerPositionRect.w,
+                                game->players[0]->playerPositionRect.h};
 
   SDL_Rect destinationPlayerColision = {
-      game->player->playerX + game->player->playerColisionRect.x,
-      game->player->playerY + game->player->playerColisionRect.y,
-      game->player->playerColisionRect.w, game->player->playerColisionRect.h};
+      game->players[0]->playerX + game->players[0]->playerColisionRect.x,
+      game->players[0]->playerY + game->players[0]->playerColisionRect.y,
+      game->players[0]->playerColisionRect.w,
+      game->players[0]->playerColisionRect.h};
 
   draw_map(game);
 
@@ -72,7 +74,7 @@ void game_draw(stGame* game) {
     }
     currentExplosion = tempExplosion;
   }
-  switch (game->player->playerDirection) {
+  switch (game->players[0]->playerDirection) {
     case 0:
       SDL_RenderCopy(game->pRenderer, game->texture[2]->texture, NULL,
                      &destinationPlayer);
@@ -127,7 +129,7 @@ void game_destroy(stGame* game) {
 
     textures_destroy(game);
     free(game->map);
-    free(game->player);
+    free(game->players);
     free(game);
   }
 }
@@ -142,7 +144,7 @@ void game_boucle(stGame* game) {
     game->presentTime = SDL_GetTicks();
     game->delta = game->presentTime - game->lastTime;
     game->lastTime = game->presentTime;
-    player_flame_colision(game, game->player);
+    player_flame_colision(game, game->players[0]);
     game_draw(game);
     quit = game_event(game);
     fps++;
