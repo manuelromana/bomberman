@@ -56,14 +56,14 @@ void destroy_bomb(stGame *game, bomb *endBomb) {
 
 int position_bomb(stGame *game, bomb *newBomb) {
   newBomb->tileX =
-      game->players[0]->playerX + game->players[0]->playerColisionRect.x;
-  newBomb->tileX += game->players[0]->playerColisionRect.w / 2;
+      game->players[0].playerX + game->players[0].playerColisionRect.x;
+  newBomb->tileX += game->players[0].playerColisionRect.w / 2;
   newBomb->tileX /= CASE_SIZE;
   newBomb->x = newBomb->tileX * CASE_SIZE;
 
   newBomb->tileY =
-      game->players[0]->playerY + game->players[0]->playerColisionRect.y;
-  newBomb->tileY += game->players[0]->playerColisionRect.h / 2;
+      game->players[0].playerY + game->players[0].playerColisionRect.y;
+  newBomb->tileY += game->players[0].playerColisionRect.h / 2;
   newBomb->tileY /= CASE_SIZE;
   newBomb->y = newBomb->tileY * CASE_SIZE;
 

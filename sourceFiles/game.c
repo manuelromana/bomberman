@@ -3,14 +3,10 @@
 stGame* game_init() {
   stGame* game = {0};
   game = malloc(sizeof(stGame));
-  game->players[0] = (struct stPlayer*)malloc(sizeof(stPlayer));
   game->map = (struct stMap*)malloc(sizeof(stMap));
   game->object = (struct stObject*)malloc(sizeof(stObject));
 
-  if (game == NULL || game->players[0] == NULL || game->map == NULL ||
-      game->object == NULL)
-    return NULL;
-
+  if (game == NULL || game->map == NULL || game->object == NULL) return NULL;
   game->pWindow = SDL_CreateWindow("Bomberman", SDL_WINDOWPOS_UNDEFINED,
                                    SDL_WINDOWPOS_UNDEFINED, SCREENSIZEX,
                                    SCREENSIZEY, SDL_WINDOW_OPENGL);
@@ -39,22 +35,8 @@ void game_draw(stGame* game) {
   SDL_SetRenderDrawColor(game->pRenderer, 10, 50, 10, 255);
   SDL_RenderClear(game->pRenderer);
   SDL_RendererFlip flip = SDL_FLIP_HORIZONTAL;
-  SDL_Rect destinationPlayer = {game->players[0]->playerX,
-                                game->players[0]->playerY,
-                                game->players[0]->playerPositionRect.w,
-                                game->players[0]->playerPositionRect.h};
-
-  SDL_Rect destinationPlayerColision = {
-      game->players[0]->playerX + game->players[0]->playerColisionRect.x,
-      game->players[0]->playerY + game->players[0]->playerColisionRect.y,
-      game->players[0]->playerColisionRect.w,
-      game->players[0]->playerColisionRect.h};
 
   draw_map(game);
-
-  SDL_SetRenderDrawColor(game->pRenderer, 10, 50, 10, 255);
-  SDL_RenderFillRect(game->pRenderer, &destinationPlayerColision);
-
   draw_bomb(game);
   while (game->object->bombs != NULL) {
     if (game->presentTime - game->object->bombs->startTime > 3000) {
@@ -74,23 +56,40 @@ void game_draw(stGame* game) {
     }
     currentExplosion = tempExplosion;
   }
-  switch (game->players[0]->playerDirection) {
-    case 0:
-      SDL_RenderCopy(game->pRenderer, game->texture[2]->texture, NULL,
-                     &destinationPlayer);
-      break;
-    case 1:
-      SDL_RenderCopyEx(game->pRenderer, game->texture[2]->texture, NULL,
-                       &destinationPlayer, 0, NULL, flip);
-      break;
-    case 2:
-      SDL_RenderCopy(game->pRenderer, game->texture[1]->texture, NULL,
-                     &destinationPlayer);
-      break;
-    case 3:
-      SDL_RenderCopy(game->pRenderer, game->texture[0]->texture, NULL,
-                     &destinationPlayer);
-      break;
+
+  for (int i = 0; i < 2; i++) {
+    SDL_Rect destinationPlayer = {game->players[i].playerX,
+                                  game->players[i].playerY,
+                                  game->players[i].playerPositionRect.w,
+                                  game->players[i].playerPositionRect.h};
+
+    SDL_Rect destinationPlayerColision = {
+        game->players[i].playerX + game->players[i].playerColisionRect.x,
+        game->players[i].playerY + game->players[i].playerColisionRect.y,
+        game->players[i].playerColisionRect.w,
+        game->players[i].playerColisionRect.h};
+
+    // SDL_SetRenderDrawColor(game->pRenderer, 10, 50, 10, 255);
+    // SDL_RenderFillRect(game->pRenderer, &destinationPlayerColision);
+
+    switch (game->players[i].playerDirection) {
+      case 0:
+        SDL_RenderCopy(game->pRenderer, game->texture[2]->texture, NULL,
+                       &destinationPlayer);
+        break;
+      case 1:
+        SDL_RenderCopyEx(game->pRenderer, game->texture[2]->texture, NULL,
+                         &destinationPlayer, 0, NULL, flip);
+        break;
+      case 2:
+        SDL_RenderCopy(game->pRenderer, game->texture[1]->texture, NULL,
+                       &destinationPlayer);
+        break;
+      case 3:
+        SDL_RenderCopy(game->pRenderer, game->texture[0]->texture, NULL,
+                       &destinationPlayer);
+        break;
+    }
   }
   SDL_RenderPresent(game->pRenderer);
 }
@@ -144,7 +143,7 @@ void game_boucle(stGame* game) {
     game->presentTime = SDL_GetTicks();
     game->delta = game->presentTime - game->lastTime;
     game->lastTime = game->presentTime;
-    player_flame_colision(game, game->players[0]);
+    player_flame_colision(game, &game->players[0]);
     game_draw(game);
     quit = game_event(game);
     fps++;
