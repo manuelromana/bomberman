@@ -19,14 +19,18 @@ stMenu *menu_init_2()
         SCREENSIZEX,
         SCREENSIZEY,
         SDL_WINDOW_OPENGL);
-    if (menu->pWindow) {
+    if (menu->pWindow)
+    {
         menu->pRenderer = SDL_CreateRenderer(menu->pWindow, -1, SDL_RENDERER_ACCELERATED);
 
-        if (!menu->pRenderer) {
+        if (!menu->pRenderer)
+        {
             printf("Could not create renderer: %s\n", SDL_GetError());
             return NULL;
         }
-    } else {
+    }
+    else
+    {
         printf("Could not create window: %s\n", SDL_GetError());
         return NULL;
     }
@@ -46,24 +50,29 @@ stMenu *menu_init_2()
 
 void control_event(SDL_Event event, int *step, char **currentText, char *hostname, char *port, int socket_target)
 {
-    while (SDL_PollEvent(&event) != 0) {
-        switch (event.type) {
+    while (SDL_PollEvent(&event) != 0)
+    {
+        switch (event.type)
+        {
         case (SDL_QUIT):
             *step = -1;
         case (SDL_TEXTINPUT):
             strcat(*currentText, event.text.text);
             break;
         case (SDL_KEYDOWN):
-            switch (event.key.keysym.sym) {
+            switch (event.key.keysym.sym)
+            {
             case SDLK_BACKSPACE:
                 strcpy(*currentText, "");
                 break;
             case SDLK_RETURN:
                 (*step)++;
-                if (*step == 1){
+                if (*step == 1)
+                {
                     *currentText = hostname;
                 }
-                if (*step == 2){
+                if (*step == 2)
+                {
                     *currentText = port;
                 }
                 break;
@@ -86,7 +95,7 @@ void menu_draw_choix(stMenu *menu, char *choix)
 
     SDL_Rect modeChoixText = {MENUDISPLAYX, MENUDISPLAYY, MENUDISPLAYW, MENUDISPLAYH};
     SDL_RenderCopy(menu->pRenderer, menu->pTextChoix, NULL, &modeChoixText);
-    
+
     if (*choix != '\0')
     {
         menu->pInputText = font_load(menu, menu->police2, choix);
@@ -106,11 +115,12 @@ void menu_draw_hostname(stMenu *menu, char *hostname)
 {
     SDL_SetRenderDrawColor(menu->pRenderer, 255, 255, 255, 255);
     SDL_RenderClear(menu->pRenderer);
-    
+
     SDL_Rect hostnameInvite = {MENUDISPLAYX, MENUDISPLAYY, MENUDISPLAYW, MENUDISPLAYH};
     SDL_RenderCopy(menu->pRenderer, menu->pTextHostname, NULL, &hostnameInvite);
 
-    if (*hostname != '\0') {
+    if (*hostname != '\0')
+    {
         menu->pInputText = font_load(menu, menu->police2, hostname);
 
         int width = strlen(hostname);
@@ -157,7 +167,8 @@ void menu_draw_welcome(stMenu *menu)
 
 void menu_destroy_2(stMenu *menu)
 {
-    if (menu) {
+    if (menu)
+    {
         TTF_CloseFont(menu->police1);
         TTF_CloseFont(menu->police2);
         SDL_DestroyWindow(menu->pWindow);
@@ -169,36 +180,42 @@ void menu_destroy_2(stMenu *menu)
 
 void send_key(SDL_Keycode keydown, int mysocket)
 {
-    switch (keydown) {
-        case SDLK_UP:
-            if (send(mysocket, "up\n", 3, MSG_NOSIGNAL) < 0) {
-                puts("send failed");
-                close(mysocket);
-            }
-            break;
-        case SDLK_DOWN:
-            if (send(mysocket, "Down\n", 5, MSG_NOSIGNAL) < 0) {
-                puts("send failed");
-                close(mysocket);
-            }
-            break;
-        case SDLK_RIGHT:
-            if (send(mysocket, "Right\n", 6, MSG_NOSIGNAL) < 0) {
-                puts("send failed");
-                close(mysocket);
-            }
-            break;
-        case SDLK_LEFT:
-            if (send(mysocket, "Left\n", 5, MSG_NOSIGNAL) < 0) {
-                puts("send failed");
-                close(mysocket);
-            }
-            break;
-        case SDLK_SPACE:
-            if (send(mysocket, "Action\n", 7, MSG_NOSIGNAL) < 0) {
-                puts("send failed");
-                close(mysocket);
-            }
-            break;
+    switch (keydown)
+    {
+    case SDLK_UP:
+        if (send(mysocket, "up\n", 3, MSG_NOSIGNAL) < 0)
+        {
+            puts("send failed");
+            close(mysocket);
+        }
+        break;
+    case SDLK_DOWN:
+        if (send(mysocket, "Down\n", 5, MSG_NOSIGNAL) < 0)
+        {
+            puts("send failed");
+            close(mysocket);
+        }
+        break;
+    case SDLK_RIGHT:
+        if (send(mysocket, "Right\n", 6, MSG_NOSIGNAL) < 0)
+        {
+            puts("send failed");
+            close(mysocket);
+        }
+        break;
+    case SDLK_LEFT:
+        if (send(mysocket, "Left\n", 5, MSG_NOSIGNAL) < 0)
+        {
+            puts("send failed");
+            close(mysocket);
+        }
+        break;
+    case SDLK_SPACE:
+        if (send(mysocket, "Action\n", 7, MSG_NOSIGNAL) < 0)
+        {
+            puts("send failed");
+            close(mysocket);
+        }
+        break;
     }
 }

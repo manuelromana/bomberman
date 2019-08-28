@@ -17,6 +17,7 @@
 #include <string.h>
 #include "network.h"
 #include "fonts.h"
+#include "game/game.h"
 
 #define SCREENSIZEX 640
 #define SCREENSIZEY 480
@@ -28,10 +29,10 @@
 
 #define INPUTPOSITIONX 60
 #define INPUTPOSITIONY 160
-#define INPUTPOSITIONW(width) ( 15 * width )
+#define INPUTPOSITIONW(width) (15 * width)
 #define INPUTPOSITIONH 50
 
-typedef struct
+typedef struct stMenu
 {
     SDL_Point screenSize;
     SDL_Window *pWindow;

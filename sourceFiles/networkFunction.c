@@ -1,10 +1,12 @@
 #include "../headerFiles/network.h"
+#include "../headerFiles/menu.h"
 
 int load_server(int *my_socket, char *hostname, char *portname)
 {
     struct sockaddr_in addr;
     *my_socket = socket(AF_INET, SOCK_STREAM, 0);
-    if (*my_socket < 0) {
+    if (*my_socket < 0)
+    {
         perror("socket()");
         return -1;
     }
@@ -13,26 +15,29 @@ int load_server(int *my_socket, char *hostname, char *portname)
     addr.sin_addr.s_addr = inet_addr(hostname);
     addr.sin_port = htons(portnum);
     addr.sin_family = AF_INET;
-    
-    if (setsockopt(*my_socket, SOL_SOCKET, SO_REUSEADDR, &addr, sizeof(int)) == -1) {
+
+    if (setsockopt(*my_socket, SOL_SOCKET, SO_REUSEADDR, &addr, sizeof(int)) == -1)
+    {
         perror("setsockopt");
         pthread_exit(NULL);
     }
-    if (bind(*my_socket, (struct sockaddr *)&addr, sizeof(addr)) < 0) {
+    if (bind(*my_socket, (struct sockaddr *)&addr, sizeof(addr)) < 0)
+    {
         perror("bind()");
         return 1;
-    } 
-    if (listen(*my_socket, 5) < 0) {
+    }
+    if (listen(*my_socket, 5) < 0)
+    {
         perror("listen()");
         return 1;
     }
-    
+
     printf("serv_sock = %i\n", *my_socket);
     puts("en attente d'acceptation de nouveaux clients");
 }
 
 int create_track_client(int *my_socket, int clients_array[])
-{   
+{
     struct timeval timeout = {0};
     stTrackClient trackClient = {0};
     fd_set read_fs;
@@ -43,7 +48,8 @@ int create_track_client(int *my_socket, int clients_array[])
     timeout.tv_sec = 1;
     trackClient.max_sd = *my_socket;
 
-    for (int i = 0; i < MAXCLIENT; i++) {
+    for (int i = 0; i < MAXCLIENT; i++)
+    {
         trackClient.sd = clients_array[i];
 
         if (trackClient.sd > 0)
@@ -54,23 +60,29 @@ int create_track_client(int *my_socket, int clients_array[])
     }
     select(trackClient.max_sd + 1, &read_fs, NULL, NULL, &timeout);
 
-    if (FD_ISSET(*my_socket, &read_fs)) {
-        if ((trackClient.new_socket = accept(*my_socket, (struct sockaddr *)&addr, &client_addr_size)) < 0) {
+    if (FD_ISSET(*my_socket, &read_fs))
+    {
+        if ((trackClient.new_socket = accept(*my_socket, (struct sockaddr *)&addr, &client_addr_size)) < 0)
+        {
             perror("connect:");
             return 1;
         }
 
         printf("detect client new_s: %i\n", trackClient.new_socket);
-        if (trackClient.new_socket >= (*my_socket + 4)) {
+        if (trackClient.new_socket >= (*my_socket + 4))
+        {
             puts("nombre client max atteint");
         }
 
-        for (int i = 0; i < MAXCLIENT; i++) {
-            if (clients_array[i] == 0) {
+        for (int i = 0; i < MAXCLIENT; i++)
+        {
+            if (clients_array[i] == 0)
+            {
                 clients_array[i] = trackClient.new_socket;
 
                 printf("add new client :%i", trackClient.new_socket);
-                if (send(trackClient.new_socket, "hello\n", 6, MSG_NOSIGNAL) < 0) {
+                if (send(trackClient.new_socket, "hello\n", 6, MSG_NOSIGNAL) < 0)
+                {
                     puts("send failed");
                     return 1;
                 }
@@ -80,11 +92,14 @@ int create_track_client(int *my_socket, int clients_array[])
         }
     }
 
-    for (int i = 0; i < MAXCLIENT; i++) {
+    for (int i = 0; i < MAXCLIENT; i++)
+    {
         trackClient.sd = clients_array[i];
 
-        if (FD_ISSET(trackClient.sd, &read_fs)) {
-            if (read_client(trackClient.sd) == -1) {
+        if (FD_ISSET(trackClient.sd, &read_fs))
+        {
+            if (read_client(trackClient.sd) == -1)
+            {
                 puts("client disconnected");
                 close(trackClient.sd);
                 clients_array[i] = 0;

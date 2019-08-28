@@ -16,7 +16,8 @@
 #define MAXCLIENT 4
 #define ARRAYSIZE 32
 
-typedef struct stInfos {
+typedef struct stInfos
+{
     char choix[ARRAYSIZE];
     char hostname[ARRAYSIZE];
     char portname[ARRAYSIZE];
@@ -25,7 +26,8 @@ typedef struct stInfos {
     int *my_socket;
 } stInfos;
 
-typedef struct stTrackClient {
+typedef struct stTrackClient
+{
     int max_sd;
     int new_socket;
     int sd;
@@ -44,4 +46,5 @@ int read_client(int client);
 void send_key(SDL_Keycode keydown, int mysocket);
 
 void control_event(SDL_Event event, int *step, char **currentText, char *hostname, char *port, int mysocket);
+
 #endif
