@@ -17,6 +17,8 @@
 #define CASE_SIZE 64
 #define BOMB_POWER 1
 
+enum enDirection { UP, DOWN, LEFT, RIGHT };
+
 typedef struct stGame {
   SDL_Point screenSize;
   SDL_Window* pWindow;
@@ -37,12 +39,13 @@ void map_init(stGame* game);
 void object_init(stGame* game);
 void textures_init(stGame* game);
 void draw_map(stGame* game);
+void character_sort(int nPlayer, stPlayer* player);
 
 void draw_bomb(stGame* game);
-void create_bomb(stGame* game);
+void create_bomb(stGame* game, stPlayer* player);
 void add_NewBomb(stGame* game, bomb* newBomb);
 void destroy_bomb(stGame* game, bomb* endBomb);
-int position_bomb(stGame* game, bomb* newBomb);
+int position_bomb(stGame* game, bomb* newBomb, stPlayer* player);
 
 void draw_explosion(stGame* game);
 void create_explosion(stGame* game, bomb* bomb);
@@ -59,7 +62,7 @@ void game_destroy(stGame* game);
 void game_boucle(stGame* game);
 
 void game_draw(stGame* game);
-void character_move(SDL_Keycode direction, stGame* game);
+void character_move(enum enDirection direction, stGame* game, stPlayer* player);
 
 int check_collision(stGame* game, int x, int y);
 

@@ -56,39 +56,44 @@ void game_draw(stGame* game) {
     }
     currentExplosion = tempExplosion;
   }
+  stPlayer newPlayer[4];
+  memcpy(newPlayer, game->players, sizeof(newPlayer));
+  character_sort(2, newPlayer);
 
   for (int i = 0; i < 2; i++) {
-    SDL_Rect destinationPlayer = {game->players[i].playerX,
-                                  game->players[i].playerY,
-                                  game->players[i].playerPositionRect.w,
-                                  game->players[i].playerPositionRect.h};
+    SDL_Rect destinationPlayer = {newPlayer[i].playerX, newPlayer[i].playerY,
+                                  newPlayer[i].playerPositionRect.w,
+                                  newPlayer[i].playerPositionRect.h};
 
     SDL_Rect destinationPlayerColision = {
-        game->players[i].playerX + game->players[i].playerColisionRect.x,
-        game->players[i].playerY + game->players[i].playerColisionRect.y,
-        game->players[i].playerColisionRect.w,
-        game->players[i].playerColisionRect.h};
+        newPlayer[i].playerX + newPlayer[i].playerColisionRect.x,
+        newPlayer[i].playerY + newPlayer[i].playerColisionRect.y,
+        newPlayer[i].playerColisionRect.w, newPlayer[i].playerColisionRect.h};
 
     // SDL_SetRenderDrawColor(game->pRenderer, 10, 50, 10, 255);
     // SDL_RenderFillRect(game->pRenderer, &destinationPlayerColision);
-
-    switch (game->players[i].playerDirection) {
-      case 0:
-        SDL_RenderCopy(game->pRenderer, game->texture[2]->texture, NULL,
-                       &destinationPlayer);
-        break;
-      case 1:
-        SDL_RenderCopyEx(game->pRenderer, game->texture[2]->texture, NULL,
-                         &destinationPlayer, 0, NULL, flip);
-        break;
-      case 2:
-        SDL_RenderCopy(game->pRenderer, game->texture[1]->texture, NULL,
-                       &destinationPlayer);
-        break;
-      case 3:
-        SDL_RenderCopy(game->pRenderer, game->texture[0]->texture, NULL,
-                       &destinationPlayer);
-        break;
+    if (newPlayer[i].isDead) {
+      SDL_RenderCopy(game->pRenderer, game->texture[7]->texture, NULL,
+                     &destinationPlayer);
+    } else {
+      switch (newPlayer[i].playerDirection) {
+        case 0:
+          SDL_RenderCopy(game->pRenderer, game->texture[2]->texture, NULL,
+                         &destinationPlayer);
+          break;
+        case 1:
+          SDL_RenderCopyEx(game->pRenderer, game->texture[2]->texture, NULL,
+                           &destinationPlayer, 0, NULL, flip);
+          break;
+        case 2:
+          SDL_RenderCopy(game->pRenderer, game->texture[1]->texture, NULL,
+                         &destinationPlayer);
+          break;
+        case 3:
+          SDL_RenderCopy(game->pRenderer, game->texture[0]->texture, NULL,
+                         &destinationPlayer);
+          break;
+      }
     }
   }
   SDL_RenderPresent(game->pRenderer);
@@ -104,14 +109,37 @@ int game_event(stGame* game) {
     } else if (e.type == SDL_KEYDOWN) {
       switch (e.key.keysym.sym) {
         case SDLK_RIGHT:
+          character_move(RIGHT, game, &game->players[0]);
+          break;
         case SDLK_LEFT:
+          character_move(LEFT, game, &game->players[0]);
+          break;
         case SDLK_UP:
+          character_move(UP, game, &game->players[0]);
+          break;
         case SDLK_DOWN:
-          character_move(e.key.keysym.sym, game);
+          character_move(DOWN, game, &game->players[0]);
           break;
         case SDLK_SPACE:
-          create_bomb(game);
+          create_bomb(game, &game->players[0]);
           break;
+
+        case SDLK_d:
+          character_move(RIGHT, game, &game->players[1]);
+          break;
+        case SDLK_q:
+          character_move(LEFT, game, &game->players[1]);
+          break;
+        case SDLK_z:
+          character_move(UP, game, &game->players[1]);
+          break;
+        case SDLK_s:
+          character_move(DOWN, game, &game->players[1]);
+          break;
+        case SDLK_e:
+          create_bomb(game, &game->players[1]);
+          break;
+
         case SDLK_ESCAPE:
           quit = 1;
           break;
@@ -143,7 +171,9 @@ void game_boucle(stGame* game) {
     game->presentTime = SDL_GetTicks();
     game->delta = game->presentTime - game->lastTime;
     game->lastTime = game->presentTime;
-    player_flame_colision(game, &game->players[0]);
+    for (int i = 0; i < 2; i++) {
+      player_flame_colision(game, &game->players[i]);
+    }
     game_draw(game);
     quit = game_event(game);
     fps++;

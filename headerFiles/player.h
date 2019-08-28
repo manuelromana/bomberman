@@ -10,12 +10,16 @@
 #define PLPOSITIONX 64
 #define PLPOSITIONY 1
 
+#define PL2POSITIONX 600
+#define PL2POSITIONY 1
+
 typedef struct stPlayer {
   SDL_Rect playerColisionRect;
   SDL_Rect playerPositionRect;
 
   int playerDirection;
   double playerX, playerY;
+  int isDead;
 } stPlayer;
 
 #endif

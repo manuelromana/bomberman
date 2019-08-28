@@ -16,14 +16,14 @@ void draw_bomb(stGame *game) {
   }
 }
 
-void create_bomb(stGame *game) {
+void create_bomb(stGame *game, stPlayer *player) {
   bomb *newBomb;
   newBomb = (bomb *)malloc(sizeof(bomb));
   newBomb->power = BOMB_POWER;
   if (newBomb == NULL) {
     exit(EXIT_FAILURE);
   }
-  if (position_bomb(game, newBomb)) {
+  if (position_bomb(game, newBomb, player)) {
     newBomb->startTime = game->presentTime;
     add_NewBomb(game, newBomb);
   } else {
@@ -54,16 +54,14 @@ void destroy_bomb(stGame *game, bomb *endBomb) {
   free(endBomb);
 }
 
-int position_bomb(stGame *game, bomb *newBomb) {
-  newBomb->tileX =
-      game->players[0].playerX + game->players[0].playerColisionRect.x;
-  newBomb->tileX += game->players[0].playerColisionRect.w / 2;
+int position_bomb(stGame *game, bomb *newBomb, stPlayer *player) {
+  newBomb->tileX = player->playerX + player->playerColisionRect.x;
+  newBomb->tileX += player->playerColisionRect.w / 2;
   newBomb->tileX /= CASE_SIZE;
   newBomb->x = newBomb->tileX * CASE_SIZE;
 
-  newBomb->tileY =
-      game->players[0].playerY + game->players[0].playerColisionRect.y;
-  newBomb->tileY += game->players[0].playerColisionRect.h / 2;
+  newBomb->tileY = player->playerY + player->playerColisionRect.y;
+  newBomb->tileY += player->playerColisionRect.h / 2;
   newBomb->tileY /= CASE_SIZE;
   newBomb->y = newBomb->tileY * CASE_SIZE;
 
@@ -238,9 +236,8 @@ void player_flame_colision(stGame *game, stPlayer *player) {
         (playerTileYRB == currentExplosion->tileY &&
          playerTileXRB == currentExplosion->tileX)) {
       printf("Dead you are little FreeMan\n");
-      game->texture[1] = game->texture[7];
-      game->texture[2] = game->texture[7];
-      game->texture[0] = game->texture[7];
+
+      player->isDead = 1;
       break;
     }
     currentExplosion = currentExplosion->next;
