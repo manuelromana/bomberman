@@ -22,8 +22,10 @@ int main(void)
 
     while (*step != -1)
     {
-
-        control_event(event, step, &infos.current_text, infos.hostname, infos.portname, *my_socket);
+        if (*step < 4)
+        {
+            control_event(event, step, &infos.current_text, infos.hostname, infos.portname, *my_socket);
+        }
 
         if (*step == 0)
         {
@@ -49,10 +51,16 @@ int main(void)
         {
 
             create_track_client(my_socket, infos.clients_array);
-
             game->presentTime = SDL_GetTicks();
-
             draw_player_test(game);
+            game_network_event(step, game);
+            fps++;
+            if (game->presentTime - lastFps > 1000)
+            {
+                printf("FPS : %d\n", fps);
+                fps = 0;
+                lastFps = game->presentTime;
+            }
         }
 
         SDL_Delay(15);
