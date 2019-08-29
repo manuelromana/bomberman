@@ -12,6 +12,7 @@ int load_server(int *my_socket, char *hostname, char *portname)
     }
 
     int portnum = atoi(portname);
+    printf("%s %d\n", hostname, portnum);
     addr.sin_addr.s_addr = inet_addr(hostname);
     addr.sin_port = htons(portnum);
     addr.sin_family = AF_INET;
@@ -21,6 +22,7 @@ int load_server(int *my_socket, char *hostname, char *portname)
         perror("setsockopt");
         pthread_exit(NULL);
     }
+
     if (bind(*my_socket, (struct sockaddr *)&addr, sizeof(addr)) < 0)
     {
         perror("bind()");
@@ -45,7 +47,7 @@ int create_track_client(int *my_socket, int clients_array[])
     socklen_t client_addr_size = sizeof(addr);
     FD_ZERO(&read_fs);
     FD_SET(*my_socket, &read_fs);
-    timeout.tv_sec = 1;
+    timeout.tv_sec = 0;
     trackClient.max_sd = *my_socket;
 
     for (int i = 0; i < MAXCLIENT; i++)
@@ -58,63 +60,62 @@ int create_track_client(int *my_socket, int clients_array[])
         if (trackClient.sd > trackClient.max_sd)
             trackClient.max_sd = trackClient.sd;
     }
-    if (trackClient.max_sd != *my_socket)
+
+    select(trackClient.max_sd + 1, &read_fs, NULL, NULL, &timeout);
+
+    if (FD_ISSET(*my_socket, &read_fs))
     {
+        if (trackClient.new_socket >= (*my_socket + 4))
+        {
+            puts("nombre client max atteint");
+            return 1;
+        }
 
-        select(trackClient.max_sd + 1, &read_fs, NULL, NULL, &timeout);
-
-        if (FD_ISSET(*my_socket, &read_fs))
+        if ((trackClient.new_socket = accept(*my_socket, (struct sockaddr *)&addr, &client_addr_size)) < 0)
         {
 
-            if ((trackClient.new_socket = accept(*my_socket, (struct sockaddr *)&addr, &client_addr_size)) < 0)
-            {
-
-                perror("connect:");
-                puts("server socket");
-                return 1;
-            }
-
-            printf("detect client new_s: %i\n", trackClient.new_socket);
-            if (trackClient.new_socket >= (*my_socket + 4))
-            {
-                puts("nombre client max atteint");
-            }
-
-            for (int i = 0; i < MAXCLIENT; i++)
-            {
-                if (clients_array[i] == 0)
-                {
-                    clients_array[i] = trackClient.new_socket;
-
-                    printf("add new client :%i", trackClient.new_socket);
-                    if (send(trackClient.new_socket, "hello\n", 6, MSG_NOSIGNAL) < 0)
-                    {
-                        puts("send failed");
-                        puts("toto");
-
-                        return 1;
-                    }
-
-                    break;
-                }
-            }
+            perror("connect:");
+            puts("server socket");
+            return 1;
         }
+
+        printf("detect client new_s: %i\n", trackClient.new_socket);
 
         for (int i = 0; i < MAXCLIENT; i++)
         {
-            trackClient.sd = clients_array[i];
-
-            if (FD_ISSET(trackClient.sd, &read_fs))
+            if (clients_array[i] == 0)
             {
-                if (read_client(trackClient.sd) == -1)
+                clients_array[i] = trackClient.new_socket;
+
+                printf("add new client :%i", trackClient.new_socket);
+                if (send(trackClient.new_socket, "hello\n", 6, MSG_NOSIGNAL) < 0)
                 {
-                    puts("client disconnected");
-                    close(trackClient.sd);
-                    clients_array[i] = 0;
+                    puts("send failed");
+                    puts("toto");
+
+                    return 1;
                 }
+
+                break;
             }
         }
     }
+
+    for (int i = 0; i < MAXCLIENT; i++)
+    {
+        trackClient.sd = clients_array[i];
+
+        if (FD_ISSET(trackClient.sd, &read_fs))
+        {
+            if (read_client(trackClient.sd) == -1)
+            {
+                puts("client disconnected");
+                close(trackClient.sd);
+                clients_array[i] = 0;
+            }
+        }
+    }
+
     return 1;
 }
 

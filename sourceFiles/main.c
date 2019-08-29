@@ -7,6 +7,8 @@ int main(void)
     stGame *game = game_network_init(menu->pWindow, menu->pRenderer);
     stInfos infos = {0};
     infos.current_text = infos.choix;
+    strcpy(infos.hostname, "127.0.0.1");
+    strcpy(infos.portname, "1234");
     SDL_Event event;
     int *my_socket = malloc(sizeof(int *));
     int *step = malloc(sizeof(int));
