@@ -10,8 +10,8 @@
 #define PLPOSITIONX 64
 #define PLPOSITIONY 1
 
-#define PL2POSITIONX 600
-#define PL2POSITIONY 1
+#define PL2POSITIONX 1088
+#define PL2POSITIONY 768
 
 typedef struct stPlayer {
   SDL_Rect playerColisionRect;
