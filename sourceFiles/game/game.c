@@ -39,6 +39,7 @@ stGame *game_init()
 
   return game;
 }
+
 stGame *game_network_init(SDL_Window *pWindow, SDL_Renderer *pRenderer)
 {
   stGame *game = {0};
@@ -123,6 +124,15 @@ void game_draw(stGame *game)
                    &destinationPlayer);
     break;
   }
+  SDL_RenderPresent(game->pRenderer);
+}
+
+void game_draw_test(stGame *game)
+{
+
+  SDL_SetRenderDrawColor(game->pRenderer, 10, 50, 10, 255);
+  SDL_RenderClear(game->pRenderer);
+  draw_map(game);
   SDL_RenderPresent(game->pRenderer);
 }
 

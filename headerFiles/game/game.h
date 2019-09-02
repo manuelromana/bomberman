@@ -60,6 +60,7 @@ void game_destroy(stGame *game);
 void game_boucle(stGame *game);
 
 void game_draw(stGame *game);
+void game_draw_test(stGame *game);
 void character_move(SDL_Keycode direction, stGame *game);
 
 int check_collision(stGame *game, int x, int y);

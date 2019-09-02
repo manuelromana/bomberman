@@ -54,8 +54,13 @@ int main(void)
 
             create_track_client(my_socket, infos.clients_array);
             game->presentTime = SDL_GetTicks();
-            draw_player_test(game);
-            game_network_event(step, game);
+            game_draw_test(game);
+            int quit = game_event(game);
+            if (quit == 1)
+            {
+                *step = -1;
+            }
+            printf("quit = %d\n", quit);
             fps++;
             if (game->presentTime - lastFps > 1000)
             {
