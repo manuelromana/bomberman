@@ -1,5 +1,4 @@
-#include "../headerFiles/network.h"
-#include "../headerFiles/menu.h"
+#include "../../headerFiles/network/network.h"
 
 int load_server(int *my_socket, char *hostname, char *portname)
 {
@@ -170,4 +169,46 @@ int load_client(int *mysocket, char *hostname, char *portname)
     memset(message, '\0', 128);
     read(*mysocket, message, 128);
     printf("%s\n", message);
+}
+
+void send_key(SDL_Keycode keydown, int mysocket)
+{
+    switch (keydown)
+    {
+    case SDLK_UP:
+        if (send(mysocket, "up\n", 3, MSG_NOSIGNAL) < 0)
+        {
+            puts("send failed");
+            close(mysocket);
+        }
+        break;
+    case SDLK_DOWN:
+        if (send(mysocket, "Down\n", 5, MSG_NOSIGNAL) < 0)
+        {
+            puts("send failed");
+            close(mysocket);
+        }
+        break;
+    case SDLK_RIGHT:
+        if (send(mysocket, "Right\n", 6, MSG_NOSIGNAL) < 0)
+        {
+            puts("send failed");
+            close(mysocket);
+        }
+        break;
+    case SDLK_LEFT:
+        if (send(mysocket, "Left\n", 5, MSG_NOSIGNAL) < 0)
+        {
+            puts("send failed");
+            close(mysocket);
+        }
+        break;
+    case SDLK_SPACE:
+        if (send(mysocket, "Action\n", 7, MSG_NOSIGNAL) < 0)
+        {
+            puts("send failed");
+            close(mysocket);
+        }
+        break;
+    }
 }

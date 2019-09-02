@@ -1,10 +1,11 @@
-#include "../headerFiles/menu.h"
+
 #include "../headerFiles/game/game.h"
 
 int main(void)
 {
-    stMenu *menu = menu_init_2();
-    stGame *game = game_network_init(menu->pWindow, menu->pRenderer);
+
+    stGame *game = game_init();
+    stMenu *menu = menu_init(game->pWindow, game->pRenderer);
     stInfos infos = {0};
     infos.current_text = infos.choix;
     strcpy(infos.hostname, "127.0.0.1");
@@ -26,7 +27,7 @@ int main(void)
     {
         if (*step < 4)
         {
-            control_event(event, step, &infos.current_text, infos.hostname, infos.portname, *my_socket);
+            menu_event(event, step, &infos.current_text, infos.hostname, infos.portname, *my_socket);
         }
 
         if (*step == 0)
@@ -54,13 +55,15 @@ int main(void)
 
             create_track_client(my_socket, infos.clients_array);
             game->presentTime = SDL_GetTicks();
-            game_draw_test(game);
+            game->delta = game->presentTime - game->lastTime;
+            game->lastTime = game->presentTime;
+            game_draw(game);
             int quit = game_event(game);
             if (quit == 1)
             {
                 *step = -1;
             }
-            printf("quit = %d\n", quit);
+
             fps++;
             if (game->presentTime - lastFps > 1000)
             {

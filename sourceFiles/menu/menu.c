@@ -1,6 +1,7 @@
-#include "../headerFiles/menu.h"
+#include "../../headerFiles/menu/menu.h"
+#include "../../headerFiles/game/game.h" //pour les screensize
 
-stMenu *menu_init_2()
+stMenu *menu_init(SDL_Window *pWindow, SDL_Renderer *pRenderer)
 {
     stMenu *menu = {0};
     menu = malloc(sizeof(stMenu));
@@ -12,32 +13,12 @@ stMenu *menu_init_2()
         exit(EXIT_FAILURE);
     }
 
-    menu->pWindow = SDL_CreateWindow(
-        "Bomberman",
-        SDL_WINDOWPOS_UNDEFINED,
-        SDL_WINDOWPOS_UNDEFINED,
-        SCREENSIZEX,
-        SCREENSIZEY,
-        SDL_WINDOW_OPENGL);
-    if (menu->pWindow)
-    {
-        menu->pRenderer = SDL_CreateRenderer(menu->pWindow, -1, SDL_RENDERER_ACCELERATED);
-
-        if (!menu->pRenderer)
-        {
-            printf("Could not create renderer: %s\n", SDL_GetError());
-            return NULL;
-        }
-    }
-    else
-    {
-        printf("Could not create window: %s\n", SDL_GetError());
-        return NULL;
-    }
+    menu->pWindow = pWindow;
+    menu->pRenderer = pRenderer;
 
     menu->police1 = TTF_OpenFont(PATHFGRAFITI, 70);
     menu->police2 = TTF_OpenFont(PATHFNEON, 45);
-
+    // menu_image_load(menu);
     menu->pTextChoix = font_load(menu, menu->police2, TXTSURFCHOIX);
     menu->pTextHostname = font_load(menu, menu->police1, TXTSURFHOSTNAME);
     menu->pTextPortname = font_load(menu, menu->police1, TXTSURFPORTNAME);
@@ -48,7 +29,32 @@ stMenu *menu_init_2()
     return menu;
 }
 
-void control_event(SDL_Event event, int *step, char **currentText, char *hostname, char *port, int socket_target)
+void menu_image_load(stMenu *menu)
+{
+    char *path = "../../assets/bomberman.png";
+    menu->surface = IMG_Load(path);
+    if (!menu->surface)
+    {
+
+        fprintf(stderr, "Erreur au chargement de l'image : %s,%s\n", path,
+                IMG_GetError());
+        menu_destroy_2(menu);
+    }
+    else
+    {
+        menu->texture = SDL_CreateTextureFromSurface(
+            menu->pRenderer, menu->surface);
+        if (!menu->texture)
+        {
+            fprintf(stderr, "Erreur au chargement de la texture : %s,%s\n",
+                    path, SDL_GetError());
+            menu_destroy_2(menu);
+        }
+        SDL_FreeSurface(menu->surface);
+    }
+}
+
+void menu_event(SDL_Event event, int *step, char **currentText, char *hostname, char *port, int socket_target)
 {
     while (SDL_PollEvent(&event) != 0)
     {
@@ -86,6 +92,17 @@ void control_event(SDL_Event event, int *step, char **currentText, char *hostnam
             }
         }
     }
+}
+
+void menu_draw(stMenu *menu)
+{
+    SDL_SetRenderDrawColor(menu->pRenderer, 255, 255, 255, 255);
+    SDL_RenderClear(menu->pRenderer);
+
+    SDL_Rect menu_fond = {0, 0, SCREENSIZEX, SCREENSIZEY};
+    SDL_RenderCopy(menu->pRenderer, menu->texturesMenu[0]->texture, NULL, &menu_fond);
+
+    SDL_RenderPresent(menu->pRenderer);
 }
 
 void menu_draw_choix(stMenu *menu, char *choix)
@@ -133,6 +150,7 @@ void menu_draw_hostname(stMenu *menu, char *hostname)
 
 void menu_draw_port(stMenu *menu, char *port)
 {
+
     SDL_SetRenderDrawColor(menu->pRenderer, 255, 255, 255, 255);
     SDL_RenderClear(menu->pRenderer);
 
@@ -175,47 +193,5 @@ void menu_destroy_2(stMenu *menu)
         SDL_DestroyRenderer(menu->pRenderer);
 
         free(menu);
-    }
-}
-
-void send_key(SDL_Keycode keydown, int mysocket)
-{
-    switch (keydown)
-    {
-    case SDLK_UP:
-        if (send(mysocket, "up\n", 3, MSG_NOSIGNAL) < 0)
-        {
-            puts("send failed");
-            close(mysocket);
-        }
-        break;
-    case SDLK_DOWN:
-        if (send(mysocket, "Down\n", 5, MSG_NOSIGNAL) < 0)
-        {
-            puts("send failed");
-            close(mysocket);
-        }
-        break;
-    case SDLK_RIGHT:
-        if (send(mysocket, "Right\n", 6, MSG_NOSIGNAL) < 0)
-        {
-            puts("send failed");
-            close(mysocket);
-        }
-        break;
-    case SDLK_LEFT:
-        if (send(mysocket, "Left\n", 5, MSG_NOSIGNAL) < 0)
-        {
-            puts("send failed");
-            close(mysocket);
-        }
-        break;
-    case SDLK_SPACE:
-        if (send(mysocket, "Action\n", 7, MSG_NOSIGNAL) < 0)
-        {
-            puts("send failed");
-            close(mysocket);
-        }
-        break;
     }
 }

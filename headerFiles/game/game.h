@@ -9,11 +9,12 @@
 #include "objects.h"
 #include "player.h"
 #include "textures.h"
-#include "../menu.h"
-#include "../network.h"
+#include "../menu/menu.h"
+#include "../network/network.h"
+
 #define SPEED 1
-// #define SCREENSIZEX 1216
-// #define SCREENSIZEY 960
+#define SCREENSIZEX 1216
+#define SCREENSIZEY 960
 #define TEXTURESSIZE 10
 #define CASE_SIZE 64
 #define BOMB_POWER 1

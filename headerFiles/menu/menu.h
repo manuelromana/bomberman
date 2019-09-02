@@ -4,33 +4,23 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
-#include <stdbool.h>
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/socket.h>
-#include <arpa/inet.h>
-#include <pthread.h>
-#include <sys/select.h>
-#include <sys/time.h>
-#include <string.h>
-#include "network.h"
+#include "../network/network.h"
 #include "fonts.h"
-#include "game/game.h"
-
-#define SCREENSIZEX 640
-#define SCREENSIZEY 480
+#include "../game/game.h"
+#include "../game/textures.h"
 
 #define MENUDISPLAYX 10
 #define MENUDISPLAYY 60
 #define MENUDISPLAYW 600
 #define MENUDISPLAYH 100
+#define TEXTURESMENUSIZE 1
 
 #define INPUTPOSITIONX 60
 #define INPUTPOSITIONY 160
 #define INPUTPOSITIONW(width) (15 * width)
 #define INPUTPOSITIONH 50
+#define PATHMENU "../../assets/bomberman.png"
 
 typedef struct stMenu
 {
@@ -54,15 +44,21 @@ typedef struct stMenu
     SDL_Rect portPositionRect;
     SDL_Rect welcomePositionRect;
     SDL_Rect choixPositionRect;
+
+    stTexture *texturesMenu[TEXTURESMENUSIZE];
+
 } stMenu;
 
-stMenu *menu_init_2();
+stMenu *menu_init(SDL_Window *pWindow, SDL_Renderer *pRenderer);
 SDL_Texture *font_load(stMenu *menu, TTF_Font *police, char *content);
-
+void menu_image_load(stMenu *menu);
+void menu_draw(stMenu *menu);
 void menu_draw_choix(stMenu *menu, char *choix);
 void menu_draw_hostname(stMenu *menu, char *hostname);
 void menu_draw_port(stMenu *menu, char *port);
 void menu_draw_welcome(stMenu *menu);
+
+void menu_event(SDL_Event event, int *step, char **currentText, char *hostname, char *port, int socket_target);
 
 void menu_destroy_2(stMenu *menu);
 #endif

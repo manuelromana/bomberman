@@ -45,6 +45,4 @@ int read_client(int client);
 
 void send_key(SDL_Keycode keydown, int mysocket);
 
-void control_event(SDL_Event event, int *step, char **currentText, char *hostname, char *port, int mysocket);
-
 #endif

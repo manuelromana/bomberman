@@ -1,13 +1,13 @@
 NAME = game
 NAME2 = client
-NAME3 = server
+NAME3 = bombermanInLine
 NAME4 = bomberman
 
 SRC2 = sourceFiles/client.c
 
-SRC3 = sourceFiles/main.c sourceFiles/game_connection.c\
-	sourceFiles/networkFunction.c\
-	sourceFiles/fonts.c \
+SRC3 = sourceFiles/main.c sourceFiles/network/network.c\
+	sourceFiles/menu/menu.c\
+	sourceFiles/menu/fonts.c \
 	sourceFiles/game/game.c\
 	sourceFiles/game/textures.c\
 	sourceFiles/game/character.c\
@@ -39,7 +39,7 @@ all: $(NAME)
 client : $(OBJ2)
 	$(CC) $(OBJ2) $(CC_SDL) -o $(NAME2)
 
-server : $(OBJ3)
+inline : $(OBJ3)
 	$(CC) $(OBJ3) $(CC_SDL) -o $(NAME3)
 
 bomberman : $(OBJ4)
