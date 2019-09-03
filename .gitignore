@@ -1,11 +1,14 @@
 sourceFiles/*.o
 sourceFiles/game/*.o
+sourceFiles/menu/*.o
+sourceFiles/network/*.o
 bomberman
 .vscode/settings.json
 assets/Bomberman/Front/BmanBackup.png
 server
 client
 test
+bombermanInLine
 draw
 rapport
 .vscode/
