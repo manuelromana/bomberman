@@ -13,8 +13,8 @@ stGame *game_init()
     return NULL;
 
   game->pWindow = SDL_CreateWindow("Bomberman", SDL_WINDOWPOS_UNDEFINED,
-                                   SDL_WINDOWPOS_UNDEFINED, SCREENSIZEX,
-                                   SCREENSIZEY, SDL_WINDOW_OPENGL);
+                                   SDL_WINDOWPOS_UNDEFINED, 1216,
+                                   960, SDL_WINDOW_OPENGL);
 
   if (game->pWindow)
   {

@@ -32,7 +32,8 @@ int main(void)
 
         if (*step == 0)
         {
-            menu_draw_choix(menu, infos.choix);
+            // menu_draw_choix(menu, infos.choix);
+            menu_draw(menu);
         }
         else if (*step == 1)
         {

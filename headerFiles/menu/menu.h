@@ -30,28 +30,33 @@ typedef struct stMenu
 
     TTF_Font *police1;
     TTF_Font *police2;
+    TTF_Font *police3;
 
+    //vaiables utilisées pour load les ttf
     SDL_Surface *surface;
     SDL_Texture *texture;
+
+    SDL_Surface *surfaceMenu;
+    SDL_Texture *textureMenu;
     SDL_Texture *pTextHostname;
     SDL_Texture *pTextPortname;
     SDL_Texture *pTextWelcome;
     SDL_Texture *pTextChoix;
     SDL_Texture *pInputText;
+    SDL_Texture *pTextheberger;
 
     SDL_Rect inputPositionRect;
     SDL_Rect hostamePositionRect;
     SDL_Rect portPositionRect;
     SDL_Rect welcomePositionRect;
     SDL_Rect choixPositionRect;
-
-    stTexture *texturesMenu[TEXTURESMENUSIZE];
+    SDL_Rect hebergerPostionRect;
 
 } stMenu;
 
 stMenu *menu_init(SDL_Window *pWindow, SDL_Renderer *pRenderer);
 SDL_Texture *font_load(stMenu *menu, TTF_Font *police, char *content);
-void menu_image_load(stMenu *menu);
+SDL_Texture *font_load_shaded(stMenu *menu, TTF_Font *police, char *content);
 void menu_draw(stMenu *menu);
 void menu_draw_choix(stMenu *menu, char *choix);
 void menu_draw_hostname(stMenu *menu, char *hostname);

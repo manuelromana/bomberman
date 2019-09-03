@@ -5,6 +5,28 @@ stMenu *menu_init(SDL_Window *pWindow, SDL_Renderer *pRenderer)
 {
     stMenu *menu = {0};
     menu = malloc(sizeof(stMenu));
+    char *path = "assets/Menu/logo.png";
+    menu->surfaceMenu = IMG_Load(path);
+
+    if (!menu->surfaceMenu)
+    {
+
+        fprintf(stderr, "Erreur au chargement de l'image : %s,%s\n", path,
+                IMG_GetError());
+        menu_destroy_2(menu);
+    }
+    else
+    {
+        menu->textureMenu = SDL_CreateTextureFromSurface(
+            pRenderer, menu->surfaceMenu);
+        if (!menu->textureMenu)
+        {
+            fprintf(stderr, "Erreur au chargement de la texture : %s,%s\n",
+                    path, SDL_GetError());
+            menu_destroy_2(menu);
+        }
+        SDL_FreeSurface(menu->surfaceMenu);
+    }
 
     TTF_Init();
     if (TTF_Init() == -1)
@@ -18,40 +40,18 @@ stMenu *menu_init(SDL_Window *pWindow, SDL_Renderer *pRenderer)
 
     menu->police1 = TTF_OpenFont(PATHFGRAFITI, 70);
     menu->police2 = TTF_OpenFont(PATHFNEON, 45);
-    // menu_image_load(menu);
+
+    TTF_SetFontOutline(menu->police2, 1);
+    //TTF_SetFontStyle(menu->police2, TTF_STYLE_BOLD);
+
     menu->pTextChoix = font_load(menu, menu->police2, TXTSURFCHOIX);
     menu->pTextHostname = font_load(menu, menu->police1, TXTSURFHOSTNAME);
     menu->pTextPortname = font_load(menu, menu->police1, TXTSURFPORTNAME);
     menu->pTextWelcome = font_load(menu, menu->police1, TXTWELCOMESERVEUR);
-
+    menu->pTextheberger = font_load_shaded(menu, menu->police2, TXTHEBERGER);
     SDL_StartTextInput();
 
     return menu;
-}
-
-void menu_image_load(stMenu *menu)
-{
-    char *path = "../../assets/bomberman.png";
-    menu->surface = IMG_Load(path);
-    if (!menu->surface)
-    {
-
-        fprintf(stderr, "Erreur au chargement de l'image : %s,%s\n", path,
-                IMG_GetError());
-        menu_destroy_2(menu);
-    }
-    else
-    {
-        menu->texture = SDL_CreateTextureFromSurface(
-            menu->pRenderer, menu->surface);
-        if (!menu->texture)
-        {
-            fprintf(stderr, "Erreur au chargement de la texture : %s,%s\n",
-                    path, SDL_GetError());
-            menu_destroy_2(menu);
-        }
-        SDL_FreeSurface(menu->surface);
-    }
 }
 
 void menu_event(SDL_Event event, int *step, char **currentText, char *hostname, char *port, int socket_target)
@@ -62,6 +62,7 @@ void menu_event(SDL_Event event, int *step, char **currentText, char *hostname, 
         {
         case (SDL_QUIT):
             *step = -1;
+
         case (SDL_TEXTINPUT):
             strcat(*currentText, event.text.text);
             break;
@@ -82,6 +83,7 @@ void menu_event(SDL_Event event, int *step, char **currentText, char *hostname, 
                     *currentText = port;
                 }
                 break;
+
             case SDLK_UP:
             case SDLK_DOWN:
             case SDLK_RIGHT:
@@ -96,11 +98,14 @@ void menu_event(SDL_Event event, int *step, char **currentText, char *hostname, 
 
 void menu_draw(stMenu *menu)
 {
-    SDL_SetRenderDrawColor(menu->pRenderer, 255, 255, 255, 255);
+    SDL_SetRenderDrawColor(menu->pRenderer, 0, 0, 0, 0);
     SDL_RenderClear(menu->pRenderer);
 
-    SDL_Rect menu_fond = {0, 0, SCREENSIZEX, SCREENSIZEY};
-    SDL_RenderCopy(menu->pRenderer, menu->texturesMenu[0]->texture, NULL, &menu_fond);
+    SDL_Rect menu_title = {300, 30, 500, 500};
+    SDL_RenderCopy(menu->pRenderer, menu->textureMenu, NULL, &menu_title);
+
+    SDL_Rect heberger = {550, 500, 500, 100};
+    SDL_RenderCopy(menu->pRenderer, menu->pTextheberger, NULL, &heberger);
 
     SDL_RenderPresent(menu->pRenderer);
 }
