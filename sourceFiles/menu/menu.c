@@ -1,4 +1,4 @@
-#include "../../headerFiles/menu/menu.h"
+
 #include "../../headerFiles/game/game.h" //pour les screensize
 
 stMenu *menu_init(SDL_Window *pWindow, SDL_Renderer *pRenderer)
@@ -56,8 +56,12 @@ stMenu *menu_init(SDL_Window *pWindow, SDL_Renderer *pRenderer)
 
 void menu_event(SDL_Event event, int *step, char **currentText, char *hostname, char *port, int socket_target)
 {
+
     while (SDL_PollEvent(&event) != 0)
     {
+        SDL_Rect targetClick = {550, 500, 500, 100};
+        int xClick = event.button.x;
+        int yClick = event.button.y;
         switch (event.type)
         {
         case (SDL_QUIT):
@@ -65,6 +69,20 @@ void menu_event(SDL_Event event, int *step, char **currentText, char *hostname, 
 
         case (SDL_TEXTINPUT):
             strcat(*currentText, event.text.text);
+            break;
+        case (SDL_MOUSEBUTTONUP):
+            switch (event.button.button)
+            {
+            case (SDL_BUTTON_LEFT):
+
+                if (xClick >= targetClick.x && xClick <= targetClick.x + targetClick.w && yClick >= targetClick.y && yClick <= targetClick.y + targetClick.h)
+                {
+                    strcpy(*currentText, "1");
+                    (*step)++;
+                    *currentText = hostname;
+                }
+                break;
+            }
             break;
         case (SDL_KEYDOWN):
             switch (event.key.keysym.sym)

@@ -32,7 +32,7 @@ int main(void)
 
         if (*step == 0)
         {
-            // menu_draw_choix(menu, infos.choix);
+            //menu_draw_choix(menu, infos.choix);
             menu_draw(menu);
         }
         else if (*step == 1)
@@ -46,7 +46,10 @@ int main(void)
         else if (*step == 3)
         {
             if (*infos.choix == '1')
+            {
+                puts("loadserver");
                 load_server(my_socket, infos.hostname, infos.portname);
+            }
             if (*infos.choix == '2')
                 load_client(my_socket, infos.hostname, infos.portname);
             (*step)++;
