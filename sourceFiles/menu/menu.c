@@ -18,7 +18,7 @@ stMenu *menu_init(SDL_Window *pWindow, SDL_Renderer *pRenderer)
 
     menu->police1 = TTF_OpenFont(PATHFGRAFITI, 70);
     menu->police2 = TTF_OpenFont(PATHFNEON, 45);
-    // menu_image_load(menu);
+    menu_image_load(menu);
     menu->pTextChoix = font_load(menu, menu->police2, TXTSURFCHOIX);
     menu->pTextHostname = font_load(menu, menu->police1, TXTSURFHOSTNAME);
     menu->pTextPortname = font_load(menu, menu->police1, TXTSURFPORTNAME);
