@@ -9,5 +9,6 @@
 #define TXTSURFPORTNAME "Tapez le numero de port puis entree : "
 #define TXTWELCOMESERVEUR "Bienvenue, tapez une commande pour le server"
 #define TXTHEBERGER "Heberger une partie"
+#define TXTREJOINDRE "Rejoindre une partie"
 
 #endif

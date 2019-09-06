@@ -44,6 +44,7 @@ typedef struct stMenu
     SDL_Texture *pTextChoix;
     SDL_Texture *pInputText;
     SDL_Texture *pTextheberger;
+    SDL_Texture *pTextRejoindre;
 
     SDL_Rect inputPositionRect;
     SDL_Rect hostamePositionRect;
@@ -51,6 +52,7 @@ typedef struct stMenu
     SDL_Rect welcomePositionRect;
     SDL_Rect choixPositionRect;
     SDL_Rect hebergerPostionRect;
+    SDL_Rect rejoindrePostionRect;
 
 } stMenu;
 

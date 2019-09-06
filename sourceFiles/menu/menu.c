@@ -49,6 +49,7 @@ stMenu *menu_init(SDL_Window *pWindow, SDL_Renderer *pRenderer)
     menu->pTextPortname = font_load(menu, menu->police1, TXTSURFPORTNAME);
     menu->pTextWelcome = font_load(menu, menu->police1, TXTWELCOMESERVEUR);
     menu->pTextheberger = font_load_shaded(menu, menu->police2, TXTHEBERGER);
+    menu->pTextRejoindre = font_load_shaded(menu, menu->police2, TXTREJOINDRE);
     SDL_StartTextInput();
 
     return menu;
@@ -59,7 +60,9 @@ void menu_event(SDL_Event event, int *step, char **currentText, char *hostname, 
 
     while (SDL_PollEvent(&event) != 0)
     {
-        SDL_Rect targetClick = {550, 500, 500, 100};
+        SDL_Rect hebergerClick = {550, 400, 500, 100};
+        SDL_Rect rejoindreClick = {550, 600, 500, 100};
+
         int xClick = event.button.x;
         int yClick = event.button.y;
         switch (event.type)
@@ -75,9 +78,16 @@ void menu_event(SDL_Event event, int *step, char **currentText, char *hostname, 
             {
             case (SDL_BUTTON_LEFT):
 
-                if (xClick >= targetClick.x && xClick <= targetClick.x + targetClick.w && yClick >= targetClick.y && yClick <= targetClick.y + targetClick.h)
+                if (xClick >= hebergerClick.x && xClick <= hebergerClick.x + hebergerClick.w && yClick >= hebergerClick.y && yClick <= hebergerClick.y + hebergerClick.h)
                 {
                     strcpy(*currentText, "1");
+                    (*step)++;
+                    *currentText = hostname;
+                }
+
+                else if (xClick >= rejoindreClick.x && xClick <= rejoindreClick.x + rejoindreClick.w && yClick >= rejoindreClick.y && yClick <= rejoindreClick.y + rejoindreClick.h)
+                {
+                    strcpy(*currentText, "2");
                     (*step)++;
                     *currentText = hostname;
                 }
@@ -122,8 +132,11 @@ void menu_draw(stMenu *menu)
     SDL_Rect menu_title = {300, 30, 500, 500};
     SDL_RenderCopy(menu->pRenderer, menu->textureMenu, NULL, &menu_title);
 
-    SDL_Rect heberger = {550, 500, 500, 100};
+    SDL_Rect heberger = {550, 400, 500, 100};
     SDL_RenderCopy(menu->pRenderer, menu->pTextheberger, NULL, &heberger);
+
+    SDL_Rect rejoindre = {550, 600, 500, 100};
+    SDL_RenderCopy(menu->pRenderer, menu->pTextRejoindre, NULL, &rejoindre);
 
     SDL_RenderPresent(menu->pRenderer);
 }
