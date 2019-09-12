@@ -212,3 +212,27 @@ void send_key(SDL_Keycode keydown, int mysocket)
         break;
     }
 }
+
+void game_client_event(int *step, int serverSocket)
+{
+    SDL_Event event;
+    while (SDL_PollEvent(&event) != 0)
+    {
+        switch (event.type)
+        {
+        case (SDL_QUIT):
+            *step = -1;
+        case (SDL_KEYDOWN):
+            switch (event.key.keysym.sym)
+            {
+            case SDLK_UP:
+            case SDLK_DOWN:
+            case SDLK_RIGHT:
+            case SDLK_LEFT:
+            case SDLK_SPACE:
+                send_key(event.key.keysym.sym, serverSocket);
+                break;
+            }
+        }
+    }
+}

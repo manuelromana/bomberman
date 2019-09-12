@@ -72,6 +72,4 @@ stGame *game_network_init(SDL_Window *pWindow, SDL_Renderer *pRenderer);
 
 void game_network_event(int *step, stGame *game);
 
-void draw_player_test(stGame *game);
-
 #endif

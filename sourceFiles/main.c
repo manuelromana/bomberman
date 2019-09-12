@@ -47,11 +47,15 @@ int main(void)
         {
             if (*infos.choix == '1')
             {
+
                 puts("loadserver");
                 load_server(my_socket, infos.hostname, infos.portname);
             }
             if (*infos.choix == '2')
+            {
+
                 load_client(my_socket, infos.hostname, infos.portname);
+            }
             (*step)++;
         }
         else if (*step == 4)
@@ -62,10 +66,18 @@ int main(void)
             game->delta = game->presentTime - game->lastTime;
             game->lastTime = game->presentTime;
             game_draw(game);
-            int quit = game_event(game);
-            if (quit == 1)
+
+            if (*infos.choix == '1')
             {
-                *step = -1;
+                int quit = game_event(game);
+                if (quit == 1)
+                {
+                    *step = -1;
+                }
+            }
+            else if (*infos.choix == '2')
+            {
+                game_client_event(step, *my_socket);
             }
 
             fps++;

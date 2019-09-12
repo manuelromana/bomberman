@@ -127,15 +127,6 @@ void game_draw(stGame *game)
   SDL_RenderPresent(game->pRenderer);
 }
 
-void game_draw_test(stGame *game)
-{
-
-  SDL_SetRenderDrawColor(game->pRenderer, 10, 50, 10, 255);
-  SDL_RenderClear(game->pRenderer);
-  draw_map(game);
-  SDL_RenderPresent(game->pRenderer);
-}
-
 void game_network_event(int *step, stGame *game)
 {
 
