@@ -2,7 +2,7 @@
 #include "../headerFiles/map.h"
 #include "../headerFiles/player.h"
 
-void player_init(stGame* game) {
+void player1_init(stGame *game) {
   game->players[0].isDead = 0;
   game->players[0].playerPositionRect.x = PLPOSITIONX;
   game->players[0].playerPositionRect.y = PLPOSITIONY;
@@ -14,7 +14,9 @@ void player_init(stGame* game) {
   game->players[0].playerColisionRect.w = PLAYERCOLISONW;
   game->players[0].playerX = game->players[0].playerPositionRect.x;
   game->players[0].playerY = game->players[0].playerPositionRect.y;
+}
 
+void player2_init(stGame *game) {
   game->players[1].isDead = 0;
   game->players[1].playerPositionRect.x = PL2POSITIONX;
   game->players[1].playerPositionRect.y = PL2POSITIONY;
@@ -27,6 +29,7 @@ void player_init(stGame* game) {
   game->players[1].playerX = game->players[1].playerPositionRect.x;
   game->players[1].playerY = game->players[1].playerPositionRect.y;
 }
+
 void character_move(enum enDirection direction, stGame* game,
                     stPlayer* player) {
   double x = player->playerColisionRect.x + player->playerX;

@@ -25,7 +25,8 @@ stGame* game_init() {
 
   textures_init(game);
   map_init(game);
-  player_init(game);
+  player1_init(game);
+  player2_init(game);
   object_init(game);
 
   return game;

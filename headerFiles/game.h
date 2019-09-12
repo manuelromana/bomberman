@@ -34,7 +34,8 @@ typedef struct stGame {
 
 stGame* game_init();
 void sdl_load(stGame* game, char* paths[], int arrayLength);
-void player_init(stGame* game);
+void player1_init(stGame *game);
+void player2_init(stGame *game);
 void map_init(stGame* game);
 void object_init(stGame* game);
 void textures_init(stGame* game);
