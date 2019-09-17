@@ -90,7 +90,7 @@ void character_move(enum enDirection direction, stGame* game,
 }
 
 int check_collision(stGame* game, int x, int y) {
-  if (game->map->map[y][x] == 1 || game->map->map[y][x] == 3) {
+  if (game->map->map[y][x] == 1 || game->map->map[y][x] == 2 || game->map->map[y][x] == 3) {
     return 1;
   } else {
     return 0;
