@@ -47,7 +47,7 @@ int create_track_client(int *my_socket, int clients_array[])
     FD_ZERO(&read_fs);
     FD_SET(*my_socket, &read_fs);
     timeout.tv_sec = 0;
-    trackClient.max_sd = *my_socket;
+    trackClient.max_sd = *my_socket; //server socket
 
     for (int i = 0; i < MAXCLIENT; i++)
     {
@@ -62,19 +62,17 @@ int create_track_client(int *my_socket, int clients_array[])
 
     select(trackClient.max_sd + 1, &read_fs, NULL, NULL, &timeout);
 
+    //detect event on server socket
     if (FD_ISSET(*my_socket, &read_fs))
     {
-        if (trackClient.new_socket >= (*my_socket + 4))
-        {
-            puts("nombre client max atteint");
-            return 1;
-        }
 
+        printf("max sd :%i\n", trackClient.max_sd);
         if ((trackClient.new_socket = accept(*my_socket, (struct sockaddr *)&addr, &client_addr_size)) < 0)
         {
 
-            perror("connect:");
-            puts("server socket");
+            perror("connect()");
+            puts("accept client failed");
+            printf("new sock %i\n", trackClient.new_socket);
             return 1;
         }
 
@@ -84,13 +82,13 @@ int create_track_client(int *my_socket, int clients_array[])
         {
             if (clients_array[i] == 0)
             {
+                //ajouter le dernier client accepté à l'indice qui a pour valeur zéro (pas encore de socket attribué)
                 clients_array[i] = trackClient.new_socket;
 
                 printf("add new client :%i", trackClient.new_socket);
                 if (send(trackClient.new_socket, "hello\n", 6, MSG_NOSIGNAL) < 0)
                 {
                     puts("send failed");
-                    puts("toto");
 
                     return 1;
                 }
@@ -100,6 +98,7 @@ int create_track_client(int *my_socket, int clients_array[])
         }
     }
 
+    //detecter la réception d'un message client en bouclant sur tout les sockets
     for (int i = 0; i < MAXCLIENT; i++)
     {
         trackClient.sd = clients_array[i];
@@ -111,6 +110,12 @@ int create_track_client(int *my_socket, int clients_array[])
                 puts("client disconnected");
                 close(trackClient.sd);
                 clients_array[i] = 0;
+            }
+            if (send(trackClient.sd, "hello\n", 6, MSG_NOSIGNAL) < 0)
+            {
+                puts("send failed");
+
+                return 1;
             }
         }
     }
@@ -124,7 +129,7 @@ int read_client(int client)
     char buff[128];
 
     if (client == -1)
-        return 1;
+        return -1;
 
     memset(buff, '\0', 128);
     while ((n = recv(client, buff, 128, 0)) >= 0)
@@ -132,7 +137,33 @@ int read_client(int client)
         if (n == 0)
             return -1;
 
-        printf("received in server %s", buff);
+        printf("received  %s", buff);
+
+        if (buff[n - 1] == '\n')
+        {
+            memset(buff, '\0', 128);
+            break;
+        }
+    }
+
+    return n;
+}
+
+int read_server(int server)
+{
+    int n = 0;
+    char buff[128];
+
+    if (server == -1)
+        return -1;
+
+    memset(buff, '\0', 128);
+    while ((n = recv(server, buff, 128, MSG_DONTWAIT)) >= 0)
+    {
+        if (n == 0)
+            return -1;
+
+        printf("received  %s", buff);
 
         if (buff[n - 1] == '\n')
         {
@@ -162,7 +193,7 @@ int load_client(int *mysocket, char *hostname, char *portname)
 
     if (connect(*mysocket, (struct sockaddr *)&addr, sizeof(addr)) < 0)
     {
-        perror("connect()");
+        perror("conne()");
         return 1;
     }
     //lecture et affichage du message de bienvenu du client dans la console

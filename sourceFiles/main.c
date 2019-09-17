@@ -61,7 +61,11 @@ int main(void)
         else if (*step == 4)
         {
 
-            create_track_client(my_socket, infos.clients_array);
+            if (*infos.choix == '1')
+            {
+                create_track_client(my_socket, infos.clients_array);
+            }
+
             game->presentTime = SDL_GetTicks();
             game->delta = game->presentTime - game->lastTime;
             game->lastTime = game->presentTime;
@@ -78,6 +82,7 @@ int main(void)
             else if (*infos.choix == '2')
             {
                 game_client_event(step, *my_socket);
+                read_server(*my_socket);
             }
 
             fps++;
