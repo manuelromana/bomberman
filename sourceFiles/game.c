@@ -154,10 +154,8 @@ void game_destroy(stGame* game) {
   if (game) {
     SDL_DestroyWindow(game->pWindow);
     SDL_DestroyRenderer(game->pRenderer);
-
     textures_destroy(game);
     free(game->map);
-    free(game->players);
     free(game);
   }
 }
