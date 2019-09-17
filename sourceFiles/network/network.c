@@ -1,4 +1,5 @@
 #include "../../headerFiles/network/network.h"
+#include "../../headerFiles/game/game.h"
 
 int load_server(int *my_socket, char *hostname, char *portname)
 {
@@ -105,17 +106,55 @@ int create_track_client(int *my_socket, int clients_array[])
 
         if (FD_ISSET(trackClient.sd, &read_fs))
         {
-            if (read_client(trackClient.sd) == -1)
+            switch (read_client(trackClient.sd))
             {
+            case -1:
                 puts("client disconnected");
                 close(trackClient.sd);
                 clients_array[i] = 0;
-            }
-            if (send(trackClient.sd, "hello\n", 6, MSG_NOSIGNAL) < 0)
-            {
-                puts("send failed");
-
                 return 1;
+            case 6:
+                if (send(trackClient.sd, "right\n", 6, MSG_NOSIGNAL) < 0)
+                {
+                    puts("send failed");
+
+                    return 1;
+                }
+                break;
+            case 7:
+                if (send(trackClient.sd, "ToLeft\n", 7, MSG_NOSIGNAL) < 0)
+                {
+                    puts("send failed");
+
+                    return 1;
+                }
+                break;
+            case 5:
+                if (send(trackClient.sd, "down\n", 5, MSG_NOSIGNAL) < 0)
+                {
+                    puts("send failed");
+
+                    return 1;
+                }
+                break;
+            case 3:
+
+                if (send(trackClient.sd, "up\n", 3, MSG_NOSIGNAL) < 0)
+                {
+                    puts("send failed");
+
+                    return 1;
+                }
+                break;
+            case 9:
+
+                if (send(trackClient.sd, "ToAction\n", 9, MSG_NOSIGNAL) < 0)
+                {
+                    puts("send failed");
+
+                    return 1;
+                }
+                break;
             }
         }
     }
@@ -137,7 +176,7 @@ int read_client(int client)
         if (n == 0)
             return -1;
 
-        printf("received  %s", buff);
+        //printf("received  %s", buff);
 
         if (buff[n - 1] == '\n')
         {
@@ -175,6 +214,42 @@ int read_server(int server)
     return n;
 }
 
+int client_event_read_network(int server, stGame *game)
+{
+    int n = 0;
+    char buff[128];
+
+    if (server == -1)
+        return -1;
+
+    memset(buff, '\0', 128);
+    while ((n = recv(server, buff, 128, MSG_DONTWAIT)) >= 0)
+    {
+        if (n == 0)
+            return -1;
+
+        switch (n)
+        {
+        case 3:
+        case 5:
+        case 6:
+        case 7:
+            character_move_in_network(n, game);
+            break;
+        case 9:
+            puts("Action");
+            break;
+        }
+
+        if (buff[n - 1] == '\n')
+        {
+            memset(buff, '\0', 128);
+            break;
+        }
+    }
+    return 1;
+}
+
 int load_client(int *mysocket, char *hostname, char *portname)
 {
     struct sockaddr_in addr;
@@ -193,7 +268,7 @@ int load_client(int *mysocket, char *hostname, char *portname)
 
     if (connect(*mysocket, (struct sockaddr *)&addr, sizeof(addr)) < 0)
     {
-        perror("conne()");
+        perror("connect client()");
         return 1;
     }
     //lecture et affichage du message de bienvenu du client dans la console
@@ -228,14 +303,14 @@ void send_key(SDL_Keycode keydown, int mysocket)
         }
         break;
     case SDLK_LEFT:
-        if (send(mysocket, "Left\n", 5, MSG_NOSIGNAL) < 0)
+        if (send(mysocket, "ToLeft\n", 7, MSG_NOSIGNAL) < 0)
         {
             puts("send failed");
             close(mysocket);
         }
         break;
     case SDLK_SPACE:
-        if (send(mysocket, "Action\n", 7, MSG_NOSIGNAL) < 0)
+        if (send(mysocket, "ToAction\n", 9, MSG_NOSIGNAL) < 0)
         {
             puts("send failed");
             close(mysocket);
@@ -265,5 +340,80 @@ void game_client_event(int *step, int serverSocket)
                 break;
             }
         }
+    }
+}
+void character_move_in_network(int event, stGame *game)
+{
+    double x = game->player->playerColisionRect.x + game->player->playerX;
+    double y = game->player->playerColisionRect.y + game->player->playerY;
+    int h = game->player->playerColisionRect.h;
+    int w = game->player->playerColisionRect.w;
+    int xInMap, yInMap, yInMap2, xInMap2;
+    switch (event)
+    {
+    case 6:
+        xInMap = (x + w + SPEED * game->delta) / 64;
+        yInMap = y / 64;
+        yInMap2 = (y + h) / 64;
+        if (check_collision(game, xInMap, yInMap) == 0 &&
+            check_collision(game, xInMap, yInMap2) == 0)
+        {
+            game->player->playerX += SPEED * game->delta;
+        }
+        else
+        {
+            game->player->playerX =
+                xInMap * 64 - 1 - w - game->player->playerColisionRect.x;
+        }
+        game->player->playerDirection = 0;
+        break;
+    case 7:
+        xInMap = (x - SPEED * game->delta) / 64;
+        yInMap = y / 64;
+        yInMap2 = (y + h) / 64;
+        if (check_collision(game, xInMap, yInMap) == 0 &&
+            check_collision(game, xInMap, yInMap2) == 0)
+        {
+            game->player->playerX -= SPEED * game->delta;
+        }
+        else
+        {
+            game->player->playerX =
+                xInMap * 64 + 65 - game->player->playerColisionRect.x;
+        }
+        game->player->playerDirection = 1;
+        break;
+    case 3:
+        xInMap = x / 64;
+        yInMap = (y - SPEED * game->delta) / 64;
+        xInMap2 = (x + w) / 64;
+        if (check_collision(game, xInMap, yInMap) == 0 &&
+            check_collision(game, xInMap2, yInMap) == 0)
+        {
+            game->player->playerY -= SPEED * game->delta;
+        }
+        else
+        {
+            game->player->playerY =
+                yInMap * 64 + 65 - game->player->playerColisionRect.y;
+        }
+        game->player->playerDirection = 2;
+        break;
+    case 5:
+        xInMap = x / 64;
+        yInMap = (y + h + SPEED * game->delta) / 64;
+        xInMap2 = (x + w) / 64;
+        if (check_collision(game, xInMap, yInMap) == 0 &&
+            check_collision(game, xInMap2, yInMap) == 0)
+        {
+            game->player->playerY += SPEED * game->delta;
+        }
+        else
+        {
+            game->player->playerY =
+                yInMap * 64 - 1 - h - game->player->playerColisionRect.y;
+        }
+        game->player->playerDirection = 3;
+        break;
     }
 }

@@ -72,4 +72,7 @@ stGame *game_network_init(SDL_Window *pWindow, SDL_Renderer *pRenderer);
 
 void game_network_event(int *step, stGame *game);
 
+int client_event_read_network(int server, stGame *game);
+void character_move_in_network(int event, stGame *game);
+
 #endif

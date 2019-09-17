@@ -1,6 +1,6 @@
 
 #include "../headerFiles/game/game.h"
-
+#include "../headerFiles/network/network.h"
 int main(void)
 {
 
@@ -82,13 +82,13 @@ int main(void)
             else if (*infos.choix == '2')
             {
                 game_client_event(step, *my_socket);
-                read_server(*my_socket);
+                client_event_read_network(*my_socket, game);
             }
 
             fps++;
             if (game->presentTime - lastFps > 1000)
             {
-                printf("FPS : %d\n", fps);
+                //printf("FPS : %d\n", fps);
                 fps = 0;
                 lastFps = game->presentTime;
             }
