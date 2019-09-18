@@ -1,4 +1,4 @@
-#include "../headerFiles/game.h"
+#include "../../headerFiles/game/game.h"
 
 // 0 = Empty; 1 = Wall; 2 = Bomb; 3 = ExploWall
 int map[HAUTEURMAP][LARGEURMAP] = {

@@ -14,7 +14,8 @@
 
 #define LEN(arr) ((int)(sizeof(arr) / sizeof(arr[0])))
 
-typedef struct stTexture {
+typedef struct stTexture
+{
   SDL_Surface *surface;
   SDL_Texture *texture;
   char *path;

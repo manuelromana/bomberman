@@ -1,4 +1,4 @@
-#include "../headerFiles/game.h"
+#include "../../headerFiles/game/game.h"
 
 void textures_init(stGame *game) {
   for (int i = 0; i < TEXTURESSIZE; i++) {

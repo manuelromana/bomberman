@@ -1,6 +1,6 @@
-#include "../headerFiles/game.h"
-#include "../headerFiles/map.h"
-#include "../headerFiles/player.h"
+#include "../../headerFiles/game/game.h"
+#include "../../headerFiles/game/map.h"
+#include "../../headerFiles/game/player.h"
 
 void player1_init(stGame *game) {
   game->players[0].isDead = 0;

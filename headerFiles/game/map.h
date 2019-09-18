@@ -1,5 +1,5 @@
-#ifndef HEADER_H
-#define HEADER_H
+#ifndef MAP_H
+#define MAP_H
 
 #define HAUTEURMAP 15
 #define LARGEURMAP 19
