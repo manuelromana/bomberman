@@ -48,6 +48,9 @@ int main(void) {
         game->presentTime = SDL_GetTicks();
         game->delta = game->presentTime - game->lastTime;
         game->lastTime = game->presentTime;
+        for (int i = 0; i < 2; i++) {
+         player_flame_colision(game, &game->players[i]);
+        }
         game_draw(game);
         if (*infos.choix == '1') {
             if (game_event(game) == 1)
