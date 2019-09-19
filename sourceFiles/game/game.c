@@ -194,7 +194,6 @@ void game_boucle(stGame *game) {
 void draw_player_test(stGame *game) {
   SDL_SetRenderDrawColor(game->pRenderer, 10, 50, 10, 255);
   SDL_RenderClear(game->pRenderer);
-  //SDL_RendererFlip flip = SDL_FLIP_HORIZONTAL;
   SDL_Rect destinationPlayer = {game->player->playerX, game->player->playerY,
                                 game->player->playerPositionRect.w,
                                 game->player->playerPositionRect.h};

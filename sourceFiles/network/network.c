@@ -38,18 +38,16 @@ int create_track_client(int *my_socket, int clients_array[], stGame *game) {
     FD_ZERO(&read_fs);
     FD_SET(*my_socket, &read_fs);
     timeout.tv_sec = 0;
-    trackClient.max_sd = *my_socket; //server socket
+    trackClient.max_sd = *my_socket;
 
     for (int i = 0; i < MAXCLIENT; i++) {
         trackClient.sd = clients_array[i];
         if (trackClient.sd > 0)
             FD_SET(trackClient.sd, &read_fs);
-
         if (trackClient.sd > trackClient.max_sd)
             trackClient.max_sd = trackClient.sd;
     }
     select(trackClient.max_sd + 1, &read_fs, NULL, NULL, &timeout);
-    //detect event on server socket
     if (FD_ISSET(*my_socket, &read_fs)){
         printf("max sd :%i\n", trackClient.max_sd);
         if ((trackClient.new_socket = accept(*my_socket, (struct sockaddr *)&addr, &client_addr_size)) < 0) {
@@ -61,7 +59,6 @@ int create_track_client(int *my_socket, int clients_array[], stGame *game) {
         printf("detect client new_s: %i\n", trackClient.new_socket);
         for (int i = 0; i < MAXCLIENT; i++) {
             if (clients_array[i] == 0) {
-                //ajouter le dernier client accepté à l'indice qui a pour valeur zéro (pas encore de socket attribué)
                 clients_array[i] = trackClient.new_socket;
                 printf("add new client :%i", trackClient.new_socket);
                 if (send(trackClient.new_socket, "hello\n", 6, MSG_NOSIGNAL) < 0) {
@@ -73,7 +70,6 @@ int create_track_client(int *my_socket, int clients_array[], stGame *game) {
             }
         }
     }
-    //detecter la réception d'un message client en bouclant sur tout les sockets
     for (int i = 0; i < MAXCLIENT; i++) {
         trackClient.sd = clients_array[i];
         if (FD_ISSET(trackClient.sd, &read_fs)) {
@@ -144,7 +140,6 @@ int read_client(int client) {
     while ((n = recv(client, buff, 128, 0)) >= 0) {
         if (n == 0)
             return -1;
-        //printf("received  %s", buff);
         if (buff[n - 1] == '\n') {
             memset(buff, '\0', 128);
             break;
@@ -176,7 +171,6 @@ int read_server(int server) {
 int client_event_read_network(int serversocket, stGame *game) {
     int n = 0;
     char buff[128];
-
     if (serversocket == -1)
         return -1;
 
@@ -227,7 +221,6 @@ int load_client(int *mysocket, char *hostname, char *portname) {
         perror("connect client()");
         return 1;
     }
-    //lecture et affichage du message de bienvenu du client dans la console
     memset(message, '\0', 128);
     read(*mysocket, message, 128);
     printf("%s\n", message);

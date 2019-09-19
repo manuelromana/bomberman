@@ -66,8 +66,6 @@ void game_draw(stGame *game) {
         newPlayer[i].playerX + newPlayer[i].playerColisionRect.x,
         newPlayer[i].playerY + newPlayer[i].playerColisionRect.y,
         newPlayer[i].playerColisionRect.w, newPlayer[i].playerColisionRect.h};
-    // SDL_SetRenderDrawColor(game->pRenderer, 10, 50, 10, 255);
-    // SDL_RenderFillRect(game->pRenderer, &destinationPlayerColision);
     if (newPlayer[i].isDead) {
       SDL_RenderCopy(game->pRenderer, game->texture[7]->texture, NULL,
                      &destinationPlayer);

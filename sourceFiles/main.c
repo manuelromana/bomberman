@@ -24,7 +24,6 @@ int main(void) {
             menu_event(event, step, &infos.current_text, infos.hostname, infos.portname, *my_socket);
         }
         if (*step == 0) {
-            //menu_draw_choix(menu, infos.choix);
             menu_draw(menu);
         }
         else if (*step == 1) {
@@ -63,7 +62,6 @@ int main(void) {
             }
             fps++;
             if (game->presentTime - lastFps > 1000) {
-                //printf("FPS : %d\n", fps);
                 fps = 0;
                 lastFps = game->presentTime;
             }

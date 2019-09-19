@@ -32,7 +32,6 @@ typedef struct stMenu
     TTF_Font *police2;
     TTF_Font *police3;
 
-    //vaiables utilisées pour load les ttf
     SDL_Surface *surface;
     SDL_Texture *texture;
 
