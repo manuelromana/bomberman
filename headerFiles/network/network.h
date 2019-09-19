@@ -40,7 +40,7 @@ int load_client(int *mysocket, char *hostname, char *portname);
 void send_key(SDL_Keycode keydown, int mysocket);
 
 void track_client(int *server_socket);
-int create_track_client(int *my_socket, int clients_array[]);
+// int create_track_client(int *my_socket, int clients_array[], stGame *game);
 int read_client(int client);
 
 void game_client_event(int *step, int serverSocket);

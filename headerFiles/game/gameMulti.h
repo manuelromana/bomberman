@@ -83,4 +83,6 @@ void game_network_event(int *step, stGame *game);
 
 int client_event_read_network(int server, stGame *game);
 void character_move_in_network(int event, stGame *game);
+int create_track_client(int *my_socket, int clients_array[], stGame *game);
+
 #endif

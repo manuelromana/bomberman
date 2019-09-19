@@ -63,7 +63,7 @@ int main(void)
 
             if (*infos.choix == '1')
             {
-                create_track_client(my_socket, infos.clients_array);
+                create_track_client(my_socket, infos.clients_array, game);
             }
 
             game->presentTime = SDL_GetTicks();
