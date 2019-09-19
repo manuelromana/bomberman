@@ -2,8 +2,7 @@
 #include "../../headerFiles/game/map.h"
 #include "../../headerFiles/game/player.h"
 
-void player1_init(stGame *game)
-{
+void player1_init(stGame *game) {
   game->players[0].isDead = 0;
   game->players[0].playerPositionRect.x = PLPOSITIONX;
   game->players[0].playerPositionRect.y = PLPOSITIONY;
@@ -17,8 +16,7 @@ void player1_init(stGame *game)
   game->players[0].playerY = game->players[0].playerPositionRect.y;
 }
 
-void player2_init(stGame *game)
-{
+void player2_init(stGame *game) {
   game->players[1].isDead = 0;
   game->players[1].playerPositionRect.x = PL2POSITIONX;
   game->players[1].playerPositionRect.y = PL2POSITIONY;
@@ -33,26 +31,22 @@ void player2_init(stGame *game)
 }
 
 void character_move(enum enDirection direction, stGame *game,
-                    stPlayer *player)
-{
+                    stPlayer *player) {
   double x = player->playerColisionRect.x + player->playerX;
   double y = player->playerColisionRect.y + player->playerY;
   int h = player->playerColisionRect.h;
   int w = player->playerColisionRect.w;
   int xInMap, yInMap, yInMap2, xInMap2;
-  switch (direction)
-  {
+  switch (direction) {
   case RIGHT:
     xInMap = (x + w + SPEED * game->delta) / 64;
     yInMap = y / 64;
     yInMap2 = (y + h) / 64;
     if (check_collision(game, xInMap, yInMap) == 0 &&
-        check_collision(game, xInMap, yInMap2) == 0)
-    {
+        check_collision(game, xInMap, yInMap2) == 0) {
       player->playerX += SPEED * game->delta;
     }
-    else
-    {
+    else {
       player->playerX = xInMap * 64 - 1 - w - player->playerColisionRect.x;
     }
     player->playerDirection = 0;
@@ -62,12 +56,10 @@ void character_move(enum enDirection direction, stGame *game,
     yInMap = y / 64;
     yInMap2 = (y + h) / 64;
     if (check_collision(game, xInMap, yInMap) == 0 &&
-        check_collision(game, xInMap, yInMap2) == 0)
-    {
+        check_collision(game, xInMap, yInMap2) == 0) {
       player->playerX -= SPEED * game->delta;
     }
-    else
-    {
+    else {
       player->playerX = xInMap * 64 + 65 - player->playerColisionRect.x;
     }
     player->playerDirection = 1;
@@ -77,12 +69,10 @@ void character_move(enum enDirection direction, stGame *game,
     yInMap = (y - SPEED * game->delta) / 64;
     xInMap2 = (x + w) / 64;
     if (check_collision(game, xInMap, yInMap) == 0 &&
-        check_collision(game, xInMap2, yInMap) == 0)
-    {
+        check_collision(game, xInMap2, yInMap) == 0) {
       player->playerY -= SPEED * game->delta;
     }
-    else
-    {
+    else{
       player->playerY = yInMap * 64 + 65 - player->playerColisionRect.y;
     }
     player->playerDirection = 2;
@@ -92,12 +82,10 @@ void character_move(enum enDirection direction, stGame *game,
     yInMap = (y + h + SPEED * game->delta) / 64;
     xInMap2 = (x + w) / 64;
     if (check_collision(game, xInMap, yInMap) == 0 &&
-        check_collision(game, xInMap2, yInMap) == 0)
-    {
+        check_collision(game, xInMap2, yInMap) == 0) {
       player->playerY += SPEED * game->delta;
     }
-    else
-    {
+    else {
       player->playerY = yInMap * 64 - 1 - h - player->playerColisionRect.y;
     }
     player->playerDirection = 3;
@@ -105,28 +93,21 @@ void character_move(enum enDirection direction, stGame *game,
   }
 }
 
-int check_collision(stGame *game, int x, int y)
-{
-  if (game->map->map[y][x] == 1 || game->map->map[y][x] == 2 || game->map->map[y][x] == 3)
-  {
+int check_collision(stGame *game, int x, int y) {
+  if (game->map->map[y][x] == 1 || game->map->map[y][x] == 2 || game->map->map[y][x] == 3) {
     return 1;
   }
-  else
-  {
+  else {
     return 0;
   }
 }
 
-void character_sort(int nPlayer, stPlayer *player)
-{
+void character_sort(int nPlayer, stPlayer *player) {
   int i, j;
   stPlayer t;
-  for (i = 0; i < nPlayer; i++)
-  {
-    for (j = i + 1; j < nPlayer; j++)
-    {
-      if (player[j].playerY < player[i].playerY)
-      {
+  for (i = 0; i < nPlayer; i++) {
+    for (j = i + 1; j < nPlayer; j++) {
+      if (player[j].playerY < player[i].playerY) {
         t = player[i];
         player[i] = player[j];
         player[j] = t;
