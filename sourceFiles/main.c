@@ -42,9 +42,6 @@ int main(void) {
     }
     
     while (*step == 4 && game_event(game) != 1) {
-        if (*infos.choix == '1') {
-            create_track_client(my_socket, infos.clients_array, game);
-        }
         game->presentTime = SDL_GetTicks();
         game->delta = game->presentTime - game->lastTime;
         game->lastTime = game->presentTime;
@@ -53,6 +50,8 @@ int main(void) {
         }
         game_draw(game);
         if (*infos.choix == '1') {
+            create_track_client(my_socket, infos.clients_array, game);
+
             if (game_event(game) == 1)
                 *step = -1;
             
