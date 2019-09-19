@@ -8,7 +8,7 @@ SRC2 = sourceFiles/client.c
 SRC3 = sourceFiles/main.c sourceFiles/network/network.c\
 	sourceFiles/menu/menu.c\
 	sourceFiles/menu/fonts.c \
-	sourceFiles/game/game.c\
+	sourceFiles/game/gameMulti.c\
 	sourceFiles/game/textures.c\
 	sourceFiles/game/character.c\
 	sourceFiles/game/objects.c\
@@ -16,7 +16,7 @@ SRC3 = sourceFiles/main.c sourceFiles/network/network.c\
 
 
 SRC4 = sourceFiles/game/main.c\
-	sourceFiles/game/game.c\
+	sourceFiles/game/gameMulti.c\
 	sourceFiles/game/textures.c\
 	sourceFiles/game/character.c\
 	sourceFiles/game/objects.c\

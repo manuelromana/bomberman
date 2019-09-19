@@ -1,5 +1,5 @@
 
-#include "../headerFiles/game/game.h"
+#include "../headerFiles/game/gameMulti.h"
 #include "../headerFiles/network/network.h"
 int main(void)
 {
@@ -81,6 +81,7 @@ int main(void)
             }
             else if (*infos.choix == '2')
             {
+
                 game_client_event(step, *my_socket);
                 client_event_read_network(*my_socket, game);
             }

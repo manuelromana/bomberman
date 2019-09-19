@@ -1,4 +1,4 @@
-#include "../../headerFiles/game/game.h"
+#include "../../headerFiles/game/gameMulti.h"
 
 int main(int argc, char *argv[])
 {

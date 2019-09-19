@@ -1,7 +1,9 @@
-#include "../../headerFiles/game/game.h"
+#include "../../headerFiles/game/gameMulti.h"
 
-void textures_init(stGame *game) {
-  for (int i = 0; i < TEXTURESSIZE; i++) {
+void textures_init(stGame *game)
+{
+  for (int i = 0; i < TEXTURESSIZE; i++)
+  {
     game->texture[i] = NULL;
     game->texture[i] = malloc(sizeof(stTexture *));
   }
@@ -13,18 +15,24 @@ void textures_init(stGame *game) {
   sdl_load(game, paths, arrayLength);
 }
 
-void sdl_load(stGame *game, char *paths[], int arrayLength) {
-  for (int i = 0; i < arrayLength; i++) {
+void sdl_load(stGame *game, char *paths[], int arrayLength)
+{
+  for (int i = 0; i < arrayLength; i++)
+  {
     game->texture[i]->path = paths[i];
     game->texture[i]->surface = IMG_Load(paths[i]);
-    if (!game->texture[i]->surface) {
+    if (!game->texture[i]->surface)
+    {
       fprintf(stderr, "Erreur au chargement de l'image : %s,%s\n", paths[i],
               IMG_GetError());
       game_destroy(game);
-    } else {
+    }
+    else
+    {
       game->texture[i]->texture = SDL_CreateTextureFromSurface(
           game->pRenderer, game->texture[i]->surface);
-      if (!game->texture[i]->texture) {
+      if (!game->texture[i]->texture)
+      {
         fprintf(stderr, "Erreur au chargement de la texture : %s,%s\n",
                 paths[i], SDL_GetError());
         game_destroy(game);
@@ -34,8 +42,10 @@ void sdl_load(stGame *game, char *paths[], int arrayLength) {
   }
 }
 
-void textures_destroy(stGame *game) {
-  for (int i = 0; i < TEXTURESSIZE; i++) {
+void textures_destroy(stGame *game)
+{
+  for (int i = 0; i < TEXTURESSIZE; i++)
+  {
     SDL_DestroyTexture(game->texture[i]->texture);
     free(game->texture[i]);
   }

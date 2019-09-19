@@ -1,5 +1,5 @@
 #include "../../headerFiles/network/network.h"
-#include "../../headerFiles/game/game.h"
+#include "../../headerFiles/game/gameMulti.h"
 
 int load_server(int *my_socket, char *hostname, char *portname)
 {
@@ -342,78 +342,78 @@ void game_client_event(int *step, int serverSocket)
         }
     }
 }
-void character_move_in_network(int event, stGame *game)
-{
-    double x = game->player->playerColisionRect.x + game->player->playerX;
-    double y = game->player->playerColisionRect.y + game->player->playerY;
-    int h = game->player->playerColisionRect.h;
-    int w = game->player->playerColisionRect.w;
-    int xInMap, yInMap, yInMap2, xInMap2;
-    switch (event)
-    {
-    case 6:
-        xInMap = (x + w + SPEED * game->delta) / 64;
-        yInMap = y / 64;
-        yInMap2 = (y + h) / 64;
-        if (check_collision(game, xInMap, yInMap) == 0 &&
-            check_collision(game, xInMap, yInMap2) == 0)
-        {
-            game->player->playerX += SPEED * game->delta;
-        }
-        else
-        {
-            game->player->playerX =
-                xInMap * 64 - 1 - w - game->player->playerColisionRect.x;
-        }
-        game->player->playerDirection = 0;
-        break;
-    case 7:
-        xInMap = (x - SPEED * game->delta) / 64;
-        yInMap = y / 64;
-        yInMap2 = (y + h) / 64;
-        if (check_collision(game, xInMap, yInMap) == 0 &&
-            check_collision(game, xInMap, yInMap2) == 0)
-        {
-            game->player->playerX -= SPEED * game->delta;
-        }
-        else
-        {
-            game->player->playerX =
-                xInMap * 64 + 65 - game->player->playerColisionRect.x;
-        }
-        game->player->playerDirection = 1;
-        break;
-    case 3:
-        xInMap = x / 64;
-        yInMap = (y - SPEED * game->delta) / 64;
-        xInMap2 = (x + w) / 64;
-        if (check_collision(game, xInMap, yInMap) == 0 &&
-            check_collision(game, xInMap2, yInMap) == 0)
-        {
-            game->player->playerY -= SPEED * game->delta;
-        }
-        else
-        {
-            game->player->playerY =
-                yInMap * 64 + 65 - game->player->playerColisionRect.y;
-        }
-        game->player->playerDirection = 2;
-        break;
-    case 5:
-        xInMap = x / 64;
-        yInMap = (y + h + SPEED * game->delta) / 64;
-        xInMap2 = (x + w) / 64;
-        if (check_collision(game, xInMap, yInMap) == 0 &&
-            check_collision(game, xInMap2, yInMap) == 0)
-        {
-            game->player->playerY += SPEED * game->delta;
-        }
-        else
-        {
-            game->player->playerY =
-                yInMap * 64 - 1 - h - game->player->playerColisionRect.y;
-        }
-        game->player->playerDirection = 3;
-        break;
-    }
-}
+// void character_move_in_network(int event, stGame *game)
+// {
+//     double x = game->player->playerColisionRect.x + game->player->playerX;
+//     double y = game->player->playerColisionRect.y + game->player->playerY;
+//     int h = game->player->playerColisionRect.h;
+//     int w = game->player->playerColisionRect.w;
+//     int xInMap, yInMap, yInMap2, xInMap2;
+//     switch (event)
+//     {
+//     case 6:
+//         xInMap = (x + w + SPEED * game->delta) / 64;
+//         yInMap = y / 64;
+//         yInMap2 = (y + h) / 64;
+//         if (check_collision(game, xInMap, yInMap) == 0 &&
+//             check_collision(game, xInMap, yInMap2) == 0)
+//         {
+//             game->player->playerX += SPEED * game->delta;
+//         }
+//         else
+//         {
+//             game->player->playerX =
+//                 xInMap * 64 - 1 - w - game->player->playerColisionRect.x;
+//         }
+//         game->player->playerDirection = 0;
+//         break;
+//     case 7:
+//         xInMap = (x - SPEED * game->delta) / 64;
+//         yInMap = y / 64;
+//         yInMap2 = (y + h) / 64;
+//         if (check_collision(game, xInMap, yInMap) == 0 &&
+//             check_collision(game, xInMap, yInMap2) == 0)
+//         {
+//             game->player->playerX -= SPEED * game->delta;
+//         }
+//         else
+//         {
+//             game->player->playerX =
+//                 xInMap * 64 + 65 - game->player->playerColisionRect.x;
+//         }
+//         game->player->playerDirection = 1;
+//         break;
+//     case 3:
+//         xInMap = x / 64;
+//         yInMap = (y - SPEED * game->delta) / 64;
+//         xInMap2 = (x + w) / 64;
+//         if (check_collision(game, xInMap, yInMap) == 0 &&
+//             check_collision(game, xInMap2, yInMap) == 0)
+//         {
+//             game->player->playerY -= SPEED * game->delta;
+//         }
+//         else
+//         {
+//             game->player->playerY =
+//                 yInMap * 64 + 65 - game->player->playerColisionRect.y;
+//         }
+//         game->player->playerDirection = 2;
+//         break;
+//     case 5:
+//         xInMap = x / 64;
+//         yInMap = (y + h + SPEED * game->delta) / 64;
+//         xInMap2 = (x + w) / 64;
+//         if (check_collision(game, xInMap, yInMap) == 0 &&
+//             check_collision(game, xInMap2, yInMap) == 0)
+//         {
+//             game->player->playerY += SPEED * game->delta;
+//         }
+//         else
+//         {
+//             game->player->playerY =
+//                 yInMap * 64 - 1 - h - game->player->playerColisionRect.y;
+//         }
+//         game->player->playerDirection = 3;
+//         break;
+//     }
+// }
