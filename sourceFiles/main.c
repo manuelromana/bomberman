@@ -11,18 +11,15 @@ int main(void) {
     SDL_Event event;
     int *my_socket = malloc(sizeof(int *));
     int *step = malloc(sizeof(int));
-    unsigned int lastFps = 0;
-    unsigned int fps = 0;
     if (!my_socket | !step)
         exit - 1;
 
     *step = 0;
     memset(my_socket, '\0', 1);
 
-    while (*step != -1) {
-        if (*step < 4) {
-            menu_event(event, step, &infos.current_text, infos.hostname, infos.portname, *my_socket);
-        }
+    while (*step > -1 && *step < 4) {
+        menu_event(event, step, &infos.current_text, infos.hostname, infos.portname, *my_socket);
+
         if (*step == 0) {
             menu_draw(menu);
         }
@@ -42,32 +39,27 @@ int main(void) {
             }
             (*step)++;
         }
-        else if (*step == 4) {
-            if (*infos.choix == '1') {
-                create_track_client(my_socket, infos.clients_array, game);
-            }
-            game->presentTime = SDL_GetTicks();
-            game->delta = game->presentTime - game->lastTime;
-            game->lastTime = game->presentTime;
-            game_draw(game);
-            if (*infos.choix == '1') {
-                int quit = game_event(game);
-                if (quit == 1) {
-                    *step = -1;
-                }
-            }
-            else if (*infos.choix == '2') {
-                game_client_event(step, *my_socket);
-                client_event_read_network(*my_socket, game);
-            }
-            fps++;
-            if (game->presentTime - lastFps > 1000) {
-                fps = 0;
-                lastFps = game->presentTime;
-            }
+    }
+    
+    while (*step == 4 && game_event(game) != 1) {
+        if (*infos.choix == '1') {
+            create_track_client(my_socket, infos.clients_array, game);
+        }
+        game->presentTime = SDL_GetTicks();
+        game->delta = game->presentTime - game->lastTime;
+        game->lastTime = game->presentTime;
+        game_draw(game);
+        if (*infos.choix == '1') {
+            if (game_event(game) == 1)
+                *step = -1;
+            
+        } else if (*infos.choix == '2') {
+            game_client_event(step, *my_socket);
+            client_event_read_network(*my_socket, game);
         }
         SDL_Delay(15);
     }
+
     TTF_Quit();
     menu_destroy_2(menu);
     game_destroy(game);
