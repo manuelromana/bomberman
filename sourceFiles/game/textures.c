@@ -1,15 +1,13 @@
-#include "../headerFiles/game.h"
+#include "../../headerFiles/game/gameMulti.h"
 
 void textures_init(stGame *game) {
   for (int i = 0; i < TEXTURESSIZE; i++) {
     game->texture[i] = NULL;
     game->texture[i] = malloc(sizeof(stTexture *));
   }
-
   char *paths[] = {PATHPLFR, PATHPLBCK, PATHPLSIDE, PATHWALL,
-                   PATHBOMB, PATHFLAME, PATHEXPBCK};
+                   PATHBOMB, PATHFLAME, PATHEXPBCK, PATHGRAVE};
   int arrayLength = LEN(paths);
-
   sdl_load(game, paths, arrayLength);
 }
 
@@ -21,7 +19,8 @@ void sdl_load(stGame *game, char *paths[], int arrayLength) {
       fprintf(stderr, "Erreur au chargement de l'image : %s,%s\n", paths[i],
               IMG_GetError());
       game_destroy(game);
-    } else {
+    }
+    else {
       game->texture[i]->texture = SDL_CreateTextureFromSurface(
           game->pRenderer, game->texture[i]->surface);
       if (!game->texture[i]->texture) {

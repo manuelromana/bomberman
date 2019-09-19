@@ -10,16 +10,16 @@
 #define PLPOSITIONX 64
 #define PLPOSITIONY 1
 
-typedef struct stPlayer {
-  SDL_Texture *pTexPlayerFront;
-  SDL_Texture *pTexPlayerBack;
-  SDL_Texture *pTexPlayerRight;
-  SDL_Texture *pTexPlayerLeft;
+#define PL2POSITIONX 1088
+#define PL2POSITIONY 768
 
+typedef struct stPlayer {
   SDL_Rect playerColisionRect;
   SDL_Rect playerPositionRect;
+
   int playerDirection;
   double playerX, playerY;
+  int isDead;
 } stPlayer;
 
 #endif

@@ -1,5 +1,5 @@
-#ifndef HEADER_H
-#define HEADER_H
+#ifndef MAP_H
+#define MAP_H
 
 #define HAUTEURMAP 15
 #define LARGEURMAP 19
@@ -9,8 +9,6 @@
 typedef struct stMap {
   int map[HAUTEURMAP][LARGEURMAP];
 
-  SDL_Texture *pTexBomb;
-  SDL_Texture *pTexWall;
   SDL_Texture *pTexExplosionWall;
   SDL_Rect wallPosition;
   SDL_Rect exploWallPosition;
