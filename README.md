@@ -1,2 +1,2 @@
-# Groupe de siguie_b
+# Groupe Bomberman inline
 
